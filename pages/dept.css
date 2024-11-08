@@ -1,0 +1,355 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: rgb(18, 46, 77);
+    color: white;
+}
+nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 60px;
+    background-color:rgb(29, 61, 97); ;
+}
+nav ul{
+    display: flex;
+    justify-content: center;
+}
+nav ul  li{
+    list-style: none;
+    margin: 0 20px;
+}
+nav ul  li a{
+    text-decoration: none;
+    color: white;
+}
+nav ul  li a:hover{
+    color: rgb(96, 96, 217);
+    font-size: 1.04rem;
+}
+
+.logo{
+    width: 15%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.logo img{
+    border-radius: 50%;
+    width: 30%;
+    justify-content: left;
+    margin-left: -96%;
+}
+
+
+.left{
+    font-size: 2.0rem;
+    /* margin-right: 200px; */
+}
+
+.box-main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color:rgb(245, 236, 236);
+    font-family:'Courier New', Courier, monospace;
+    max-width: 50%;
+    margin-left: 35%;
+    margin-top: 16%;
+    height:80%;
+}
+.firstHalf{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.text-box{
+    justify-content: center;
+    width: auto;
+    height: auto;
+}
+
+.text-big{
+    font-size: 50px;
+    color: #f6f0f0;
+    margin: 0%;
+}
+.text-small{
+    font-size: 40px;
+    color: rgb(9, 245, 84);
+}
+.btn-btn-sm{
+    padding: 5px 10px;
+    margin: 2px 0;
+    border: 2px solid rgb(18, 17, 17);
+    border-radius: 8px;
+    background-color: none;
+    cursor: pointer;
+}
+.btnin{
+    padding: 8px 20px;
+    margin: 2px 0;
+    border: 2px solid rgb(18, 17, 17);
+    border-radius: 8px;
+    background-color: none;
+    cursor: pointer;
+
+}
+.btnin a{
+    text-decoration: none;
+}
+.btnout{
+    padding: 8px 20px;
+    margin: 2px 0;
+    border: 2px solid rgb(18, 17, 17);
+    border-radius: 8px;
+    background-color: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+.btnout a{
+    text-decoration: none;
+}
+.btnin:hover{
+    background-color: rgb(14, 196, 190);
+    font-size: 1.04rem;
+ }
+.btnout:hover{
+background-color: red;
+font-size: 1.04rem;
+}
+
+.footer{
+    margin-top:10%;
+}
+
+.addnewelement{
+    display: flex;
+    justify-content: right;
+    margin-right: 2%;
+    margin-top: 1%;
+}
+.inputbox{
+    padding: .5%;
+    margin: 0%;
+    margin-left: 0%;
+    border-radius: 10px;
+    width: 16vw;
+    border: 2px solid rgb(0, 204, 255);
+}
+.addbtn{
+    padding: 0.5%;
+    border-radius: 12%;
+    background-color: rgb(8, 139, 247);
+    color:white;
+    cursor: pointer;
+}
+/* Media Queries for Responsiveness */
+@media only screen and (max-width: 821px) {
+
+    .logo img {
+        border-radius: 73%;
+        width: 44%;
+        justify-content: left;
+        margin-left: 15%;
+    }
+    .rightNav{
+        text-align: center;
+    }
+
+    nav {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav ul {
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 280px;
+        background-color: rgb(29, 61, 97);
+    }
+
+    .box-main {
+        flex-direction: column;
+        text-align: center;
+        max-width: 100%;
+        padding: 20px;
+        margin-top: 190px;
+        margin-left: 21px
+    }
+
+    .text-big {
+        font-size: 2.5rem;
+    }
+
+    .text-small {
+        font-size: 1.5rem;
+    }
+
+    .button {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .text-big {
+        font-size: 2rem;
+    }
+
+    .text-small {
+        font-size: 1.2rem;
+    }
+
+    .btnin, .btnout {
+        padding: 8px 20px;
+    }
+}
+.header{
+    background-color: blue;
+    height: 80px;
+}
+
+.mainBody{
+    margin-top: 10px;
+    /* border: 2px solid red; */
+    background-image:url("https://t3.ftcdn.net/jpg/05/00/34/58/360_F_500345899_4OqmtspFst6SRnNQvLj7h7TfKOrBwTer.jpg");
+}
+
+
+.image{
+    height: 20vw;
+    width: 20vw;
+    margin-top: 4%;
+    margin-left: 9%;
+    padding: 0%;
+    cursor: pointer;
+}
+.image2{
+    height: 20vw;
+    width: 20vw;
+    margin-top: -24%;
+    margin-left: 40%;
+    margin-bottom: 3%;
+    border-radius: 0%;
+    cursor: pointer;
+}
+.text{
+    font-size: 20px;
+    color: #fdfdfd;
+    margin-left: 6%;
+
+}
+.text2{
+    font-size: 20px;
+    color: #fdfdfd;
+    margin-left: 43%;
+    margin-top: -37px;
+
+}
+
+
+.text3{
+    font-size: 20px;
+    color: #fdfdfd;
+    margin-left:78%;
+    margin-top: -37px;
+
+}
+
+.image3{
+    height: 20vw;
+    width: 20vw;
+    margin-top: -24%;
+    margin-left: 72%;
+    margin-bottom: 3%;
+    border-radius: 0%;
+    cursor: pointer;
+}
+
+.contain img:hover{
+    filter: grayscale(10);
+    transform: scale(1.03);
+    
+}
+
+.contain img{
+    border: 2px solid rgb(248, 156, 156);
+    box-shadow: 4px 7px 7px 0px black;
+    transition:  400ms;
+    border-radius: 8%;
+}
+
+/* .years .subjects .subject {
+    border: 2px solid green;
+    height: 200px;
+    width: 250px;
+    margin: 10px;
+    border-radius: 20px;
+    text-align: center;
+    background-color: rgb(172 240 49);
+} */
+
+@media (max-width: 600px) {
+    .text{
+        font-size: 15px;
+        color: #fdfdfd;
+        margin-left: 26%;
+        margin-top: -22px;
+    }
+
+    .text2{
+        font-size: 15px;
+        color: #fdfdfd;
+        margin-left: 26%;
+        margin-top: -22px;
+    }
+
+    .text3{
+        font-size: 15px;
+        color: #fdfdfd;
+        margin-left: 26%;
+        margin-top: -22px;
+    }
+    .image2{
+        height: 30vw;
+    width: 30vw;
+    margin-top: 9%;
+    margin-left: 33%;
+    margin-bottom: 7%;
+    border-radius: 8%;
+    cursor: pointer;
+    }
+
+    .image{
+        height: 30vw;
+        width: 30vw;
+        margin-top: 9%;
+        margin-left: 33%;
+        margin-bottom: 7%;
+        border-radius: 8%;
+        cursor: pointer;
+    }
+    .image3{
+        height: 30vw;
+        width: 30vw;
+        margin-top: 9%;
+        margin-left: 33%;
+        margin-bottom: 7%;
+        border-radius: 8%;
+        cursor: pointer;
+    }
+}

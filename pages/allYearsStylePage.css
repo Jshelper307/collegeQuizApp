@@ -1,0 +1,175 @@
+.header{
+    background-color: blue;
+    height: 80px;
+}
+
+.mainBody{
+    margin-top: 10px;
+    /* border: 2px solid red; */
+    background-image:url("https://t3.ftcdn.net/jpg/05/00/34/58/360_F_500345899_4OqmtspFst6SRnNQvLj7h7TfKOrBwTer.jpg");
+}
+.rh{
+    margin-top: 2%;
+}
+.addnewelement{
+    display: flex;
+    justify-content: right;
+    margin-right: 2%;
+    margin-top: -1%;
+}
+.inputbox{
+    padding: .5%;
+    margin: 0%;
+    margin-left: 0%;
+    border-radius: 10px;
+    width: 16vw;
+    border: 2px solid rgb(0, 204, 255);
+}
+.addbtn{
+    padding: 0.5%;
+    border-radius: 12%;
+    background-color: rgb(8, 139, 247);
+    color:white;
+    cursor: pointer;
+}
+.years{
+    /* border: 2px solid black; */
+    margin: 10px;
+}
+
+.years .chip{
+    /* border: 2px solid aqua; */
+    display: inline-block;
+    padding: 10px 10px;
+    border-radius: 40px;
+    background-color: aquamarine;
+    font-weight: bold;
+    color: black;
+    margin-top: -2vw;
+}
+
+.years .subjects{
+    /* border: 2px solid green; */
+    /* height: 200px; */
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: center;
+}
+.years .subjects .subject{
+    border: 2px solid green;
+    height: 200px;
+    width: 250px;
+    margin: 10px;
+    border-radius: 20px;
+    text-align: center;
+    background-color:rgb(189, 248, 81);
+    color:black;
+}
+
+/* this portion will start the navigation bar and logo*/
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: rgb(18, 46, 77);
+    color: white;
+}
+nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 60px;
+    background-color:rgb(29, 61, 97); ;
+}
+nav ul{
+    display: flex;
+    justify-content: center;
+}
+nav ul  li{
+    list-style: none;
+    margin: 0 20px;
+}
+nav ul  li a{
+    text-decoration: none;
+    color: rgb(231, 213, 213);
+}
+nav ul  li a:hover{
+    color: rgb(96, 96, 217);
+    font-size: 1.04rem;
+}
+
+.logo{
+    width: 15%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.logo img{
+    border-radius: 50%;
+    width: 30%;
+    justify-content: left;
+    margin-left: -96%;
+}
+
+
+.left{
+    font-size: 2.0rem;
+}
+
+/*responsive navigation */
+@media only screen and (max-width: 821px) {
+
+    .logo img {
+        border-radius: 73%;
+        width: 44%;
+        justify-content: left;
+        margin-left: 15%;
+    }
+    .rightNav{
+        text-align: center;
+    }
+
+    nav {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav ul {
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+    nav ul  li a{
+        text-decoration: none;
+        color: rgb(243, 157, 9);
+    }
+    nav ul  li a:hover{
+        color: rgb(96, 96, 217);
+        font-size: 1.04rem;
+    }
+    nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 280px;
+        background-color: rgb(29, 61, 97);
+    }
+    .inputbox{
+        padding: .5%;
+        margin: 0%;
+        margin-left: 0%;
+        border-radius: 10px;
+        width: 26vw;
+        border: 2px solid rgb(0, 204, 255);
+    }
+}
+
+@media only screen and (max-width: 821px) {
+    .years .subjects .subject{
+        margin-top: 45px;
+    }
+}
