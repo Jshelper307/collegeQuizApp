@@ -37,7 +37,6 @@ nav{
     justify-content:space-around;
     align-items: center;
     width:100%;
-    z-index: 1;
 }
 .nav__container a{
     text-decoration: none;

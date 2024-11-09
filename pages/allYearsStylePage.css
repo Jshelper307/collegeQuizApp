@@ -1,12 +1,21 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
 .header{
     background-color: blue;
     height: 80px;
 }
 
 .mainBody{
-    margin-top: 10px;
+    margin-top: 76px;
     /* border: 2px solid red; */
     background-image:url("https://t3.ftcdn.net/jpg/05/00/34/58/360_F_500345899_4OqmtspFst6SRnNQvLj7h7TfKOrBwTer.jpg");
+}
+
+.nav__container{
+   z-index: none; 
 }
 .rh{
     margin-top: 2%;
@@ -67,15 +76,12 @@
 }
 
 /* this portion will start the navigation bar and logo*/
-*{
-    margin: 0;
-    padding: 0;
-}
+
 body{
     background-color: rgb(18, 46, 77);
     color: white;
 }
-nav{
+/* nav{
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -115,7 +121,7 @@ nav ul  li a:hover{
 
 .left{
     font-size: 2.0rem;
-}
+} */
 
 /*responsive navigation */
 @media only screen and (max-width: 821px) {

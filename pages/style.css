@@ -100,12 +100,8 @@ header{
 
 }
 .header__container{
-    position: relative;
-    display:grid;
-    grid-template-columns: repeat(2,1fr);
-    align-items: center;
-    gap:5rem;
-    height: 100%;
+    border: 2px solid red;
+    display: flex;
 }
 .header__left p{
     margin: 1rem 0 2.4rem;

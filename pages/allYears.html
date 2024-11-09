@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Years</title>
+    <link rel="stylesheet" href="./utility.css">
     <link rel="stylesheet" href="allYearsStylePage.css">
     <script src="../logic/allYearsPageLogic.js"></script>
 </head>
@@ -12,19 +13,21 @@
 <body>
     <!-- this is for the header things -->
     <header>
-        <nav>
-            <div class="logo"><img src="D:/7th SEM/Project/pic/logo.jpeg" alt=""></div>
-            <div class="left">Online College Quiz</div>
-            <div class="right">
-                <ul>
-                    <li><a href="">Home</li></a>
-                    <li><a href="">About</li></a>
-                    <li><a href="">Academic</li></a>
-                    <li><a href="">contact</li></a>
-                    <li><a href="">Register</li></a>
-                </ul>
-            </div>
-        </nav>
+        <nav class="nav__container">
+            <a href="index.html"><h4>QuizMania</h4></a>
+            <ul  class="nav__menue">
+               <li><a href="index.html">Home</a></li>
+               <li><a href="about.html">About</a></li>
+               <li class="dropdown">
+                 Academic
+                 <ul class="dropdown-menu">
+                     <li><a href="./academic.html">Question Practice</a></li>
+                     <li><a href="#">Create Test</a></li>
+                 </ul>
+              </li>
+               <li><a href="contact.html">Contact</a></li>
+             </ul>
+         </nav>
     </header>
     <!-- here the main content of the body is present -->
     <main class="mainBody">

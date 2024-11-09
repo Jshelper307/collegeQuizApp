@@ -4,23 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./dept.css">
+    <link rel="stylesheet" href="./utility.css">
     <title>potfolio</title>
 </head>
 <body>
     <header>
-        <nav>
-            <div class="logo"><img src="./pic/logo.jpeg" alt=""></div>
-            <div class="left">Online College Quiz</div>
-            <div class="right">
-                <ul>
-                    <li><a href="">Home</li></a>
-                    <li><a href="">About</li></a>
-                    <li><a href="academic.html">Academic</li></a>
-                    <li><a href="">contact</li></a>
-                    <li><a href="register.html">Register</li></a>
-                </ul>
-            </div>
-        </nav>
+        <nav class="nav__container">
+            <a href="index.html"><h4>QuizMania</h4></a>
+            <ul  class="nav__menue">
+               <li><a href="index.html">Home</a></li>
+               <li><a href="about.html">About</a></li>
+               <li class="dropdown">
+                 Academic
+                 <ul class="dropdown-menu">
+                     <li><a href="./academic.html">Question Practice</a></li>
+                     <li><a href="#">Create Test</a></li>
+                 </ul>
+              </li>
+               <li><a href="contact.html">Contact</a></li>
+             </ul>
+         </nav>
     </header>
     <section class="background firstSection">
         <div class="addnewelement">
