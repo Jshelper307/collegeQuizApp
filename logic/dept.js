@@ -4,4 +4,4 @@ function toggleButton(value) {
     button.style.display = value ? 'block' : 'none';
     text.style.display = value ? 'block' : 'none';
   }
-  toggleButton(false);
+  toggleButton(true);
