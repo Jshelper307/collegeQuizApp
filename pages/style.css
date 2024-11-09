@@ -95,13 +95,24 @@ img{
 
 /* ++++++++++ header++++++++++++*/
 header{
-    height: 100vh;
+    height: 80vh;
     margin-bottom: 5rem;
-
+    display: flex;
 }
 .header__container{
-    border: 2px solid red;
     display: flex;
+    margin-top: 10px;
+}
+.header__left{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.header__right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .header__left p{
     margin: 1rem 0 2.4rem;
@@ -149,4 +160,16 @@ header{
        grid-template-columns: repeat(1,1fr);
     }
  
+}
+
+@media screen and (max-width : 700px) {
+    .header__container{
+        flex-direction: column;
+        gap: 20px;
+        height: fit-content;
+        align-items: center;
+    }
+    .header__left{
+        width: 80%;
+    }
 }

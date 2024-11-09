@@ -27,8 +27,6 @@ nav{
     background: var(--color-bg);
     height: 4rem;
     width:100vw;
-    position: fixed;
-    top: 0;
 }
 
 .nav__container{
