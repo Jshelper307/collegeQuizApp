@@ -1,12 +1,16 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
 /* Paste the entire content of styles.css here */
-body {
+html,body{
     background-color: #1f2641;
+    width: 100vw;
 }
 .content{
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
+    height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -67,4 +71,5 @@ body {
 .image-container img {
     max-width: 89%;
     border-radius: 10px;
+    border: 2px solid red;
 }

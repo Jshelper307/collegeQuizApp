@@ -9,14 +9,10 @@
 }
 
 .mainBody{
-    margin-top: 76px;
     /* border: 2px solid red; */
     background-image:url("https://t3.ftcdn.net/jpg/05/00/34/58/360_F_500345899_4OqmtspFst6SRnNQvLj7h7TfKOrBwTer.jpg");
 }
 
-.nav__container{
-   z-index: none; 
-}
 .rh{
     margin-top: 2%;
 }
@@ -81,89 +77,9 @@ body{
     background-color: rgb(18, 46, 77);
     color: white;
 }
-/* nav{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 60px;
-    background-color:rgb(29, 61, 97); ;
-}
-nav ul{
-    display: flex;
-    justify-content: center;
-}
-nav ul  li{
-    list-style: none;
-    margin: 0 20px;
-}
-nav ul  li a{
-    text-decoration: none;
-    color: rgb(231, 213, 213);
-}
-nav ul  li a:hover{
-    color: rgb(96, 96, 217);
-    font-size: 1.04rem;
-}
-
-.logo{
-    width: 15%;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-}
-.logo img{
-    border-radius: 50%;
-    width: 30%;
-    justify-content: left;
-    margin-left: -96%;
-}
-
-
-.left{
-    font-size: 2.0rem;
-} */
 
 /*responsive navigation */
 @media only screen and (max-width: 821px) {
-
-    .logo img {
-        border-radius: 73%;
-        width: 44%;
-        justify-content: left;
-        margin-left: 15%;
-    }
-    .rightNav{
-        text-align: center;
-    }
-
-    nav {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    nav ul {
-        flex-direction: column;
-        margin-top: 10px;
-    }
-
-    nav ul li {
-        margin: 10px 0;
-    }
-    nav ul  li a{
-        text-decoration: none;
-        color: rgb(243, 157, 9);
-    }
-    nav ul  li a:hover{
-        color: rgb(96, 96, 217);
-        font-size: 1.04rem;
-    }
-    nav {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        height: 280px;
-        background-color: rgb(29, 61, 97);
-    }
     .inputbox{
         padding: .5%;
         margin: 0%;

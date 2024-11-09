@@ -25,12 +25,11 @@ h4{
 /* For navbar */
 nav{
     background: var(--color-bg);
-    height: 4rem;
     width:100vw;
+    padding: 15px;
 }
 
 .nav__container{
-    height: 4rem;
     display: flex;
     justify-content:space-around;
     align-items: center;
@@ -39,9 +38,7 @@ nav{
 .nav__container a{
     text-decoration: none;
 }
-nav button{
-    display: none;
-}
+
 .nav__menue{
     display: flex;
     width: 60%;
@@ -63,17 +60,16 @@ nav button{
 }
 .nav__menue a:hover{
     color: var(--color-warning);
-
 }
 .dropdown-menu {
     display: none;
-    
     top: 100%;
     left: 0;
     list-style: none;
     padding: 0;
     margin: 0;
-    background-color: #333;
+    background-color: #1e1e1e;
+    width: 300%;
 }
 
 .dropdown-menu li a {
@@ -84,19 +80,26 @@ nav button{
 }
 .dropdown{
     height: 1.7rem;
+    position: relative;
 }
 .dropdown-menu li a:hover {
     background-color: #555;
 }
 
 /* Show dropdown on hover */
+.dropdown:hover{
+    color: #f7c94b;
+}
 .dropdown:hover .dropdown-menu {
+    position: absolute;
     display: block;
+    z-index: 1;
 }
 
 @media screen and (max-width : 700px) {
     .nav__container{
         flex-direction: column;
+        gap: 10px;
     }
     .nav__menue{
         width: 100%;
