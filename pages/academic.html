@@ -5,21 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Course</title>
     <link rel="stylesheet" href="./academicstyle.css">
+    <link rel="stylesheet" href="./utility.css">
 </head>
 <body>
-    <div class="container">
-        <div class="menu">
-            <h2>Select Course</h2>
-            <ul>
-                <li><a href="#">Diploma</a></li>
-                <li><a href="./dept.html">Btech</a></li>
-                <li><a href="#">Mtech</a></li>
-                <li><a href="#">MBA</a></li>
-            </ul>
-        </div>
-        <div class="image-container">
-            <img src="../images/question-mark.jpg" alt="Question Mark">
+    <nav class="nav__container">
+        <a href="index.html"><h4>QuizMania</h4></a>
+        <ul  class="nav__menue">
+           <li><a href="index.html">Home</a></li>
+           <li><a href="about.html">About</a></li>
+           <li class="dropdown">
+             Academic
+             <ul class="dropdown-menu">
+                 <li><a href="./academic.html">Question Practice</a></li>
+                 <li><a href="#">Create Test</a></li>
+             </ul>
+          </li>
+           <li><a href="contact.html">Contact</a></li>
+           <li><a href="./register.html">Login/Regester</a></li>
+         </ul>
+     </nav>
+   
+    <div class="content">
+        <div class="container">
+            <div class="course_menu">
+                <h2>Select Course</h2>
+                <ul>
+                    <li><a href="#">Diploma</a></li>
+                    <li><a href="./dept.html">Btech</a></li>
+                    <li><a href="#">Mtech</a></li>
+                    <li><a href="#">MBA</a></li>
+                </ul>
+            </div>
+            <div class="image-container">
+                <img src="../images/question-mark.jpg" alt="Question Mark">
+            </div>
         </div>
     </div>
 </body>
 </html>
+

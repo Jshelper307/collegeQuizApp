@@ -1,13 +1,19 @@
-/* Paste the entire content of styles.css here */
-body {
-    font-family: Arial, sans-serif;
+*{
     margin: 0;
     padding: 0;
+}
+
+/* Paste the entire content of styles.css here */
+html,body{
+    background-color: #1f2641;
+    width: 100vw;
+}
+.content{
+    font-family: Arial, sans-serif;
+    height: 90vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #f5f5f5;
+    justify-content: center;
 }
 
 .container {
@@ -18,25 +24,28 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.menu {
+.course_menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     margin-right: 40px;
 }
 
-.menu h2 {
+.course_menu h2 {
     margin-bottom: 20px;
     text-align: center;
 }
 
-.menu ul {
+.course_menu ul {
     list-style: none;
     padding: 0;
 }
 
-.menu ul li {
+.course_menu ul li {
     margin: 10px 0;
 }
 
-.menu ul li a {
+.course_menu ul li a {
     text-decoration: none;
     color: black;
     background-color: #f7c568;
@@ -44,11 +53,12 @@ body {
     border-radius: 5px;
     display: block;
     text-align: center;
+    font-size: x-large;
     font-weight: bold;
     transition: background-color 0.3s;
 }
 
-.menu ul li a:hover {
+.course_menu ul li a:hover {
     background-color: #d4a347;
 }
 
@@ -59,6 +69,6 @@ body {
 }
 
 .image-container img {
-    max-width: 300px;
+    max-width: 89%;
     border-radius: 10px;
 }

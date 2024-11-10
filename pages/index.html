@@ -4,42 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>project</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"> -->
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./utility.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   
 </head>
 <body>
-
-  
-    
-    <nav >
-      <div class="container .nav__container">
-       <a href="index.html"><h4>QuizMania</h4></a>
-       <ul  class="nav__menue">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="academic.html">Academic</a></li>
-          <li class="dropdown">
-            <a href="#">Courses</a>
-            <ul class="dropdown-menu">
-                <li><a href="#">CSE</a></li>
-                <li><a href="#">ECE</a></li>
-                <li><a href="#">EE</a></li>
-            </ul>
-         </li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-       <button id="open-menue-btn"><i class="fa-solid fa-bars"></i></button>
-       <button id="close-menue-btn"><i class="fa-solid fa-xmark"></i></button>
-
-      </div>
-    </nav>
-
-
-      
+ 
+  <nav class="nav__container">
+     <a href="index.html"><h4>QuizMania</h4></a>
+     <ul  class="nav__menue">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li class="dropdown">
+          Academic
+          <ul class="dropdown-menu">
+              <li><a href="./academic.html">Question Practice</a></li>
+              <li><a href="#">Create Test</a></li>
+          </ul>
+       </li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="./register.html">Login/Regester</a></li>
+      </ul>
+  </nav>
 
   <header>
     <div class="container header__container">

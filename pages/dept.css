@@ -6,43 +6,6 @@ body{
     background-color: rgb(18, 46, 77);
     color: white;
 }
-nav{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 60px;
-    background-color:rgb(29, 61, 97); ;
-}
-nav ul{
-    display: flex;
-    justify-content: center;
-}
-nav ul  li{
-    list-style: none;
-    margin: 0 20px;
-}
-nav ul  li a{
-    text-decoration: none;
-    color: white;
-}
-nav ul  li a:hover{
-    color: rgb(96, 96, 217);
-    font-size: 1.04rem;
-}
-
-.logo{
-    width: 15%;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-}
-.logo img{
-    border-radius: 50%;
-    width: 30%;
-    justify-content: left;
-    margin-left: -96%;
-}
-
 
 .left{
     font-size: 2.0rem;
@@ -149,39 +112,6 @@ font-size: 1.04rem;
 }
 /* Media Queries for Responsiveness */
 @media only screen and (max-width: 821px) {
-
-    .logo img {
-        border-radius: 73%;
-        width: 44%;
-        justify-content: left;
-        margin-left: 15%;
-    }
-    .rightNav{
-        text-align: center;
-    }
-
-    nav {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    nav ul {
-        flex-direction: column;
-        margin-top: 10px;
-    }
-
-    nav ul li {
-        margin: 10px 0;
-    }
-
-    nav {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        height: 280px;
-        background-color: rgb(29, 61, 97);
-    }
-
     .box-main {
         flex-direction: column;
         text-align: center;
