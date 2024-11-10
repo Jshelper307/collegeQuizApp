@@ -1,21 +1,12 @@
-:root{
-    --color-primary: #ce63ff;
-    --color-success: #00bf8e;
-    --color-warning: #f7c94b; 
-    --color-danger: #f75842;
-     
-    --color-danger-variant: rgba(247, 88, 66, 0.4);
-    --color-white: #fff;
-    --color-light:rgba(255, 255, 255, 0.7);
-    --color-black: #000;
-    --color-bg1: #2e3267;
-    --color-bg: #1f2641;
-    --color-bg2: #424890;
+*{
+    box-sizing: border-box;
+}
 
-    --container-width-lg: 90%;
-    --container-width-md: 93%;
-    --container-width-sm: 95%;
-    --transition:all 400ms ease;
+
+
+:root{
+    --color-warning: #f7c94b; 
+    --color-bg: #1f2641;
 }
 
 h4{
