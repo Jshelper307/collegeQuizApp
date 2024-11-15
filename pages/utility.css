@@ -2,8 +2,6 @@
     box-sizing: border-box;
 }
 
-
-
 :root{
     --color-warning: #f7c94b; 
     --color-bg: #1f2641;
@@ -101,4 +99,20 @@ nav{
 
 .border{
     border: 2px solid red;
+}
+
+.input{
+    width: 40vw;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.submitBtn{
+    padding: 10px 40px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+form{
+    margin: 10px;
 }
