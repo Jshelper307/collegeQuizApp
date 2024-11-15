@@ -138,7 +138,7 @@ const addSubject = async (subject_id,subject_name,department_name,year)=>{
  addAcadamics("MBA");
 // addDepartment("Computer Science and Engineering","B.Tech");
 // addSubject("BS-PH102","Physics-II","Computer",1);
-export {
+module.exports = {
     addAcadamics,
     addDepartment,
     addSubject,

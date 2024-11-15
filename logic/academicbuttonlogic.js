@@ -1,9 +1,9 @@
-import acadamic from '../Database/acadamic';
+const {addAcadamics} = require('../Database/acadamic.js');
 
 
 let button = document.getElementsByClassName("submitBtn")[0]; 
 
-let academicname = document.getElementsByClassName("input");
+let academicname = document.querySelector(".input").value;
 
 button.addEventListener("click", ()=>{
     console.log(academicname)
