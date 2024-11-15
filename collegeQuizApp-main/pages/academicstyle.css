@@ -1,0 +1,76 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+/* Paste the entire content of styles.css here */
+html,body{
+    background-color: #1f2641;
+    width: 100vw;
+}
+.content{
+    font-family: Arial, sans-serif;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    background-color: #bfa37d;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    justify-content: center;
+}
+
+.course_menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 40px;
+}
+
+.course_menu h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.course_menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.course_menu ul li {
+    margin: 10px 0;
+}
+
+.course_menu ul li a {
+    text-decoration: none;
+    color: black;
+    background-color: #f7c568;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: block;
+    text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.course_menu ul li a:hover {
+    background-color: #d4a347;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-container img {
+    max-width: 89%;
+    border-radius: 10px;
+}
