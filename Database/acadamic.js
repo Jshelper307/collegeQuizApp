@@ -5,7 +5,7 @@ const mysql = require("mysql2");
 const connection = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "Soham123@",
+    password: "1234",
     database: "collegequiz",
   });
 
@@ -135,14 +135,11 @@ const addSubject = async (subject_id,subject_name,department_name,year)=>{
 
 
 // test
- addAcadamics("MBA");
+ addAcadamics("B.Tech");
 // addDepartment("Computer Science and Engineering","B.Tech");
 // addSubject("BS-PH102","Physics-II","Computer",1);
 module.exports = {
     addAcadamics,
     addDepartment,
-    addSubject,
-    calculateAcadamicId,
-    calculateDepartmentId,
-    calculateShortName
+    addSubject
 };

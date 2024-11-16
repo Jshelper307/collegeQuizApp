@@ -1,12 +1,16 @@
-const {addAcadamics} = require('../Database/acadamic.js');
+// import database logics from Database
+const acadamic = require('../Database/acadamic');
 
+// Get the button
+let button = document.getElementsByClassName("submitBtn")[0];
 
-let button = document.getElementsByClassName("submitBtn")[0]; 
-
-let academicname = document.querySelector(".input").value;
-
+// Add event listener in this button
 button.addEventListener("click", ()=>{
-    console.log(academicname)
+    const academicname = document.getElementById("academicInp").value;
+    console.log(academicname);
+    acadamic.addAcadamics(academicname);
+    academicname.value = "";
     console.log("clicked");
 });
-console.log(button);
+
+
