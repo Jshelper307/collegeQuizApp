@@ -1,0 +1,98 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: rgb(18, 46, 77);
+    
+}
+/* h1{
+    left:20px ;
+}
+.headline{
+    color: antiquewhite;
+    width:100vw;
+    height: 30px;
+    padding: 25px;
+    left: 20px;
+    background-color: brown;
+} */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body Styling */
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color:antiquewhite;
+    background:rgb(18, 46, 77) ;
+  }
+  
+  /* Header Styling */
+  .header {
+    background:rgb(18, 46, 77) ;
+    color: #fff;
+    padding: 2rem 0;
+    text-align: center;
+  }
+  
+  .header h1 {
+    font-size: 2.5rem;
+    color: #f7c94b;
+    left: 30px;
+  }
+  
+  .header p {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+  }
+  h2{
+    color: #f7c94b;
+  }
+  
+  /* Section Styling */
+  .container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  
+  .about {
+    background:rgb(18, 46, 77) ;
+    padding: 2rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .about h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  /* Footer Styling */
+.footer {
+    background:rgb(18, 46, 77) ;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+  }
+  
+  .footer p {
+    font-size: 0.9rem;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .header h1 {
+      font-size: 2rem;
+    }
+  
+    .header p {
+      font-size: 1rem;
+    }
+  }
+  
