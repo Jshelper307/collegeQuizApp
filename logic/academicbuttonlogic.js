@@ -43,12 +43,9 @@ button.addEventListener('click',()=>{
         return response.json();
     })
     .then(data => {
-        console.log("data is 12: ",data)
+        console.log("data is : ",data)
     })
     .catch(err => console.error('Error:', err));
     
 });
 
-function insertIntoTable(data){
-
-}

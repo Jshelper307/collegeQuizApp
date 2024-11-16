@@ -19,7 +19,11 @@ app.get('/getAcadamics', (req, res) => {
 
 // add data in acadamics table
 app.post('/addAcadamics',(req,res)=>{
-  
+  const {acadamicName} = req.body;
+  const db = dbService.getDbServiceInstance();
+  const result = db.addAcadamics(acadamicName);
+
+  result.then(data=>res.json({success:true})).catch(error=>console.log(error))
 })
 
 
