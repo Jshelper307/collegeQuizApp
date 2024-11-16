@@ -47,7 +47,7 @@ html,body{
     margin: 10px 0;
 }
 
-.course_menu ul li a {
+.course_menu ul li{
     text-decoration: none;
     color: black;
     background-color: #f7c568;
@@ -60,7 +60,7 @@ html,body{
     transition: background-color 0.3s;
 }
 
-.course_menu ul li a:hover {
+.course_menu ul li:hover {
     background-color: #d4a347;
 }
 

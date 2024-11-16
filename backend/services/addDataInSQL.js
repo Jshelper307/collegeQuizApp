@@ -9,20 +9,7 @@ const connection = mysql.createConnection({
     database: "collegequiz",
   });
 
-// Insert data into acadamic table
-const addAcadamics = (acadamic_name)=>{
-    try{
-        let query = "INSERT INTO acadamics(acadamic_names) VALUES (?)";
-        connection.execute(query,[acadamic_name],(error,res)=>{
-            if(error){
-                console.log("Error is : ",error);
-            }
-        })
-    }
-    catch(e){
-        console.log(e);
-    }
-}
+
 
 // Insert data into department table
 const calculateShortName = (name = "") => {
