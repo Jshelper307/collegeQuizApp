@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+  <link rel="stylesheet" href="Contact.css">
+  <link rel="stylesheet" href="./utility.css">
+</head>
+<body>
+  <!-- Navbar -->
+   
+  <nav class="nav__container">
+    <a href="index.html"><h4>QuizMania</h4></a>
+    <ul  class="nav__menue">
+       <li><a href="index.html">Home</a></li>
+       <li><a href="about.html">About</a></li>
+       <li class="dropdown">
+         Academic
+         <ul class="dropdown-menu">
+             <li><a href="./academic.html">Question Practice</a></li>
+             <li><a href="#">Create Test</a></li>
+         </ul>
+      </li>
+       <li><a href="contact.html">Contact</a></li>
+       <li><a href="./register.html">Login/Regester</a></li>
+     </ul>
+  </nav>
+ 
+
+  <!-- Contact Section -->
+  <div class="contact-container">
+    <h1>Contact Us</h1>
+    <p>This is the official page of Quiz Mania, where you can share all your queries, feedback, complaints, or any concern you may have about our centers, courses, and programs.In Case of any grievance, don't hesitate to get in touch with us.</p>
+    
+    <div class="contact-content">
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <div class="info-item">
+          <span class="icon">🏠</span>
+          <p><strong>Address:</strong><br>Budge Budge Institute Of Technology ,Kolkata , Pin-700137,West Bengal</p>
+        </div>
+        <div class="info-item">
+          <span class="icon">📞</span>
+          <p><strong>Phone:</strong><br>033 2482 0641</p>
+        </div>
+        <div class="info-item">
+          <span class="icon">📧</span>
+          <p><strong>Email:</strong><br>contact@bbit.edu.in</p>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form">
+        <h2>Send Message</h2>
+        <form id="contactForm">
+          <input type="text" id="name" placeholder="Full Name" required>
+          <input type="email" id="email" placeholder="Email" required>
+          <textarea id="message" placeholder="Type your Message..." rows="5" required></textarea>
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="contact.js"></script>
+</body>
+</html>
