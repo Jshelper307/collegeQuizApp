@@ -7,7 +7,7 @@ const loadAcadamicNames = (data)=>{
     let names = data['acadamicName'];
     // console.log(names);
     for(let i=0;i<names.length;i++){
-        container.innerHTML += `<li>${names[i]["acadamic_names"]}</li>`
+        container.innerHTML += `<li onClick='openDepartmentPage()'>${names[i]["acadamic_names"]}</li>`
     }
 }
 
@@ -49,3 +49,7 @@ button.addEventListener('click',()=>{
     
 });
 
+
+const openDepartmentPage = ()=>{
+    window.open('../pages/dept.html','_parent');
+}
