@@ -26,7 +26,7 @@ let button = document.querySelector(".submitBtn");
 button.addEventListener('click',()=>{
     const acadamicInp = document.getElementById("academicInp");
     const acadamicName = acadamicInp.value;
-    console.log(acadamicName);
+    // console.log(acadamicName);
 
     fetch('http://localhost:3000/addAcadamics', {
         headers: {

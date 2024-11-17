@@ -8,29 +8,37 @@ html,body{
     background-color: #1f2641;
     width: 100vw;
 }
+
 .content{
-    font-family: Arial, sans-serif;
-    height: 90vh;
     display: flex;
-    flex-direction: column;
+    /* border: 2px solid red; */
+    overflow: hidden;
+    padding: 10px;
+    justify-content: center;
     align-items: center;
-    justify-content: center;
+    height: 90vh;
 }
 
-.container {
-    display: flex;
+.content_box{
+    /* border: 2px solid rgb(242, 255, 0); */
+    width: 60%;
+    height: 70vh;
+    padding: 10px;
     background-color: #bfa37d;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    justify-content: center;
+    border-radius: 20px;
+    max-width: 850px;
 }
 
-.course_menu {
+.container{
+    /* border: 2px solid rgb(0, 255, 51); */
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-right: 40px;
+    height: 85%;
+}
+
+.course_menu{
+    /* border: 2px solid rgb(0, 47, 255); */
+    width: 50%;
+    height: 100%;
 }
 
 .course_menu h2 {
@@ -38,16 +46,13 @@ html,body{
     text-align: center;
 }
 
-.course_menu ul {
-    list-style: none;
-    padding: 0;
+#acadamicNameContainer{
+    /* border: 2px solid rgb(255, 0, 255); */
+    overflow-x: auto;
+    height: 85%;
 }
 
-.course_menu ul li {
-    margin: 10px 0;
-}
-
-.course_menu ul li{
+#acadamicNameContainer li{
     text-decoration: none;
     color: black;
     background-color: #f7c568;
@@ -58,20 +63,15 @@ html,body{
     text-align: center;
     font-size: x-large;
     font-weight: bold;
+    margin: 10px;
+    word-break: break-all;
     transition: background-color 0.3s;
 }
 
-.course_menu ul li:hover {
-    background-color: #d4a347;
+.image-container{
+    text-align: center;
 }
 
-.image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.image-container img {
-    max-width: 89%;
-    border-radius: 10px;
+.image-container img{
+    width: 70%;
 }
