@@ -1,4 +1,4 @@
-// const { response } = require("express");
+
 
 const loadAcadamicNames = (data)=>{
     let container = document.querySelector('#acadamicNameContainer');
@@ -7,7 +7,7 @@ const loadAcadamicNames = (data)=>{
     let names = data['acadamicName'];
     // console.log(names);
     for(let i=0;i<names.length;i++){
-        container.innerHTML += `<li onClick='openDepartmentPage()'>${names[i]["acadamic_names"]}</li>`
+        container.innerHTML += `<li onClick='openDepartmentPage(event)'>${names[i]["acadamic_names"]}</li>`
     }
 }
 
@@ -28,28 +28,36 @@ button.addEventListener('click',()=>{
     const acadamicName = acadamicInp.value;
     // console.log(acadamicName);
 
-    fetch('http://localhost:3000/addAcadamics', {
-        headers: {
-            'Content-type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify({ acadamicName: acadamicName })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        // console.log("response is running...",response);
-        return response.json();
-    })
-    .then(data => {
-        console.log("data is : ",data)
-    })
-    .catch(err => console.error('Error:', err));
+    if(acadamicName.length >= 3){
+        fetch('http://localhost:3000/addAcadamics', {
+            headers: {
+                'Content-type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({ acadamicName: acadamicName })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            // console.log("response is running...",response);
+            return response.json();
+        })
+        .then(data => {
+            console.log("data is : ",data)
+        })
+        .catch(err => console.error('Error:', err));
+        document.getElementById("academicInp").value = "";
+    }
+    else{
+        alert("Acadamic name length must be grater than 3 !!!");
+    }
     
 });
 
 
-const openDepartmentPage = ()=>{
+const openDepartmentPage = (event)=>{
+    const buttonName = event.target.textContent
+    localStorage.setItem("acadamicName",buttonName);
     window.open('../pages/dept.html','_parent');
 }
