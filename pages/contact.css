@@ -1,0 +1,124 @@
+/* General Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: Arial, sans-serif;
+ 
+  background: #f4f4f4;
+  color: #333;
+}
+html, body {
+  width: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Contact Section */
+.contact-container {
+  text-align: center;
+  padding: 20px;
+  background: #0c0f1c url('background-image.jpg') no-repeat center center/cover;
+  color: white;
+  width: 100%; /* Ensure it spans the full viewport width */
+  box-sizing: border-box; /* Ensure padding does not cause overflow */
+}
+
+.contact-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.contact-container p {
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+/* Contact Content (Two Columns) */
+.contact-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 0 15px; /* Added padding to avoid content sticking to edges */
+}
+
+/* Contact Info */
+.contact-info {
+  width: 45%;
+  text-align: left;
+  margin-bottom: 20px; /* Added for spacing on smaller screens */
+}
+
+.info-item {
+  margin: 20px 0;
+}
+
+.icon {
+  font-size: 1.5rem;
+  margin-right: 10px;
+}
+
+.contact-info p {
+  font-size: 1rem;
+}
+
+/* Contact Form */
+.contact-form {
+  width: 45%;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.contact-form input, .contact-form textarea, .contact-form button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.contact-form button {
+  background-color: #007bff;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.contact-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .contact-content {
+      flex-direction: column;
+      align-items: center;
+  }
+  .contact-info, .contact-form {
+      width: 90%; /* Adjusted to fit smaller screens */
+  }
+}
+
+@media (max-width: 500px) {
+  .contact-container h1 {
+      font-size: 2rem;
+  }
+
+  .contact-container p {
+      font-size: 0.9rem;
+  }
+
+  .contact-form h2 {
+      font-size: 1.2rem;
+  }
+}
