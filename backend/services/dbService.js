@@ -65,11 +65,12 @@ class DbService{
     }
 
     // get data from departments table
-    async getDepartments(){
+    async getDepartments(acadamicname){
         try{
+            const acadamic_id = await this.calculateAcadamicId(acadamicname);
             const response = await new Promise((resolve,reject)=>{
-                const query = "SELECT * FROM departments;";
-                connection.query(query,(error,result)=>{
+                const query = "SELECT * FROM departments where acadamic_id=?;";
+                connection.query(query,[acadamic_id],(error,result)=>{
                     if(error){
                         reject(new Error(error.message));
                     }
@@ -77,7 +78,7 @@ class DbService{
                 })
             })
 
-            console.log(response);
+            // console.log(response);
             return response;
         }
         catch(error){
@@ -105,7 +106,7 @@ class DbService{
                     console.log(error);
                     reject(error);
                 } else {
-                    console.log("Acadamic ID is: ", res[0].acadamic_id);
+                    // console.log("Acadamic ID is: ", res[0].acadamic_id);
                     resolve(res[0].acadamic_id);
                 }
             });
@@ -124,7 +125,7 @@ class DbService{
                         reject(e);
                     } else {
                         let newDepartmentId = "0" + (r[0].totalrow + 1) + this.calculateShortName(department_name);
-                        console.log("Department ID is: ", newDepartmentId);
+                        // console.log("Department ID is: ", newDepartmentId);
                         resolve(newDepartmentId);
                     }
                 });
@@ -132,7 +133,7 @@ class DbService{
 
             // Fetch the acadamic ID
             const acadamic_id = await this.calculateAcadamicId(acadamic);
-            console.log("Acadamic ID in addDepartment: ", acadamic_id);
+            // console.log("Acadamic ID in addDepartment: ", acadamic_id);
 
             // Now insert into departments table
             let query = "INSERT INTO departments(department_id,department_names,image_url,acadamic_id) VALUES (?,?,?,?)";

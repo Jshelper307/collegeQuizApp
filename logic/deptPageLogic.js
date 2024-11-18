@@ -1,6 +1,25 @@
+const loadDepartments = (data)=>{
+    let box = document.querySelector(".box");
+
+    let departments = data['departments']
+    // console.log("data is : ",departments);
+
+    if(departments){
+        for(let i=0;i<departments.length;i++){
+            box.innerHTML += `<div class="department" onClick='openAllYearsPage()'>
+                <img src="${departments[i]['image_url']}" alt="this">
+                <p>${departments[i]['department_names']}</p>
+            </div>`
+        }
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded',()=>{
-    fetch('http://localhost:3000/getDepartments').then(response=>response.json()).then(data=>{
-        console.log("data is : ",data);
+    const acadamicName =localStorage.getItem("acadamicName");
+    let url = `http://localhost:3000/getDepartments?acadamicName=${acadamicName}`
+    fetch(url).then(response=>response.json()).then(data=>{
+        loadDepartments(data);
     });
 })
 
@@ -40,4 +59,6 @@ submitBtn.addEventListener("click",()=>{
 })
 
 
-
+const openAllYearsPage = ()=>{
+    console.log("CLicked....");
+}

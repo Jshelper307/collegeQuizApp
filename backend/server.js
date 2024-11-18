@@ -35,9 +35,10 @@ app.post("/addAcadamics", (req, res) => {
 
 // Fetch data from departments Table
 app.get("/getDepartments", (req, res) => {
+  const acadamicName = req.query.acadamicName;
   const db = dbService.getDbServiceInstance();
-  const result = db.getDepartments();
-  console.log(result);
+  const result = db.getDepartments(acadamicName);
+  // console.log(result);
   result
     .then((data) => res.json({ departments: data }))
     .catch((error) => console.log(error));
