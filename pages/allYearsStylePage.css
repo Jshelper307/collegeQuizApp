@@ -10,33 +10,14 @@
 
 .mainBody{
     /* border: 2px solid red; */
-    background-image:url("https://t3.ftcdn.net/jpg/05/00/34/58/360_F_500345899_4OqmtspFst6SRnNQvLj7h7TfKOrBwTer.jpg");
+    /* background-image:url("https://t3.ftcdn.net/jpg/05/00/34/58/360_F_500345899_4OqmtspFst6SRnNQvLj7h7TfKOrBwTer.jpg"); */
+    background-color: #2d3e84;
 }
 
 .rh{
     margin-top: 2%;
 }
-.addnewelement{
-    display: flex;
-    justify-content: right;
-    margin-right: 2%;
-    margin-top: -1%;
-}
-.inputbox{
-    padding: .5%;
-    margin: 0%;
-    margin-left: 0%;
-    border-radius: 10px;
-    width: 16vw;
-    border: 2px solid rgb(0, 204, 255);
-}
-.addbtn{
-    padding: 0.5%;
-    border-radius: 12%;
-    background-color: rgb(8, 139, 247);
-    color:white;
-    cursor: pointer;
-}
+
 .years{
     /* border: 2px solid black; */
     margin: 10px;
@@ -67,8 +48,9 @@
     margin: 10px;
     border-radius: 20px;
     text-align: center;
-    background-color:rgb(189, 248, 81);
+    background-color:rgb(12, 93, 79);
     color:black;
+    cursor: pointer;
 }
 
 /* this portion will start the navigation bar and logo*/

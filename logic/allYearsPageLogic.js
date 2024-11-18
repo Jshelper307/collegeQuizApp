@@ -49,17 +49,11 @@ function load_all_years(){
     load_second_year_subjects();
     load_third_year_subjects();
     load_forth_year_subjects();
-    toggleButton(true);
 }
 
-//button and inputtext box will be seen when the faculty is used
-function toggleButton(value) {
-    const button = document.getElementById('additem');
-    const text = document.getElementById('inputnewitem');
-    button.style.display = value ? 'block' : 'none';
-    text.style.display = value ? 'block' : 'none';
-  }
-  
 // when the window is loaded the load_all_years function is run automatically
 window.onload = load_all_years;
 
+
+
+// code start here
