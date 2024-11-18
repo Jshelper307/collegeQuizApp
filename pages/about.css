@@ -35,7 +35,7 @@ body{
   .header {
     background:rgb(18, 46, 77) ;
     color: #fff;
-    padding: 2rem 0;
+    /* padding: 2rem 0; */
     text-align: center;
   }
   
