@@ -44,15 +44,11 @@ app.get("/getDepartments", (req, res) => {
 });
 // add data in departments Table
 app.post("/addDepartments", (req, res) => {
-  // const {acadamicName} = req.body;
-  // const db = dbService.getDbServiceInstance();
-  // const result = db.addAcadamics(acadamicName);
-  // const { acadamicName } = req.session.data; // Extract from request body
-  // console.log("Received acadamicName: ", req.session.data);
-  res.send({
-    success: true,
-  });
-  // result.then(data=>res.json({success:true})).catch(error=>console.log(error))
+  const {departmentName,imageUrl,acadamicName} = req.body;
+
+  const db = dbService.getDbServiceInstance();
+  const result = db.addDepartment(departmentName,imageUrl,acadamicName);
+  result.then(data=>res.json({success:true})).catch(error=>console.log(error))
 });
 
 app.listen(port, () => {

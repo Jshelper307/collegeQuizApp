@@ -86,7 +86,7 @@ class DbService{
     }
 
     // Insert data into department table
-    calculateShortName = (name = "") => {
+    calculateShortName(name = ""){
         let words = name.split(" ");
         let shortName = "";
         words.forEach((word) => {
@@ -95,7 +95,7 @@ class DbService{
         return shortName;
     };
 
-    calculateAcadamicId = async (acadamic_name) => {
+    async calculateAcadamicId(acadamic_name){
         let query = "SELECT acadamic_id FROM acadamics WHERE acadamic_names=?";
         
         // Use promise to handle asynchronous operation
@@ -112,7 +112,7 @@ class DbService{
         });
     };
 
-    addDepartment = async (department_name,image_url,acadamic) => {
+    async addDepartment(department_name,image_url,acadamic){
         try {
             // Fetch the next department ID
             let departmentQuery = "SELECT COUNT(department_id) AS totalrow FROM departments";
@@ -123,7 +123,7 @@ class DbService{
                         console.log(e);
                         reject(e);
                     } else {
-                        let newDepartmentId = "0" + (r[0].totalrow + 1) + calculateShortName(department_name);
+                        let newDepartmentId = "0" + (r[0].totalrow + 1) + this.calculateShortName(department_name);
                         console.log("Department ID is: ", newDepartmentId);
                         resolve(newDepartmentId);
                     }
@@ -131,7 +131,7 @@ class DbService{
             });
 
             // Fetch the acadamic ID
-            const acadamic_id = await calculateAcadamicId(acadamic);
+            const acadamic_id = await this.calculateAcadamicId(acadamic);
             console.log("Acadamic ID in addDepartment: ", acadamic_id);
 
             // Now insert into departments table
