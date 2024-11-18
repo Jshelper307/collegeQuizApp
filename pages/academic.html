@@ -27,28 +27,26 @@
    
     <div class="content">
         
-        <div >
-            <form action="">
-                <input class="input" type="text" placeholder="Enter a Course Name">
-                <input class="submitBtn" type="submit" value="submit">
-            </form>
+        <div class="content_box">
+            <div class="form">
+                <input class="input" id="academicInp" type="text" placeholder="Enter a Course Name" value="">
+                <button class="submitBtn">Submit</button>
+            </div>
             <div class="container">
-            <div class="course_menu">
-                <h2>Select Course</h2>
-                <ul>
-                    <li><a href="#">Diploma</a></li>
-                    <li><a href="./dept.html">Btech</a></li>
-                    <li><a href="#">Mtech</a></li>
-                    <li><a href="#">MBA</a></li>
-                </ul>
+                <div class="course_menu">
+                    <h2>Select Course</h2>
+                    <ul id="acadamicNameContainer">
+                        <!-- Acadamic names loaded here -->
+                    </ul>
+                </div>
+                <div class="image-container">
+                    <img src="../images/question-mark.jpg" alt="Question Mark">
+                </div>
             </div>
-            <div class="image-container">
-                <img src="../images/question-mark.jpg" alt="Question Mark">
-            </div>
-        </div>
         </div>
         
     </div>
+    <script src="../logic/academicbuttonlogic.js"></script>
 </body>
 </html>
 

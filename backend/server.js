@@ -1,84 +1,56 @@
-const express = require('express')
-const path = require('path');
-require("../backend/db/conn")
-const Subjects = require("../backend/models/subjects");
+const express = require("express");
+const path = require("path");
+const cors = require("cors");
+const dotenv = require('dotenv')
+const dbService = require("./services/dbService");
+dotenv.config();
 
+const app = express();
+const port = process.env.PORT||3001;
+app.use(cors());
+app.use(express.json()); // Add this line to parse JSON request bodies
+app.use(express.urlencoded({ extended: true })); // For parsing URL-encoded data
 
-const app = express()
-const port = 3000
-
-app.get('/', (req, res) => {
-  res.send("Welcome ")
-})
-
-// Add a new Subject
-app.post('/subjects', async (req, res) => {
-  try {
-    const subject = new Subject({
-      subjectCode: req.body.subjectCode,
-      units: req.body.units
-    });
-    const savedSubject = await subject.save();
-    res.status(201).json(savedSubject);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
+// Fetch data form acadamics table
+app.get("/getAcadamics", (req, res) => {
+  const db = dbService.getDbServiceInstance();
+  const result = db.getAcadamics();
+  result
+    .then((data) => {
+      res.json({ acadamicName: data });
+    })
+    .catch((error) => console.log(error));
 });
 
-// Add a new Unit
-app.post('/subjects/:subjectId/units', async (req, res) => {
-  try {
-    const subject = await Subject.findById(req.params.subjectId);
-    const newUnit = {
-      unit: req.body.unit,
-      topics: req.body.topics
-    };
-    subject.units.push(newUnit);
-    const savedSubject = await subject.save();
-    res.status(201).json(savedSubject);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
+// add data in acadamics table
+app.post("/addAcadamics", (req, res) => {
+  const { acadamicName } = req.body;
+  const db = dbService.getDbServiceInstance();
+  const result = db.addAcadamics(acadamicName);
+
+  result
+    .then((data) => res.json({ success: true }))
+    .catch((error) => console.log(error));
 });
 
-// Add a new Topic
-app.post('/subjects/:subjectId/units/:unitIndex/topics', async (req, res) => {
-  try {
-    const subject = await Subject.findById(req.params.subjectId);
-    const unit = subject.units[req.params.unitIndex];
-    const newTopic = {
-      topic: req.body.topic,
-      questionsWithAns: req.body.questionsWithAns
-    };
-    unit.topics.push(newTopic);
-    const savedSubject = await subject.save();
-    res.status(201).json(savedSubject);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
+// Fetch data from departments Table
+app.get("/getDepartments", (req, res) => {
+  const db = dbService.getDbServiceInstance();
+  const result = db.getDepartments();
+  console.log(result);
+  result
+    .then((data) => res.json({ departments: data }))
+    .catch((error) => console.log(error));
 });
+// add data in departments Table
+app.post("/addDepartments", (req, res) => {
+  const {departmentName,imageUrl,acadamicName} = req.body;
 
-// Add a new Question
-app.post('/subjects/:subjectId/units/:unitIndex/topics/:topicIndex/questions', async (req, res) => {
-  try {
-    const subject = await Subject.findById(req.params.subjectId);
-    const unit = subject.units[req.params.unitIndex];
-    const topic = unit.topics[req.params.topicIndex];
-
-    const newQuestion = {
-      question: req.body.question,
-      options: req.body.options,
-      answer: req.body.answer
-    };
-
-    topic.questionsWithAns.push(newQuestion);
-    const savedSubject = await subject.save();
-    res.status(201).json(savedSubject);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
+  const db = dbService.getDbServiceInstance();
+  const result = db.addDepartment(departmentName,imageUrl,acadamicName);
+  result.then(data=>res.json({success:true})).catch(error=>console.log(error))
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});
