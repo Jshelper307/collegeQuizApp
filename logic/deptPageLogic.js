@@ -4,12 +4,26 @@ const loadDepartments = (data)=>{
     let departments = data['departments']
     // console.log("data is : ",departments);
 
-    if(departments){
-        for(let i=0;i<departments.length;i++){
-            box.innerHTML += `<div class="department" onClick='openAllYearsPage()'>
+    if (departments) {
+        for (let i = 0; i < departments.length; i++) {
+            // Create the department element
+            const departmentDiv = document.createElement('div');
+            departmentDiv.classList.add('department');
+            departmentDiv.innerHTML = `
                 <img src="${departments[i]['image_url']}" alt="this">
                 <p>${departments[i]['department_names']}</p>
-            </div>`
+            `;
+
+            // Add event listener to log the <p> content
+            departmentDiv.addEventListener('click', ()=>{
+                const departmentName = departmentDiv.querySelector('p').textContent;
+                localStorage.setItem("departmentName",departmentName);
+                // console.log(departmentName);
+                window.open('../pages/allYears.html','_parent');
+            });
+
+            // Append to the box
+            box.appendChild(departmentDiv);
         }
     }
 }
@@ -58,7 +72,3 @@ submitBtn.addEventListener("click",()=>{
     }
 })
 
-
-const openAllYearsPage = ()=>{
-    console.log("CLicked....");
-}
