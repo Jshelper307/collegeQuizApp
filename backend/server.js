@@ -1,21 +1,15 @@
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
-const session = require("express-session");
+const dotenv = require('dotenv')
 const dbService = require("./services/dbService");
+dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT||3001;
 app.use(cors());
 app.use(express.json()); // Add this line to parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // For parsing URL-encoded data
-app.use(
-  session({
-    secret: "my-secret",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
 
 // Fetch data form acadamics table
 app.get("/getAcadamics", (req, res) => {

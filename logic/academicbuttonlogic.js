@@ -6,8 +6,10 @@ const loadAcadamicNames = (data)=>{
     // console.log(data);
     let names = data['acadamicName'];
     // console.log(names);
-    for(let i=0;i<names.length;i++){
-        container.innerHTML += `<li onClick='openDepartmentPage(event)'>${names[i]["acadamic_names"]}</li>`
+    if(names){
+        for(let i=0;i<names.length;i++){
+            container.innerHTML += `<li onClick='openDepartmentPage(event)'>${names[i]["acadamic_names"]}</li>`
+        }
     }
 }
 

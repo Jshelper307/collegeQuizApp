@@ -11,10 +11,11 @@ let password = "789456";
 
 
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "1234",
-  database: "collegequiz",
+    host: process.env.HOST,
+    user: process.env.USER_NAME,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE_NAME,
+    port: process.env.DB_PORT || 3307,
 });
 
 const hashPassword = (password) => {
