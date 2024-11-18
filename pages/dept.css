@@ -300,6 +300,7 @@ font-size: 1.04rem;
 
 .department{
     min-width: 300px;
+    max-width: 300px;
     min-height: 300px;
     /* border: 2px solid blue; */
     overflow: hidden;
