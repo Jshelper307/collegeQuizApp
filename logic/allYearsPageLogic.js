@@ -59,7 +59,7 @@ window.onload = load_all_years;
 // code start here
 document.addEventListener("DOMContentLoaded",()=>{
     const departmentName =localStorage.getItem("departmentName");
-    console.log(departmentName);
+    // console.log(departmentName);
     let url =`http://localhost:3000/getSubjects?departmentName=${departmentName}`
     fetch(url).then(response=>response.json()).then(data=>{
         console.log(data);
