@@ -49,17 +49,56 @@ function load_all_years(){
     load_second_year_subjects();
     load_third_year_subjects();
     load_forth_year_subjects();
-    toggleButton(true);
 }
 
-//button and inputtext box will be seen when the faculty is used
-function toggleButton(value) {
-    const button = document.getElementById('additem');
-    const text = document.getElementById('inputnewitem');
-    button.style.display = value ? 'block' : 'none';
-    text.style.display = value ? 'block' : 'none';
-  }
-  
 // when the window is loaded the load_all_years function is run automatically
 window.onload = load_all_years;
 
+
+
+// code start here
+document.addEventListener("DOMContentLoaded",()=>{
+    const departmentName =localStorage.getItem("departmentName");
+    // console.log(departmentName);
+    let url =`http://localhost:3000/getSubjects?departmentName=${departmentName}`
+    fetch(url).then(response=>response.json()).then(data=>{
+        console.log(data);
+    });
+})
+
+const btn = document.querySelector('.submitBtn');
+
+btn.addEventListener('click',()=>{
+    const subjectCode = document.getElementById('subjectCodeInp').value;
+    const subjectName = document.getElementById('subjectInp').value;
+    const year = document.getElementById('yearInp').value;
+    const department_name = localStorage.getItem('departmentName');
+    console.log("Button Clicked...");
+    console.log("Subject Code : ",subjectCode);
+    console.log("Subject Name : ",subjectName);
+    console.log("Year : ",year);
+
+    if(subjectCode.length >5 && subjectName.length>=3 && year.length>0){
+        fetch('http://localhost:3000/addSubjects',{
+            headers: {
+                'Content-type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({ subjectCode: subjectCode,subjectName:subjectName,year:year,department_name:department_name })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            // console.log("response is running...",response);
+            return response.json();
+        })
+        .then(data => {
+            console.log("data is : ",data)
+        })
+        .catch(err => console.error('Error:', err));
+    }
+    else{
+        alert("Please Enter correct imageUrl and Department Name!!!");
+    }
+})

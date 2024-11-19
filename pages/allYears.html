@@ -32,9 +32,16 @@
     <!-- here the main content of the body is present -->
     <main class="mainBody">
         <!-- Here the subjects of first year is present -->
-        <div class="addnewelement">
-            <input type="text" class="inputbox" id="inputnewitem">
-            <button class="addbtn" id="additem">+Add-Item</button>
+        <div class="form">
+            <input class="input" id="subjectCodeInp" type="text" placeholder="Enter a Subject Code" value="">
+            <input class="input" id="subjectInp" type="text" placeholder="Enter a Subject Name" value="">
+            <select class="input" name="year" id="yearInp">
+                <option value="1">1st Year</option>
+                <option value="2">2nd Year</option>
+                <option value="3">3rd Year</option>
+                <option value="4">4th Year</option>
+            </select>
+            <button class="submitBtn">Submit</button>
         </div>
         <div class="years year1">
             <div class="chip">
