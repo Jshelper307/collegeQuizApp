@@ -53,6 +53,25 @@ app.post("/addDepartments", (req, res) => {
   result.then(data=>res.json({success:true})).catch(error=>console.log(error))
 });
 
+// Fetch data from departments Table
+app.get("/getSubjects", (req, res) => {
+  const department_name = req.query.departmentName;
+  const db = dbService.getDbServiceInstance();
+  const result = db.getSubjects(department_name);
+  // console.log(result);
+  result
+    .then((data) => res.json({ departments: data }))
+    .catch((error) => console.log(error));
+});
+// add data in departments Table
+app.post("/addSubjects", (req, res) => {
+  const {subjectCode,subjectName,year,department_name } = req.body;
+
+  const db = dbService.getDbServiceInstance();
+  const result = db.addSubject(subjectCode,subjectName,year,department_name );
+  result.then(data=>res.json({success:true})).catch(error=>console.log(error))
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

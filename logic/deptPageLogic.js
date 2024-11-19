@@ -10,7 +10,7 @@ const loadDepartments = (data)=>{
             const departmentDiv = document.createElement('div');
             departmentDiv.classList.add('department');
             departmentDiv.innerHTML = `
-                <img src="${departments[i]['image_url']}" alt="this">
+                <img src="${departments[i]['image_url']}" alt="Related Image">
                 <p>${departments[i]['department_names']}</p>
             `;
 

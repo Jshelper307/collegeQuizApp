@@ -95,6 +95,7 @@ nav{
     width: 40vw;
     padding: 10px;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .submitBtn{

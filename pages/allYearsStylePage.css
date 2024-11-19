@@ -42,15 +42,21 @@
     justify-content: center;
 }
 .years .subjects .subject{
-    border: 2px solid green;
-    height: 200px;
+    padding: 10px;
+    height: 100px;
     width: 250px;
     margin: 10px;
-    border-radius: 20px;
-    text-align: center;
     background-color:rgb(12, 93, 79);
+    background-image: linear-gradient(to bottom right, #00C0FF, #4218B8);
+    border-radius: 20px;
     color:black;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: x-large;
+    color: color-mix(in srgb, red 50%, blue 50%);
+    text-shadow: black;
 }
 
 /* this portion will start the navigation bar and logo*/

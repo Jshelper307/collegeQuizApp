@@ -149,6 +149,72 @@ class DbService{
             console.log("Error occurred: ", error);
         }
     };
-}
 
+    // get data from subject table
+    async getSubjects(department_name){
+        try{
+            const department_id = await this.calculateDepartmentId(department_name);
+            const response = await new Promise((resolve,reject)=>{
+                const query = "SELECT * FROM subjects where department_id=?;";
+                connection.query(query,[department_id],(error,result)=>{
+                    if(error){
+                        reject(new Error(error.message));
+                    }
+                    resolve(result);
+                })
+            })
+
+            // console.log(response);
+            return response;
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
+    // Insert data into subject table
+    calculateDepartmentId = (department_name)=>{
+        let query = "SELECT department_id FROM departments WHERE department_names=?";
+        
+        // Use promise to handle asynchronous operation
+        return new Promise((resolve, reject) => {
+            try{
+                connection.execute(query, [department_name], (error, res) => {
+                    if (error) {
+                        console.log("This is the error : ",error);
+                        reject(error);
+                    } 
+                    else if(res.length==0){
+                        console.log("Data is not present");
+                    }
+                    else {
+                        console.log("Acadamic ID is: ", res);
+                        console.log("Acadamic ID is: ", res[0].department_id);
+                        resolve(res[0].department_id);
+                    }
+                });
+            }
+            catch(e){
+                console.log(e);
+            }
+        });
+    }
+    addSubject = async (subject_id,subject_name,department_name,year)=>{
+        let department_id = await this.calculateDepartmentId(department_name);
+        try{
+            let query = "INSERT INTO subjects(subject_id,subject_names,department_id,year) VALUES (?,?,?,?)"
+            connection.execute(query,[subject_id,subject_name,department_id,year],(error,res)=>{
+                if(error){
+                    console.log(error);
+                }
+                else{
+                    console.log("Successfully added");
+                }
+            })
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
+}
 module.exports = DbService;
