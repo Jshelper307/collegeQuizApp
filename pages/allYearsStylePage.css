@@ -56,8 +56,19 @@
     justify-content: center;
     font-size: x-large;
     color: color-mix(in srgb, red 50%, blue 50%);
-    text-shadow: black;
+    text-shadow: 2px 0px black;
+    box-shadow: 10px 7px;
+    overflow-y: auto;
 }
+
+.subject::before{
+    content: "";
+    height: 70%;
+    width: 2px;
+    background-color: red;
+    margin-right: 5px;
+}
+
 
 /* this portion will start the navigation bar and logo*/
 
