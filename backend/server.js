@@ -4,6 +4,7 @@ const cors = require("cors");
 const dotenv = require('dotenv')
 const dbService = require("./services/dbService");
 const questions = require("./routes/questions");
+const authService = require('./routes/authfunctionalities');
 dotenv.config();
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json()); // Add this line to parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // For parsing URL-encoded data
 app.use("/api",questions);
+app.use('/auth',authService);
 // Fetch data form acadamics table
 app.get("/getAcadamics", (req, res) => {
   const db = dbService.getDbServiceInstance();
