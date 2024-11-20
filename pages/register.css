@@ -58,7 +58,7 @@ html,body{
   z-index: 1;
   transition: all 0.6s ease;
 }
-.slide-controls label.signup{
+.slide-controls label.signupFormBtn{
   color: #000;
 }
 .slide-controls .slider-tab{
@@ -74,21 +74,21 @@ html,body{
 input[type="radio"]{
   display: none;
 }
-#signup:checked ~ .slider-tab{
+#signupFormBtn:checked ~ .slider-tab{
   left: 50%;
 }
-#signup:checked ~ label.signup{
+#signupFormBtn:checked ~ label.signupFormBtn{
   color: #fff;
   cursor: default;
   user-select: none;
 }
-#signup:checked ~ label.login{
+#signupFormBtn:checked ~ label.loginFormBtn{
   color: #000;
 }
-#login:checked ~ label.signup{
+#loginFormBtn:checked ~ label.signupFormBtn{
   color: #000;
 }
-#login:checked ~ label.login{
+#loginFormBtn:checked ~ label.loginFormBtn{
   cursor: default;
   user-select: none;
 }
