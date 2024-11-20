@@ -12,8 +12,14 @@ const port = process.env.PORT||3001;
 app.use(cors());
 app.use(express.json()); // Add this line to parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // For parsing URL-encoded data
+
+//This is middleware for question api
 app.use("/api",questions);
+
+// This is middleware for authservice api
 app.use('/auth',authService);
+
+
 // Fetch data form acadamics table
 app.get("/getAcadamics", (req, res) => {
   const db = dbService.getDbServiceInstance();
