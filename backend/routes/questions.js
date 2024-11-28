@@ -1,17 +1,14 @@
 // authRoutes.js
 const express = require('express');
-const mongoose = require('mongoose');
 const Subject = require('../models/subjects');
+const connectMongoDB = require('../db/mongoConnection')
 
 const router = express.Router();
 
 // In-memory store for users (you would typically use a database)
 
-mongoose.connect('mongodb://localhost:27017/your_database_name', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  
+// create connection with mongodb
+connectMongoDB();
 // Add a new Subject
 router.post('/subjects', async (req, res) => {
 try {

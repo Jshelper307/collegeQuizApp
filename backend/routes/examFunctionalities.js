@@ -1,5 +1,5 @@
 const express = require('express')
-const connectDB = require('../services/mongoConnection')
+const connectMongoDB = require('../db/mongoConnection')
 const Exam = require('../models/exam'); // Import the Exam model
 const {v4 : uuidv4} = require('uuid');
 
@@ -9,7 +9,7 @@ const router = express.Router();
 let exams = {};
 
 // connect with mongodb
-connectDB();
+connectMongoDB();
 
 
 

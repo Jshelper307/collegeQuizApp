@@ -5,7 +5,7 @@ const uri = 'mongodb://localhost:27017/examDb'; // For local MongoDB
 // Example for cloud database (MongoDB Atlas): 
 // const uri = 'mongodb+srv://<username>:<password>@cluster.mongodb.net/exam-platform?retryWrites=true&w=majority';
 
-const connectDB = async () => {
+const connectMongoDB = async () => {
     try {
         await mongoose.connect(uri);
         console.log('MongoDB connected successfully!');
@@ -15,4 +15,4 @@ const connectDB = async () => {
     }
 };
 
-module.exports = connectDB;
+module.exports = connectMongoDB;
