@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Creation Page</title>
+  <link rel="stylesheet" href="Teacharpage.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header Buttons -->
+    <div class="header">
+      <button class="btn delete">Delete</button>
+      <button class="btn exit">Exit</button>
+      <button class="btn done">Done</button>
+    </div>
+
+    <!-- Test Details Section -->
+    <div class="test-details">
+      <div class="test-info">
+        <label for="title">Title</label>
+        <input type="text" id="title" placeholder="Enter test title">
+        <label for="description">Description</label>
+        <textarea id="description" rows="3" placeholder="Enter test description"></textarea>
+      </div>
+      <div class="test-settings">
+        <label for="total-time">Total Time</label>
+        <input type="number" id="total-time" placeholder="Minutes">
+        <label for="points">Points</label>
+        <input type="number" id="points" placeholder="Points">
+        <label for="time-limit">Time Limit</label>
+        <input type="number" id="time-limit" placeholder="Minutes">
+      </div>
+    </div>
+
+<!-- Question Section -->
+  <!-- Recent Question Display -->
+  <div class="main-view">
+    <div class="recent-question">
+      <p id="recent-total">Total Number of Questions Added : <span id="total-questions">0</span></p>
+      <hr>
+      <p><strong>Recently Added Questions:</strong></p>
+      <div id="recent-questions">
+        <!-- Dynamically added questions will appear here -->
+      </div>
+    </div>
+    
+    <!-- Add Question Section -->
+    <div class="add-question">
+      <label for="question">Enter your question:</label>
+      <textarea type="text" id="question" placeholder="Enter question here"></textarea>
+    
+      <!-- Options Section -->
+      <div class="options-section">
+        <div class="option-item">
+          <input type="text" id="option1" placeholder="Option 1" />
+          <input type="radio" name="correctOption" id="correct1" /> 
+        </div>
+        <div class="option-item">
+          <input type="text" id="option2" placeholder="Option 2" />
+          <input type="radio" name="correctOption" id="correct2" /> 
+        </div>
+        <div class="option-item">
+          <input type="text" id="option3" placeholder="Option 3" />
+          <input type="radio" name="correctOption" id="correct3" /> 
+        </div>
+        <div class="option-item">
+          <input type="text" id="option4" placeholder="Option 4" />
+          <input type="radio" name="correctOption" id="correct4" /> 
+        </div>
+      </div>
+    
+          <!-- Add More Button -->
+          <button class="btn add-more">Add More</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="../logic/teacharPageLogic.js"></script>
+</body>
+</html>
