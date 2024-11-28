@@ -16,12 +16,12 @@ connectMongoDB();
 // API to create an exam
 router.post('/create-exam', async (req, res) => {
     try {
-        const {title,description,language ,total_time,points_per_question,questionsWithAns } = req.body;
+        const {title,description,points_per_question,time_limit,questionsWithAns} = req.body;
 
         const examId = uuidv4(); // Generate a unique ID for the exam
         exams = {
             exam_id : examId,
-            exam : {title,description,language ,total_time,points_per_question,questionsWithAns}
+            exam : {title,description,points_per_question,time_limit,questionsWithAns}
         };
         
         // Create a new exam
@@ -29,7 +29,7 @@ router.post('/create-exam', async (req, res) => {
 
         // Save to MongoDB
         await newExam.save();
-        res.status(201).send({ success: true, message: 'Exam created successfully!',examUrl: `/pages/test.html?id=${examId}` });
+        res.status(201).send({ success: true, message: 'Exam created successfully!',examUrl: `http://localhost:5500/pages/test.html?id=${examId}` });
     } catch (error) {
         console.error('Error creating exam:', error.message);
         res.status(500).send({ success: false, error: 'Internal Server Error' });

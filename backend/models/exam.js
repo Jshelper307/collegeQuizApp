@@ -9,9 +9,8 @@ const questionSchema = new mongoose.Schema({
 const examSchema = new mongoose.Schema({
     title : { type:String,required:true},
     description: { type: String, required: true },
-    language : { type:String,required:true},
-    total_time: { type: String, required: true },
     points_per_question : { type:Number,required:true},
+    time_limit : {type:Number,required:true},
     questionsWithAns: [questionSchema]
 });
 

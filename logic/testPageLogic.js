@@ -1,43 +1,3 @@
-// let examData = {
-//     "success": true,
-//     "exam": {
-//             "_id": "6745c88c2a72a38a9cff26ed",
-//             "exam_id": "3ad1b34d-7db4-4e6b-a47a-0e3bbc1d4b62",
-//             "exam": {
-//                     "title": "try 1",
-//                     "description": "This is first test post request",
-//                     "language": "english",
-//                     "total_time": "20 min",
-//                     "points_per_question": 2,
-//                     "questionsWithAns": [
-//                         {
-//                             "question": "This is test question 1",
-//                             "options": [
-//                                 "a",
-//                                 "b",
-//                                 "c",
-//                                 "d"
-//                                 ],
-//                             "answer": "a",
-//                             "_id": "6745c88c2a72a38a9cff26ef"
-//                         },
-//                         {
-//                             "question": "This is test question 2",
-//                             "options": [
-//                             "aa",
-//                             "ba",
-//                             "ca",
-//                             "da"
-//                             ],
-//                             "answer": "ca",
-//                             "_id": "6745c88c2a72a38a9cff26f0"
-//                         }
-//                         ],
-//                     "_id": "6745c88c2a72a38a9cff26ee"
-//                 },
-//             "__v": 0
-//         }
-//     }
 
 let examData = {};
 
@@ -67,7 +27,7 @@ document.addEventListener("DOMContentLoaded",async ()=>{
 
 
 const loadData = async (examId)=>{
-    await fetch(`http://localhost:3000/exam/${examId}`).then(response=>response.json()).then(data=>{
+    await fetch(`http://localhost:3000/exams/exam/${examId}`).then(response=>response.json()).then(data=>{
         if(data.error){
             console.log(data.error);
         }
