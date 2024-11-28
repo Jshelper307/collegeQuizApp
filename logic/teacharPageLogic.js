@@ -49,6 +49,10 @@ document.querySelector(".delete").addEventListener("click", () => {
   }
 });
 
+document.getElementById("backToHomeBtn").addEventListener("click",()=>{
+  window.open('../pages/index.html','_parent');
+})
+
 
 
 // Function to add question and update the recent question display
