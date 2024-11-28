@@ -1,0 +1,279 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body,html {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #cac9c9;
+    background-color: black;
+  }
+  
+  /* Container */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: none;
+  }
+
+  .linkContainer{
+    /* border: 2px solid red; */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: block;
+  }
+
+  .messageHolder{
+    background-color: #333;
+    padding: 10px;
+    border-radius: 20px;
+    text-align: center;
+  }
+
+  .message{
+    font-size: xx-large;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: aliceblue;
+  }
+
+  .link{
+    /* border: 2px solid blue; */
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: rgba(238, 238, 242, 0.338) 0px 30px 60px -12px inset, rgba(211, 209, 209, 0.49) 0px 18px 36px -18px inset;
+  }
+
+  .link p{
+    color: #8abbf0;
+    text-decoration: underline;
+  }
+
+  #copyBtn{
+    padding: 5px 17px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  /* Header Buttons */
+  .header {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 10px;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Test Details Section */
+  .test-details {
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    /* background-color: #d9e7ff; */
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+  
+  .test-info, .test-settings {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
+  input, textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  textarea {
+    resize: none;
+  }
+  
+  /* Question Section */
+  .question-section {
+    display: flex;
+    gap: 20px;
+  }
+
+  .main-view{
+    display: flex;
+    gap: 10px;
+    max-height: 50vh;
+  }
+  
+  .recent-question {
+    flex: 1;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+  
+  .add-question {
+    flex: 1;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  #question{
+    min-height: 20%;
+  }
+  /* Options Section */
+.options-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* border: 2px solid red; */
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #f4f4f4;
+    flex-wrap: nowrap;
+  }
+  
+  #recent-total{
+    /* border: 2px solid red; */
+    padding: 5px;
+    text-align: center;
+  }
+
+  hr{
+    margin: 10px;
+  }
+.question-container{
+  padding: 5px;
+  margin-top: 10px;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: rgba(255, 255, 255, 0.147) 0px 50px 100px -20px, 
+  rgba(255, 255, 255, 0.145) 0px 30px 60px -30px, 
+  rgba(255, 255, 255, 0.374) 0px -2px 6px 0px inset;
+}
+.button-Holder{
+  /* border: 2px solid blue; */
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+.editBtn{
+  border-radius: 5px;
+  cursor: pointer;
+}
+.deleteBtn{
+  border-radius: 5px;
+  cursor: pointer;
+}
+  
+  /* Option Styling for Inputs */
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .option-item input[type="text"] {
+    background-color: transparent;
+    border: none;
+    outline: none;
+  }
+  .option-item > input[type="text"]:focus {
+    outline: none;
+  }
+  /* Add Question Button */
+  .add-more {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .add-more:hover {
+    background-color: #218838;
+  }
+  
+  /* Styling for Question Box */
+
+  .add-question input[type="text"] {
+    padding: 8px;
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+    min-width: 90%;
+  }
+
+  
+  .add-more:hover {
+    background-color: #218838;
+  }
+
+
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .header{
+      justify-content: center;
+    }
+    .main-view{
+      flex-direction: column;
+    }
+    .test-details {
+      flex-direction: column;
+    }
+  
+    .question-section {
+      flex-direction: column;
+    }
+  
+    .recent-question{
+      min-height: 50vh;
+    }
+    .option-item input[type="text"] {
+      width: 100%;
+    }
+  }
+  
+  .green{
+    color: #28a745;
+  }
