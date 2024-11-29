@@ -33,6 +33,9 @@ class DbService{
       
     async registerUser(password,firstname,lastname,email,phone,college,universityrollnumber){
         const username = this.calculateStudentId(firstname,lastname,universityrollnumber);
+
+        
+
         // Hash the password before storing it
         const hashedPassword = this.hashPassword(password);
     

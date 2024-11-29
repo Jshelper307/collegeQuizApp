@@ -175,37 +175,40 @@ class DbService{
     // Insert data into subject table
     calculateDepartmentId = (department_name)=>{
         let query = "SELECT department_id FROM departments WHERE department_names=?";
-        
-        // Use promise to handle asynchronous operation
-        return new Promise((resolve, reject) => {
+        let result;
+        result = new Promise((resolve, reject) => {
             try{
                 connection.execute(query, [department_name], (error, res) => {
                     if (error) {
                         console.log("This is the error : ",error);
                         reject(error);
                     } 
-                    else if(res.length==0){
-                        console.log("Data is not present");
-                    }
+                    // else if(res.length==0){
+                    //     console.log("Data is not present");
+                    // }
                     else {
-                        console.log("Acadamic ID is: ", res);
-                        console.log("Acadamic ID is: ", res[0].department_id);
+                        // console.log("Department ID is: ", res);
+                        // console.log("Department ID is: ", res[0].department_id);
                         resolve(res[0].department_id);
                     }
                 });
+
             }
             catch(e){
                 console.log(e);
             }
         });
+        return result;
+        // Use promise to handle asynchronous operation
     }
     addSubject = async (subject_id,subject_name,department_name,year)=>{
         let department_id = await this.calculateDepartmentId(department_name);
+        year = parseInt(year);
         try{
             let query = "INSERT INTO subjects(subject_id,subject_names,department_id,year) VALUES (?,?,?,?)"
             connection.execute(query,[subject_id,subject_name,department_id,year],(error,res)=>{
                 if(error){
-                    console.log(error);
+                    console.log("Error from query : ",error);
                 }
                 else{
                     console.log("Successfully added");
@@ -213,7 +216,7 @@ class DbService{
             })
         }
         catch(e){
-            console.log(e);
+            console.log("error from addSubject : ",e);
         }
     }
 }

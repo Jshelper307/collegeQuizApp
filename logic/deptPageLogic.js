@@ -31,7 +31,8 @@ const loadDepartments = (data)=>{
 
 document.addEventListener('DOMContentLoaded',()=>{
     const acadamicName =localStorage.getItem("acadamicName");
-    let url = `http://localhost:3000/getDepartments?acadamicName=${acadamicName}`
+    // let url = `http://localhost:3000/getDepartments?acadamicName=${acadamicName}`
+    let url = `http://localhost:3000/getAcadamics/${acadamicName}/getDepartments`
     fetch(url).then(response=>response.json()).then(data=>{
         loadDepartments(data);
     });
