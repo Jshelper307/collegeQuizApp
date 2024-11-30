@@ -70,14 +70,16 @@ const noSubjects = (id)=>{
 }
 
 const openSubjectQuiz = (subject)=>{
-    let subjectWithId = (subject.target.innerHTML).split("(")[0];
-    console.log("clicked .....");
-    subjectWithId = subjectWithId.replace("\"","");
-    if(subjectWithId.includes("&")){
-        subjectWithId = subjectWithId.replace("&amp;","&");
-    }
-    console.log(subjectWithId);
-    localStorage.setItem("subjectName",subjectWithId);
+    let subjectWithId = (subject.target.innerHTML).split(" ");
+    let subjectId = subjectWithId[subjectWithId.length-1];
+    // console.log("clicked .....");
+    subjectId = subjectId.replace("\"","");
+    subjectId = subjectId.substring(1,subjectId.length-1);
+    // if(subjectWithId.includes("&")){
+    //     subjectWithId = subjectWithId.replace("&amp;","&");
+    // }
+    // console.log("id : ",subjectId);
+    localStorage.setItem("subjectId",subjectId);
     window.open("../pages/Questionpage.html","_parent");
 }
 

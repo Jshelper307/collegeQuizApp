@@ -219,5 +219,28 @@ class DbService{
             console.log("error from addSubject : ",e);
         }
     }
+
+    getSubjectName(subject_id){
+        let query = "SELECT subject_names FROM subjects WHERE subject_id=?"
+        let result = new Promise((resolve, reject) => {
+            try{
+                connection.execute(query,[subject_id],(error,res)=>{
+                    if (error) {
+                        console.log("This is the error : ",error);
+                        reject(error);
+                    } 
+                    else {
+                        // console.log("subject name : ",res[0]);
+                        resolve(res[0]['subject_names']);
+                    }
+                });
+
+            }
+            catch(e){
+                console.log(e);
+            }
+        });
+        return result;
+    }
 }
 module.exports = DbService;

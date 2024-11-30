@@ -27,28 +27,30 @@
             <div class="units dropdown" id="dropdown-container">
                 
                 <div class="dropdown-content" id="dropdown-content">
-                    <h3>Unit 1: Introduction to OS
-                        <button class="addBtn" id="addTopicBtn">+</button>
-                    </h3>
-                    <div class="addTopic">
-                        <input class="input" id="topicNameInp" type="text" placeholder="Enter a Topic name for add" required>
-                        <button class="addBtn" id="addNewTopicBtn">Enter</button>
+                    <!-- <div class="unit">
+                        <h3>Unit 1: Introduction to OS
+                            <button class="addBtn" id="addTopicBtn">+</button>
+                        </h3>
+                        <div class="addTopic">
+                            <input class="input" id="topicNameInp" type="text" placeholder="Enter a Topic name for add" required>
+                            <button class="addBtn" id="addNewTopicBtn">Enter</button>
+                        </div>
+                        <ul>
+                            <li data-topic="Topic 1" onclick="loadQuestion('Unit 1', 'Topic 1', 0)">What is an OS?</li>
+                            <li data-topic="Topic 2" onclick="loadQuestion('Unit 1', 'Topic 2', 0)">Functions of OS</li>
+                            <li data-topic="Topic 3" onclick="loadQuestion('Unit 1', 'Topic 3', 0)">Types of OS</li>
+                        </ul>
                     </div>
-                    <ul>
-                        <li data-topic="Topic 1" onclick="loadQuestion('Unit 1', 'Topic 1', 0)">What is an OS?</li>
-                        <li data-topic="Topic 2" onclick="loadQuestion('Unit 1', 'Topic 2', 0)">Functions of OS</li>
-                        <li data-topic="Topic 3" onclick="loadQuestion('Unit 1', 'Topic 3', 0)">Types of OS</li>
-                    </ul>
                     <h3>Unit 2: Process Management</h3>
                     <ul>
                         <li data-topic="Topic 4" onclick="loadQuestion('Unit 2', 'Topic 4', 0)">Process Lifecycle</li>
                         <li data-topic="Topic 5" onclick="loadQuestion('Unit 2', 'Topic 5', 0)">CPU Scheduling</li>
                         <li data-topic="Topic 6" onclick="loadQuestion('Unit 2', 'Topic 6', 0)">Deadlocks</li>
-                    </ul>
+                    </ul> -->
                 </div>
             </div>
         </aside>
-        <!-- <section class="content">
+        <section class="content">
             <div class="topic-button">
                 <h2 id="topic-title">Select a Topic</h2>
                 <div id="timer"></div>
@@ -57,14 +59,14 @@
                 <p id="question-text">Please select a topic to see the question.</p>
                 <div class="options" id="options">
                     <!-- Options will load here -->
-                     <!--
                 </div>
                 <button class="submit-btn" onclick="submitAnswer()">Submit</button>
                 <p id="feedback" class="feedback"></p>
                 <button id="next-btn" class="next-btn" onclick="nextQuestion()" style="display: none;">Next Question</button>
             </div>
-        </section> -->
-        <section class="content">
+        </section>
+       
+        <!-- <section class="content">
             <div class="topic-head">
                 <h2 id="topic-title">Select a Topic</h2>
                 <button class="addBtn" id="addQuestionBtn">Add New Question</button>
@@ -99,15 +101,17 @@
                 </div>
                 <button class="addBtn" id="addNewQuestionBtn">Enter</button>
             </div>
-            <div class="questions">
+            <div class="questions"> 
                 <!-- Questions load here -->
+                 <!-- 
             </div>
         </section>
+         -->
     </div>
-    <!-- <div class="hello">
+    <div class="hello">
         <button class="back-btn" onclick="goBack()">Back</button>
-    </div> -->
-    <div class="formHolder">
+    </div>
+    <!-- <div class="formHolder">
         <div class="form">
             <input class="input" id="unitNameFormInp" type="text" placeholder="Enter a unit name for add" required>
             <input class="input" id="topicNameFormInp" type="text" placeholder="Enter a Topic name for add" required>
@@ -135,13 +139,14 @@
             <button class="addBtn" id="addNew">Add</button>
             <div class="showAddedQuestions">
                 <!-- Questions loaded here .... -->
+                 <!--
             </div>
             <div class="buttons">
                 <button class="addBtn" id="submitForm">Submit</button>
                 <button class="colseBtn">Close</button>
             </div>
         </div>
-    </div>
+    </div> -->
     <script src="../logic/NewQuestion.js"></script>
 </body>
 </html>

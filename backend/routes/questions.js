@@ -1,20 +1,44 @@
 // authRoutes.js
 const express = require('express');
 const Subject = require('../models/subjects');
-const connectMongoDB = require('../db/mongoConnection')
-
+const connectMongoDB = require('../db/mongoConnection');
+const DbService = require('../services/dbService');
 const router = express.Router();
 
 // In-memory store for users (you would typically use a database)
 
 // create connection with mongodb
 connectMongoDB();
+
+// get subjects
+router.get('/getSubject/:subjectId',async(req,res)=>{
+    try {
+        const { subjectId } = req.params;
+        // Find the exam by ID
+        const subject = await Subject.findOne({subjectCode: subjectId });
+
+        if (!subject) {
+            return res.status(404).send({ success: false, error: 'Subject not found' });
+        }
+        
+        res.send({ success: true, subject:subject });
+    } catch (error) {
+        console.error('Error fetching subject:', error.message);
+        res.status(500).send({ success: false, error: 'Internal Server Error' });
+    }
+})
+
+
 // Add a new Subject
-router.post('/subjects', async (req, res) => {
+router.post('/addSubjects', async (req, res) => {
 try {
+    const subjectId = req.body.subjectCode;
+    const db = DbService.getDbServiceInstance();
+    const subjectName =await db.getSubjectName(subjectId);
     const subject = new Subject({
-    subjectCode: req.body.subjectCode,
-    units: req.body.units
+        subjectCode: subjectId,
+        subjectName:subjectName,
+        units: req.body.units
     });
     const savedSubject = await subject.save();
     res.status(201).json(savedSubject);
