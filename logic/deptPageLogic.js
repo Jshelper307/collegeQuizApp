@@ -30,6 +30,9 @@ const loadDepartments = (data)=>{
 
 
 document.addEventListener('DOMContentLoaded',()=>{
+    // clear the localstorage
+    localStorage.removeItem("departmentName");
+
     const acadamicName =localStorage.getItem("acadamicName");
     // let url = `http://localhost:3000/getDepartments?acadamicName=${acadamicName}`
     let url = `http://localhost:3000/getAcadamics/${acadamicName}/getDepartments`

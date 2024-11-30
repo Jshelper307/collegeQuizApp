@@ -77,10 +77,15 @@ const openSubjectQuiz = (subject)=>{
         subjectWithId = subjectWithId.replace("&amp;","&");
     }
     console.log(subjectWithId);
+    localStorage.setItem("subjectName",subjectWithId);
+    window.open("../pages/Questionpage.html","_parent");
 }
 
 // code start here
 document.addEventListener("DOMContentLoaded",()=>{
+    // clear the localstorage
+    localStorage.removeItem("subjectName");
+    
     const departmentName =localStorage.getItem("departmentName");
     const acadamicName =localStorage.getItem("acadamicName");
     // console.log(departmentName);
