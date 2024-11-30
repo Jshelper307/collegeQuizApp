@@ -23,6 +23,11 @@ body {
     
 }
 
+/* for teacher */
+#teacherContent{
+    display: none;
+}
+
 /* timer */
 
 .timer {

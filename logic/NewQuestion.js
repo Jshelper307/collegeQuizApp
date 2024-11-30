@@ -9,6 +9,15 @@ let addedQuestions = [];
 
 // when page load
 document.addEventListener("DOMContentLoaded", () => {
+
+    // check who is user teache or student
+    if(isTeacher){
+        document.getElementById("teacherContent").style.display = "block";
+        document.getElementById("studentContent").style.display = "none";
+        document.querySelector(".hello").style.display = "none";
+    }
+
+
   const subjectName = document.getElementById("subjectName");
   const subjectId = localStorage.getItem("subjectId");
   
