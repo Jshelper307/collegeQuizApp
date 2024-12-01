@@ -1,6 +1,7 @@
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
+const nodemailer = require("nodemailer");
 let instance = null;
 dotenv.config();
 // create connection
@@ -34,7 +35,33 @@ class DbService{
     async registerUser(password,firstname,lastname,email,phone,college,universityrollnumber){
         const username = this.calculateStudentId(firstname,lastname,universityrollnumber);
 
-        
+        // Configure the transport using SMTP settings from .env
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,  // Gmail's SMTP host
+            port: process.env.SMTP_PORT || 587,  // Use port 587 for TLS or 465 for SSL
+            secure: process.env.SMTP_PORT === '465',  // true for SSL (port 465)
+            auth: {
+                user: process.env.SMTP_USER,  // Your Gmail email address
+                pass: process.env.SMTP_PASS,  // App password or Gmail password (depending on 2FA)
+            },
+        });
+    
+        // Set up the email options
+        const mailOptions = {
+            from: `"Your App Name" <${process.env.SMTP_USER}>`, // Sender's email
+            to: email,  // Receiver's email (user's email)
+            subject: "Welcome to Our Platform!",  // Email subject
+            text: `Hello ${firstname} ${lastname},\n\nThank you for registering!\n\nYour credentials are:\nUsername: ${username}\nPassword: ${password}\n\nPlease keep this information secure.\n\nBest Regards,\nYour App Team`, // Email body in plain text
+        };
+    
+        // Send the email
+        try {
+            const info = await transporter.sendMail(mailOptions);
+            console.log("Email sent successfully:", info.response);
+        } catch (error) {
+            console.error("Failed to send email:", error);
+            throw new Error("Failed to send registration email.");
+        }
 
         // Hash the password before storing it
         const hashedPassword = this.hashPassword(password);
