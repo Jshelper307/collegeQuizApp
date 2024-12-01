@@ -15,12 +15,12 @@
 }
 
 .rh{
-    margin-top: 2%;
+    margin-top: 1%;
 }
 
 .years{
     /* border: 2px solid black; */
-    margin: 10px;
+    margin: 18px 10px;
 }
 
 .years .chip{
@@ -39,7 +39,7 @@
     /* height: 200px; */
     display: flex;
     flex-wrap:wrap;
-    justify-content: center;
+    /* justify-content: center; */
 }
 .years .subjects .subject{
     padding: 10px;
@@ -77,6 +77,14 @@ body{
     color: white;
 }
 
+.noSubject{
+    /* border: 2px solid red; */
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    font-size: x-large;
+    color: cyan;
+}
 /*responsive navigation */
 @media only screen and (max-width: 821px) {
     .inputbox{
@@ -87,10 +95,7 @@ body{
         width: 26vw;
         border: 2px solid rgb(0, 204, 255);
     }
-}
-
-@media only screen and (max-width: 821px) {
-    .years .subjects .subject{
-        margin-top: 45px;
+    .years .subjects{
+        justify-content: center;
     }
 }

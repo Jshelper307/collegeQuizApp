@@ -15,10 +15,12 @@ const loadAcadamicNames = (data)=>{
 
 
 document.addEventListener("DOMContentLoaded",()=>{
+    // clear the localstorage
+    localStorage.removeItem("acadamicName");
+
     fetch("http://localhost:3000/getAcadamics").then(response=>response.json()).then(data=>{
         loadAcadamicNames(data);
     });
-    
 });
 
 // Get the submit button

@@ -19,6 +19,7 @@ const unitSchema = new mongoose.Schema({
 
 const subjectSchema = new mongoose.Schema({
     subjectCode: { type: String, required: true },
+    subjectName: { type: String, required: true },
     units: [unitSchema]
 });
 

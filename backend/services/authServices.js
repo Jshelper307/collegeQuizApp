@@ -34,6 +34,7 @@ class DbService{
       
     async registerUser(password,firstname,lastname,email,phone,college,universityrollnumber){
         const username = this.calculateStudentId(firstname,lastname,universityrollnumber);
+
         // Configure the transport using SMTP settings from .env
         const transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,  // Gmail's SMTP host
