@@ -23,11 +23,6 @@ body {
     
 }
 
-/* for teacher */
-#teacherContent{
-    display: none;
-}
-
 /* timer */
 
 .timer {
@@ -84,6 +79,7 @@ body {
     gap: 20px;
     padding: 0 10px;
     position: relative;
+    justify-content: center;
 }
 
 .sidebar {
@@ -132,6 +128,16 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-height: 88vh;
     overflow-y: auto;
+}
+
+.questionHolder{
+    background-color: #ffffff;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 88vh;
+    width: 50vw;
+    min-width: 500px;
 }
 
 .content h2 {
@@ -438,4 +444,17 @@ body {
 }
 .green{
     background-color:#28a745;
+}
+
+
+
+/* Styles for test page */
+#answered{
+    background-color: #ffffff;
+    padding: 1em;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
 }

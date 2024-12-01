@@ -18,7 +18,7 @@ let examId;
 
 document.addEventListener("DOMContentLoaded",async ()=>{
     examId = params.get("id");
-    console.log("id : ",examId);
+    // console.log("id : ",examId);
     await loadData(examId);
     heading.innerHTML = examData["exams"]["exam"]["title"];
     loadQuestion(currentInd);
@@ -76,10 +76,16 @@ next.addEventListener("click",()=>{
     for(let i=0;i<options.length;i++){
         if(options[i].checked){
             console.log("ans is : ",options[i].value);
+            answerWithTime.push({
+                answer:options[i].value,
+                timeTaken:timer.innerHTML
+            })
         }
     }
-    if(next.innerHTML === "Submit"){
+    if(currentInd == totalQuestions){
+        next.style.display = "none";
         optionsContainer.innerHTML = "";
+        storeResult();
         question_text.innerHTML = "Thankyou For participating...! We recorder your response. Result will be declared soon....";
         clearInterval(timerId);
         timer.innerHTML = "";
@@ -88,3 +94,22 @@ next.addEventListener("click",()=>{
         loadQuestion(currentInd);
     }
 })
+
+const storeResult = ()=>{
+    console.log("exam id : ",examId);
+    console.log(answerWithTime);
+    const url =`http://localhost:3000/exams/exam/${examId}/store_result`;
+    fetch(url,{
+        headers:{
+            'content-type':'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify({answerWithTime:answerWithTime})
+    })
+    .then(response=>{
+        return response.json();
+    })
+    .catch(error=>{
+        console.log(error);
+    })
+}
