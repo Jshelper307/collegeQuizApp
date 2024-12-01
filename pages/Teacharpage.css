@@ -251,7 +251,10 @@
   .add-more:hover {
     background-color: #218838;
   }
-
+.SelectInput{
+  padding: 8px;
+  border-radius: 10px;
+}
 
   
   /* Responsive Design */
