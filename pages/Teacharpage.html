@@ -18,18 +18,66 @@
     <!-- Test Details Section -->
     <div class="test-details">
       <div class="test-info">
-        <label for="title">Title</label>
-        <input type="text" id="title" placeholder="Enter test title">
-        <label for="description">Description</label>
-        <textarea id="description" rows="3" placeholder="Enter test description"></textarea>
+        <!-- Add dropdown for department -->
+<label for="department">Department <span class="mandatory" style="color: red;">*</span></label>
+<select id="department">
+  <option value="">Select Department</option>
+  <option value="CE">CE</option>
+  <option value="CSE">CSE</option>
+  <option value="ME">ME</option>
+  <option value="ECE">ECE</option>
+  <option value="EE">EE</option>
+  <option value="other">Others(Please Enter)</option>
+</select>
+<input type="text" id="custom-department" placeholder="Enter custom department" style="display:none;">
+
+<!-- Add dropdown for subjects -->
+<label for="subject">Subject <span class="mandatory" style="color: red;">*</span></label>
+<select id="subject">
+  <option value="">Select Subject</option>
+  <option value="DSA">DSA</option>
+  <option value="OS">OS</option>
+  <option value="DAA">DAA</option>
+  <option value="OOPS">OOPS</option>
+  <option value="Water Resources Engineering">Water Resources Engineering</option>
+  <option value="Basic Electronics">Basic Electronics</option>
+  <option value="Solid Mechanics">Solid Mechanics</option>
+  <option value="other">Others (Please Enter)</option>
+</select>
+<input type="text" id="custom-subject" placeholder="Enter custom subject" style="display:none;">
+<label for="topic">Topic<span class="mandatory" style="color: red;">*</span></label>
+<input type="text" id="topic" placeholder="Enter Specific topic">
+<label for="description">description<span class="mandatory" style="color: red;">*</span></label>
+        <textarea id="description" rows="3" placeholder="Enter suitable test description"></textarea>
       </div>
       <div class="test-settings">
-        <label for="total-time">Total Time</label>
-        <input type="number" id="total-time" placeholder="Minutes">
-        <label for="points">Points</label>
-        <input type="number" id="points" placeholder="Points">
-        <label for="time-limit">Time Limit</label>
-        <input type="number" id="time-limit" placeholder="Minutes">
+        <!-- Add dropdown for total time -->
+<label for="total time">Total time <span class="mandatory" style="color: red;">*</span></label>
+<select id="total-time">
+  <option value="">Select Time</option>
+  <option value="20">20 min</option>
+  <option value="30">30 min</option>
+  <option value="45">45 min</option>
+  <option value="60">60 min</option>
+  <option value="other">Others</option>
+</select>
+<input type="text" id="custom-total-time" placeholder="Enter custom time in minutes" style="display:none;">
+<!-- Add dropdown for points -->
+<label for="points">Points Per Question <span class="mandatory" style="color: red;">*</span></label>
+<select id="points">
+  <option value="">Select Points</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="5">5</option>
+  <option value="other">Others</option>
+</select>
+<input type="text" id="custom-points" placeholder="Enter custom points per question" style="display:none;">
+
+<p class="error-message" id="form-error" style="display:none; color:red;">Please fill all (*) mandatory fields</p>
+<label for="event opening day">Event Opening Day<span class="mandatory" style="color: red;">*</span></label>
+        <input type="datetime-local" id="event opening day" min="2024-12-01T08:00" max="2024-12-31T20:00">
+        <label for="event closing day">Event Closing Day<span class="mandatory" style="color: red;">*</span></label>
+        <input type="datetime-local" id="event closing day" min="2024-12-01T08:00" max="2024-12-31T20:00">
       </div>
     </div>
 
@@ -47,6 +95,7 @@
     
     <!-- Add Question Section -->
     <div class="add-question">
+      <label for="question">Question<span class="mandatory" style="color: red;">*</span></label>
       <label for="question">Enter your question:</label>
       <textarea type="text" id="question" placeholder="Enter question here"></textarea>
     
