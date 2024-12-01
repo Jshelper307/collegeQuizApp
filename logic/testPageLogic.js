@@ -6,6 +6,7 @@ let answerWithTime = [];
 let totalQuestions = 0;
 let timerId;
 const path = window.location.pathname;
+let userResponded;
 
 const heading = document.getElementById("heading");
 const question_text = document.getElementById("question-text");
@@ -17,23 +18,32 @@ const params = new URLSearchParams(window.location.search);
 let examId;
 
 document.addEventListener("DOMContentLoaded",async ()=>{
+    userResponded = false;
     examId = params.get("id");
     // console.log("id : ",examId);
+    // check user already give his answer or not
     await loadData(examId);
-    heading.innerHTML = examData["exams"]["exam"]["title"];
-    loadQuestion(currentInd);
-    startTimer(60);
+    if(!userResponded){
+        heading.innerHTML = examData["exams"]["exam"]["title"];
+        loadQuestion(currentInd);
+        startTimer(60);
+    }
+    else{
+        showResponded();
+    }
 })
 
 
 const loadData = async (examId)=>{
     await fetch(`http://localhost:3000/exams/exam/${examId}`).then(response=>response.json()).then(data=>{
         if(data.error){
+            // console.log("data form loaddata error : ",data);
             console.log(data.error);
+            userResponded = true;
         }
         else{
             examData = data;
-            // console.log(examData);
+            console.log(examData);
             totalQuestions = examData["exams"]["exam"]["questionsWithAns"].length;
         }
     })
@@ -98,7 +108,8 @@ next.addEventListener("click",()=>{
 const storeResult = ()=>{
     console.log("exam id : ",examId);
     console.log(answerWithTime);
-    const url =`http://localhost:3000/exams/exam/${examId}/store_result`;
+    const userName = '27600121003DP'
+    const url =`http://localhost:3000/exams/exam/${examId}/store_result/${userName}`;
     fetch(url,{
         headers:{
             'content-type':'application/json'
@@ -112,4 +123,9 @@ const storeResult = ()=>{
     .catch(error=>{
         console.log(error);
     })
+}
+
+const showResponded = ()=>{
+    question_text.innerHTML = "You already responded for this exam !!!"
+    next.style.display = "none";
 }

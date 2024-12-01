@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const answerAndTimeSchema = new mongoose.Schema({
     answer: { type: String, required: true },
-    time: { type: String, required: true }
+    timeTaken: { type: String, required: true }
 });
 
 const studentResultSchema = new mongoose.Schema({
