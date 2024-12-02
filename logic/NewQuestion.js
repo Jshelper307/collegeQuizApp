@@ -4,7 +4,7 @@ let score = 0;
 let responses = []; // To track user's responses
 let timer; // Variable to store the timer interval
 let timeLeft = (1 / 2) * 60; // Set initial time to 10 minutes (600 seconds)
-const isTeacher = false;
+let isTeacher = false;
 let addedQuestions = [];
 
 // when page load
@@ -16,7 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("studentContent").style.display = "none";
         document.querySelector(".hello").style.display = "none";
     }
-
+    else{
+        document.getElementById("teacherContent").style.display = "none";
+        document.getElementById("studentContent").style.display = "block";
+        document.querySelector(".hello").style.display = "flex";
+    }
 
   const subjectName = document.getElementById("subjectName");
   const subjectId = localStorage.getItem("subjectId");

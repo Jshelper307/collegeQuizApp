@@ -65,6 +65,7 @@ app.post("/addDepartments", (req, res) => {
   result.then(data=>res.json({success:true})).catch(error=>console.log(error))
 });
 
+
 // Fetch data from departments Table
 app.get("/getAcadamics/:acadamicName/getDepartments/:departmentName/getSubjects", (req, res) => {
   // const department_name = req.query.departmentName;

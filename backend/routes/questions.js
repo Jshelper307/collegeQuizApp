@@ -10,8 +10,24 @@ const router = express.Router();
 // create connection with mongodb
 connectMongoDB();
 
+// check the user is regestard or not
+function verifyUser(req,res,next){
+    const bearerHeader = req.headers['authorization'];
+    if(typeof bearerHeader !== 'undefined'){
+      const token = bearerHeader.split(" ")[1];
+      req.token = token;
+      next();
+    }
+    else{
+      res.send({
+        result : "Token is not valid"
+      })
+    }
+  }
+  
+
 // get subjects
-router.get('/getSubject/:subjectId',async(req,res)=>{
+router.get('/getSubject/:subjectId',verifyUser,async(req,res)=>{
     try {
         const { subjectId } = req.params;
         // Find the exam by ID
@@ -30,7 +46,7 @@ router.get('/getSubject/:subjectId',async(req,res)=>{
 
 
 // Add a new Subject
-router.post('/addSubjects', async (req, res) => {
+router.post('/addSubjects',verifyUser, async (req, res) => {
 try {
     const subjectId = req.body.subjectCode;
     const db = DbService.getDbServiceInstance();
