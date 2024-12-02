@@ -36,8 +36,8 @@ const setUserName =(token)=>{
       // console.log(decoded);
   } catch (error) {
       console.log('Invalid token',error);
-      // localStorage.removeItem('token');
+      localStorage.removeItem('token');
       loggedIn = false;
-      // window.location.href = 'login.html'; // Redirect on invalid token
+      window.location.href = 'login.html'; // Redirect on invalid token
   } 
 }

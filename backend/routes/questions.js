@@ -4,6 +4,7 @@ const Subject = require('../models/subjects');
 const connectMongoDB = require('../db/mongoConnection');
 const DbService = require('../services/dbService');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 
 // In-memory store for users (you would typically use a database)
 
@@ -13,8 +14,10 @@ connectMongoDB();
 // check the user is regestard or not
 function verifyUser(req,res,next){
     const bearerHeader = req.headers['authorization'];
+    // console.log("bear : ",bearerHeader)
     if(typeof bearerHeader !== 'undefined'){
       const token = bearerHeader.split(" ")[1];
+    //   console.log("token from verify user : ",token);
       req.token = token;
       next();
     }
@@ -27,40 +30,78 @@ function verifyUser(req,res,next){
   
 
 // get subjects
-router.get('/getSubject/:subjectId',verifyUser,async(req,res)=>{
-    try {
-        const { subjectId } = req.params;
-        // Find the exam by ID
-        const subject = await Subject.findOne({subjectCode: subjectId });
-
-        if (!subject) {
-            return res.status(404).send({ success: false, error: 'Subject not found' });
+router.post('/getSubject/:subjectId',verifyUser,async(req,res)=>{
+    // console.log("secret key : ",process.env.SECRET_KEY);
+    const isValidUser = jwt.verify(req.token,process.env.SECRET_KEY,(error,data)=>{
+        if(error){
+            // console.log("Invalid token");
+            return false;
+        }else{
+            // console.log("valid user from getSubject....",data)
+            return true;
         }
-        
-        res.send({ success: true, subject:subject });
-    } catch (error) {
-        console.error('Error fetching subject:', error.message);
-        res.status(500).send({ success: false, error: 'Internal Server Error' });
+    })
+    if(isValidUser){
+        try {
+            const { subjectId } = req.params;
+            // Find the exam by ID
+            const subject = await Subject.findOne({subjectCode: subjectId });
+    
+            if (!subject) {
+                return res.status(404).send({ success: false, error: 'Subject not found' });
+            }
+            
+            res.send({ success: true, subject:subject });
+        } catch (error) {
+            console.error('Error fetching subject:', error.message);
+            res.status(500).send({ success: false, error: 'Internal Server Error' });
+        }
+    }
+    else{
+        res.send({success:false,message:"session expeired"});
     }
 })
 
 
 // Add a new Subject
 router.post('/addSubjects',verifyUser, async (req, res) => {
-try {
-    const subjectId = req.body.subjectCode;
-    const db = DbService.getDbServiceInstance();
-    const subjectName =await db.getSubjectName(subjectId);
-    const subject = new Subject({
-        subjectCode: subjectId,
-        subjectName:subjectName,
-        units: req.body.units
-    });
-    const savedSubject = await subject.save();
-    res.status(201).json(savedSubject);
-} catch (error) {
-    res.status(400).json({ message: error.message });
-}
+    let result;
+    jwt.verify(req.token,process.env.SECRET_KEY,(error,data)=>{
+        if(error){
+            // console.log("Invalid token");
+            result = {
+                validUser : false,
+                isTeacher:false
+            }
+            return result;
+        }else{
+            // console.log("valid user from getSubject....",data)
+            result = {
+                validUser : false,
+                isTeacher : data.isTeacher
+            }
+            return result;
+        }
+    })
+    if(result.validUser && result.isTeacher){
+        try {
+            const subjectId = req.body.subjectCode;
+            const db = DbService.getDbServiceInstance();
+            const subjectName =await db.getSubjectName(subjectId);
+            const subject = new Subject({
+                subjectCode: subjectId,
+                subjectName:subjectName,
+                units: req.body.units
+            });
+            const savedSubject = await subject.save();
+            res.status(201).json(savedSubject);
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+    else{
+        res.send({success:false,message:"session expeired"})
+    }
 });
 
 // Add a new Unit

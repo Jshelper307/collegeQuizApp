@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     // let url =`http://localhost:3000/getSubjects?departmentName=${departmentName}`
     let url =`http://localhost:3000/getAcadamics/${acadamicName}/getDepartments/${departmentName}/getSubjects`
     fetch(url).then(response=>response.json()).then(data=>{
-        console.log(data);
+        // console.log(data);
         if(data['subjects'].length > 0){
             data['subjects'].map(item=>{
                 if(item['year']==1){
