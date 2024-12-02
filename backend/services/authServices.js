@@ -48,10 +48,10 @@ class DbService{
     
         // Set up the email options
         const mailOptions = {
-            from: `"Your App Name" <${process.env.SMTP_USER}>`, // Sender's email
+            from: `"QuizMania" <${process.env.SMTP_USER}>`, // Sender's email
             to: email,  // Receiver's email (user's email)
             subject: "Welcome to Our Platform!",  // Email subject
-            text: `Hello ${firstname} ${lastname},\n\nThank you for registering!\n\nYour credentials are:\nUsername: ${username}\nPassword: ${password}\n\nPlease keep this information secure.\n\nBest Regards,\nYour App Team`, // Email body in plain text
+            text: `Hello ${firstname} ${lastname},\n\nThank you for registering!\n\nYour credentials are:\nUsername: ${username}\nPassword: ${password}\n\nPlease keep this information secure.\n\nBest Regards,\nQuizMania Team`, // Email body in plain text
         };
     
         // Send the email
@@ -143,8 +143,31 @@ class DbService{
         
 
     async login(userName,password){
-        const result = await this.verifyUser(userName,password);
+        const {success,message} = await this.verifyUser(userName,password);
+        const userNameresult = await this.getUserName(userName);
+        const result = {
+            success:success,
+            message:message,
+            userNameresult:userNameresult
+        }
         return result;
+    }
+
+    async getUserName(userName){
+        const userFullName =await new Promise((resolve,reject)=>{
+            let query = "SELECT firstname,lastname FROM studentdetails WHERE studentid=?"
+            connection.execute(query,[userName],(error,results)=>{
+                if(error){
+                    reject(error.message);
+                }
+                else{
+                    const name = `${results[0].firstname} ${results[0].lastname}`
+                    console.log("name form getUserName : ",name);
+                    resolve(name);
+                }
+            })
+        })
+        return userFullName;
     }
 }
 
