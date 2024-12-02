@@ -32,6 +32,7 @@ nav{
     display: flex;
     width: 60%;
     justify-content: space-around;
+    align-items: center;
 }
 .nav__menue li{
     list-style: none;
@@ -73,6 +74,10 @@ nav{
 }
 .dropdown-menu li a:hover {
     background-color: #555;
+}
+
+#userDetails img{
+    filter: invert();
 }
 
 /* Show dropdown on hover */
