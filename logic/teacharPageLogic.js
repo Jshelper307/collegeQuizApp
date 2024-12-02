@@ -75,7 +75,20 @@ function addQuestion() {
   correct4.value = option4;
 
   const correctOption = document.getElementsByName("correctOption");
+  let isCorrectSelected = false;
+  let selectedAnswer = null;
+  for (let i = 0; i < correctOption.length; i++) {
+    if (correctOption[i].checked) {
+      isCorrectSelected = true;
+      selectedAnswer = correctOption[i].value; // Get the correct answer
+      break;
+    }
+  }
 
+  if (!isCorrectSelected) {
+    alert("Please mark the correct Answer.");
+    return; // Stop execution if no correct answer is marked
+  }
   for (let i = 0; i < correctOption.length; i++) {
     if (correctOption[i].checked) {
       questions.push({
@@ -114,6 +127,82 @@ function addQuestion() {
     console.log(e);
   });
 }
+document.querySelector(".done").addEventListener("click", () => {
+  const department = document.getElementById("department").value;
+  const customDepartment = document.getElementById("custom-department").value.trim();
+  const subject = document.getElementById("subject").value;
+  const customSubject = document.getElementById("custom-subject").value.trim();
+  const totalTime = document.getElementById("total-time").value;
+  const customTotalTime = document.getElementById("custom-total-time").value.trim();
+  const points = document.getElementById("points").value;
+  const customPoints = document.getElementById("custom-points").value.trim();
+
+  let isValid = true;
+
+  // Validate department
+  if (department === "other" && !customDepartment) {
+    isValid = false;
+  } else if (!department) {
+    isValid = false;
+  }
+
+  // Validate subject
+  if (subject === "other" && !customSubject) {
+    isValid = false;
+  } else if (!subject) {
+    isValid = false;
+  }
+
+  // Validate total time
+  if (totalTime === "other" && !customTotalTime) {
+    isValid = false;
+  } else if (!totalTime) {
+    isValid = false;
+  }
+
+  // Validate points
+  if (points === "other" && !customPoints) {
+    isValid = false;
+  } else if (!points) {
+    isValid = false;
+  }
+
+  // Show error message if validation fails
+  if (!isValid) {
+    document.getElementById("form-error").style.display = "block";
+    return;
+  }
+
+  // Hide error message if validation passes
+  document.getElementById("form-error").style.display = "none";
+
+  // Submit data
+  console.log({
+    department: department === "other" ? customDepartment : department,
+    subject: subject === "other" ? customSubject : subject,
+    totalTime: totalTime === "other" ? customTotalTime : totalTime,
+    points: points === "other" ? customPoints : points,
+  });
+
+  alert("Form submitted successfully!");
+});
+
+// Show/hide custom input for "Others" in dropdowns
+document.getElementById("department").addEventListener("change", (e) => {
+  document.getElementById("custom-department").style.display = e.target.value === "other" ? "block" : "none";
+});
+
+document.getElementById("subject").addEventListener("change", (e) => {
+  document.getElementById("custom-subject").style.display = e.target.value === "other" ? "block" : "none";
+});
+
+document.getElementById("total-time").addEventListener("change", (e) => {
+  document.getElementById("custom-total-time").style.display = e.target.value === "other" ? "block" : "none";
+});
+
+document.getElementById("points").addEventListener("change", (e) => {
+  document.getElementById("custom-points").style.display = e.target.value === "other" ? "block" : "none";
+});
 
 const showPreviewQuestion = (questions) => {
   const preview_area = document.getElementById("recent-questions");

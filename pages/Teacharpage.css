@@ -20,7 +20,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    /* display: none; */
+    /*display: none;*/
   }
 
   .linkContainer{
@@ -362,6 +362,10 @@
   .option-item > input[type="text"]:focus {
     outline: none;
   }
+  /* .hidden { 
+    display: none;
+  }*/
+  
   /* Add Question Button */
   .add-more {
     background-color: #28a745;
@@ -388,7 +392,10 @@
   .add-more:hover {
     background-color: #218838;
   }
-
+.SelectInput{
+  padding: 8px;
+  border-radius: 10px;
+}
 
   
   /* Responsive Design */
