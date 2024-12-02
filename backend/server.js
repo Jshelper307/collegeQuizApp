@@ -46,9 +46,9 @@ app.post("/addAcadamics", (req, res) => {
     .catch((error) => console.log(error));
 });
 
-// Fetch data from departments Table
-app.get("/getDepartments", (req, res) => {
-  const acadamicName = req.query.acadamicName;
+app.get("/getAcadamics/:acadamicName/getDepartments", (req, res) => {
+  // const acadamicName = req.query.acadamicName;
+  const acadamicName = req.params.acadamicName;
   const db = dbService.getDbServiceInstance();
   const result = db.getDepartments(acadamicName);
   // console.log(result);
@@ -66,21 +66,21 @@ app.post("/addDepartments", (req, res) => {
 });
 
 // Fetch data from departments Table
-app.get("/getSubjects", (req, res) => {
-  const department_name = req.query.departmentName;
+app.get("/getAcadamics/:acadamicName/getDepartments/:departmentName/getSubjects", (req, res) => {
+  // const department_name = req.query.departmentName;
+  const department_name = req.params.departmentName;
   const db = dbService.getDbServiceInstance();
   const result = db.getSubjects(department_name);
   // console.log(result);
   result
-    .then((data) => res.json({ departments: data }))
+    .then((data) => res.json({ subjects: data }))
     .catch((error) => console.log(error));
 });
 // add data in departments Table
 app.post("/addSubjects", (req, res) => {
   const {subjectCode,subjectName,year,department_name } = req.body;
-
   const db = dbService.getDbServiceInstance();
-  const result = db.addSubject(subjectCode,subjectName,year,department_name );
+  const result = db.addSubject(subjectCode,subjectName,department_name,year);
   result.then(data=>res.json({success:true})).catch(error=>console.log(error))
 });
 

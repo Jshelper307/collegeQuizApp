@@ -1,68 +1,138 @@
 // the data of the subjects load from surver
-var first_year_subjects = ["Physics-I (BS-PH101)","Chemistry-I (BS-CH101)","Matematics-I A (BS-M101)","Basic Electrical Engineering (ES-EE101)","Physics-I (BS-PH201)","Chemistry-I (BS-CH201)","Matematics-II A (BS-M201)","Programming for problem solving (ES-CS201)","English (HM-HU201)"];
-var second_year_subjects = ["Analog & Digital Electronics (ESC-301)","Data Structure & Algorithm (PCC-CS301)","Computer Organization (PCC-CS302)","Matematics-III(Differential Calculus) (BSC-301)","Economics for Engineers (Humanities-II) (HSMC-301)","Discrete Mathematics (PCC-CS 401)","Computer Architecture (PCC-CS 402)","Formal Language & Automata Theory (PCC-CS 403)","Design and Analysis of Algorithms (PCC-CS 404)","Biology (BSC 401)","Environmental Science (MC-401)"];
-var third_year_subjects = ["Software Engineering (ESC-501)","Chemistry-I (BS-CH101)","Matematics-I A (BS-M101)","Basic Electrical Engineering (ES-EE101)","Physics-I (BS-PH201)","Chemistry-I (BS-CH201)","Matematics-II A (BS-M201)","Programming for problem solving (ES-CS201)","English (HM-HU201)"];
-var fourth_year_subjects = ["Physics-I (BS-PH101)","Chemistry-I (BS-CH101)","Matematics-I A (BS-M101)","Basic Electrical Engineering (ES-EE101)","Physics-I (BS-PH201)","Chemistry-I (BS-CH201)","Matematics-II A (BS-M201)","Programming for problem solving (ES-CS201)","English (HM-HU201)"];
+var first_year_subjects = [];
+var second_year_subjects = [];
+var third_year_subjects = [];
+var fourth_year_subjects = [];
 
 
 // Functions for load the subjects 
-function load_first_year_subjects(){
-    var first_subject_chip = "";
-
-    for(var i=0;i<first_year_subjects.length;i++){
-        first_subject_chip+= "<div class=\"subject\"><p>"+first_year_subjects[i]+"</p></div>"
-    }
+function load_first_year_subjects(first_year_subjects){
     var years = document.getElementById('firstyear_subjectHolder');
-    years.innerHTML = first_subject_chip;
-}
-function load_second_year_subjects(){
-    var second_subject_chip = "";
-
-    for(var i=0;i<second_year_subjects.length;i++){
-        second_subject_chip+= "<div class=\"subject\"><p>"+second_year_subjects[i]+"</p></div>"
+    if(first_year_subjects.length>0){
+        for(var i=0;i<first_year_subjects.length;i++){
+            const div = document.createElement("div");
+            div.className = "subject";
+            div.innerHTML = `<p>"${first_year_subjects[i]}"</p>`
+            div.addEventListener("click",openSubjectQuiz);
+            years.appendChild(div);
+        }
+        
     }
+}
+function load_second_year_subjects(second_year_subjects){
     var years = document.getElementById('secondyear_subjectHolder');
-    years.innerHTML = second_subject_chip;
-}
-function load_third_year_subjects(){
-    var third_subject_chip = "";
-
-    for(var i=0;i<third_year_subjects.length;i++){
-        third_subject_chip+= "<div class=\"subject\"><p>"+third_year_subjects[i]+"</p></div>"
+    if(second_year_subjects.length>0){
+        for(var i=0;i<second_year_subjects.length;i++){
+            const div = document.createElement("div");
+            div.className = "subject";
+            div.innerHTML = `<p>"${second_year_subjects[i]}"</p>`
+            div.addEventListener("click",openSubjectQuiz);
+            years.appendChild(div);
+        }
     }
+}
+function load_third_year_subjects(third_year_subjects){
     var years = document.getElementById('thirdyear_subjectHolder');
-    years.innerHTML = third_subject_chip;
-}
-function load_forth_year_subjects(){
-    var fourth_subject_chip = "";
-
-    for(var i=0;i<fourth_year_subjects.length;i++){
-        fourth_subject_chip+= "<div class=\"subject\"><p>"+fourth_year_subjects[i]+"</p></div>"
+    if(third_year_subjects.length>0){
+        for(var i=0;i<third_year_subjects.length;i++){
+            const div = document.createElement("div");
+            div.className = "subject";
+            div.innerHTML = `<p>"${third_year_subjects[i]}"</p>`
+            div.addEventListener("click",openSubjectQuiz);
+            years.appendChild(div);
+        }
     }
+}
+function load_forth_year_subjects(fourth_year_subjects){
     var years = document.getElementById('fourthyear_subjectHolder');
-    years.innerHTML = fourth_subject_chip;
+    if(fourth_year_subjects.length>0){
+        for(var i=0;i<fourth_year_subjects.length;i++){
+            const div = document.createElement("div");
+            div.className = "subject";
+            div.innerHTML = `<p>"${fourth_year_subjects[i]}"</p>`
+            div.addEventListener("click",openSubjectQuiz);
+            years.appendChild(div);
+        }
+    }
 }
 
 // Function for load all year subjects at once
-function load_all_years(){
-    load_first_year_subjects();
-    load_second_year_subjects();
-    load_third_year_subjects();
-    load_forth_year_subjects();
+function load_all_years(first_year_subjects,second_year_subjects,third_year_subjects,fourth_year_subjects){
+    load_first_year_subjects(first_year_subjects);
+    load_second_year_subjects(second_year_subjects);
+    load_third_year_subjects(third_year_subjects);
+    load_forth_year_subjects(fourth_year_subjects);
 }
 
-// when the window is loaded the load_all_years function is run automatically
-window.onload = load_all_years;
+const noSubjects = (id)=>{
+    var years = document.getElementById(id);
+    years.innerHTML = "<p class='noSubject'>............. No Subjects to Show .............</p>"
+}
 
-
+const openSubjectQuiz = (subject)=>{
+    let subjectWithId = (subject.target.innerHTML).split(" ");
+    let subjectId = subjectWithId[subjectWithId.length-1];
+    // console.log("clicked .....");
+    subjectId = subjectId.replace("\"","");
+    subjectId = subjectId.substring(1,subjectId.length-1);
+    // if(subjectWithId.includes("&")){
+    //     subjectWithId = subjectWithId.replace("&amp;","&");
+    // }
+    // console.log("id : ",subjectId);
+    localStorage.setItem("subjectId",subjectId);
+    window.open("../pages/Questionpage.html","_parent");
+}
 
 // code start here
 document.addEventListener("DOMContentLoaded",()=>{
+    // clear the localstorage
+    localStorage.removeItem("subjectName");
+    
     const departmentName =localStorage.getItem("departmentName");
+    const acadamicName =localStorage.getItem("acadamicName");
     // console.log(departmentName);
-    let url =`http://localhost:3000/getSubjects?departmentName=${departmentName}`
+    // let url =`http://localhost:3000/getSubjects?departmentName=${departmentName}`
+    let url =`http://localhost:3000/getAcadamics/${acadamicName}/getDepartments/${departmentName}/getSubjects`
     fetch(url).then(response=>response.json()).then(data=>{
         console.log(data);
+        if(data['subjects'].length > 0){
+            data['subjects'].map(item=>{
+                if(item['year']==1){
+                    first_year_subjects.push(`${item['subject_names']} (${item['subject_id']})`)
+                }
+                if(item['year']==2){
+                    second_year_subjects.push(`${item['subject_names']} (${item['subject_id']})`)
+                }
+                if(item['year']==3){
+                    third_year_subjects.push(`${item['subject_names']} (${item['subject_id']})`)
+                }
+                if(item['year']==4){
+                    fourth_year_subjects.push(`${item['subject_names']} (${item['subject_id']})`)
+                }
+            })
+            if(first_year_subjects.length == 0){
+                noSubjects("firstyear_subjectHolder");
+            }
+            if(second_year_subjects.length==0){
+                noSubjects('secondyear_subjectHolder');
+            }
+            if(third_year_subjects.length == 0){
+                noSubjects('thirdyear_subjectHolder');
+            }
+            if(fourth_year_subjects.length==0){
+                noSubjects('fourthyear_subjectHolder');
+            }
+             // load all year subjects in the page
+            load_all_years(first_year_subjects,second_year_subjects,third_year_subjects,fourth_year_subjects);
+        }
+        else{
+            noSubjects("firstyear_subjectHolder");
+            noSubjects('secondyear_subjectHolder');
+            noSubjects('thirdyear_subjectHolder');
+            noSubjects('fourthyear_subjectHolder');
+        }
+
+       
     });
 })
 
@@ -73,10 +143,11 @@ btn.addEventListener('click',()=>{
     const subjectName = document.getElementById('subjectInp').value;
     const year = document.getElementById('yearInp').value;
     const department_name = localStorage.getItem('departmentName');
-    console.log("Button Clicked...");
-    console.log("Subject Code : ",subjectCode);
-    console.log("Subject Name : ",subjectName);
-    console.log("Year : ",year);
+    // console.log("Button Clicked...");
+    // console.log("Subject Code : ",subjectCode);
+    // console.log("Subject Name : ",subjectName);
+    // console.log("Year : ",year);
+    // console.log("department_name : ",department_name);
 
     if(subjectCode.length >5 && subjectName.length>=3 && year.length>0){
         fetch('http://localhost:3000/addSubjects',{
@@ -95,6 +166,9 @@ btn.addEventListener('click',()=>{
         })
         .then(data => {
             console.log("data is : ",data)
+            document.getElementById('subjectCodeInp').value = "";
+            document.getElementById('subjectInp').value = "";
+            document.getElementById('yearInp').value = false;
         })
         .catch(err => console.error('Error:', err));
     }
