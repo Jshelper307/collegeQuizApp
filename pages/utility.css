@@ -75,7 +75,12 @@ nav{
 .dropdown-menu li a:hover {
     background-color: #555;
 }
-
+#userDetails{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 #userDetails img{
     filter: invert();
 }

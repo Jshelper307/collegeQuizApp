@@ -124,15 +124,15 @@ class DbService{
                     const isPasswordCorrect = bcrypt.compareSync(inputPassword, storedHashedPassword);
             
                     if (isPasswordCorrect) {
-                        console.log('Password is correct!');
+                        // console.log('Password is correct!');
                         resolve({success:true,message:"logged in..."});
                     } else {
-                        console.log('Incorrect password.');
+                        // console.log('Incorrect password.');
                         reject({success:false,message:"Invalid Password"});
                     }
                 } 
                 else {
-                    console.log('User not found.',results);
+                    // console.log('User not found.',results);
                     reject({success:false,message:"User not Found"});
                 }
             });
@@ -162,7 +162,7 @@ class DbService{
                 }
                 else{
                     const name = `${results[0].firstname} ${results[0].lastname}`
-                    console.log("name form getUserName : ",name);
+                    // console.log("name form getUserName : ",name);
                     resolve(name);
                 }
             })
