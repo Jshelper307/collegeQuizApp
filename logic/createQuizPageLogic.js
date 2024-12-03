@@ -2,6 +2,39 @@ let totalQuestions = 0;
 let questions = [];
 const optionBoxes = document.querySelectorAll(".option-item");
 
+document.addEventListener("DOMContentLoaded", () => {
+  const examStartDate = document.getElementById("eventOpeningDay");
+  const examEndDate = document.getElementById("eventClosingDay");
+  setMinDate(examStartDate);
+  examEndDate.addEventListener("click", () => {
+    checkStartDateValue(examStartDate, examEndDate);
+  });
+});
+// this function set the exam start date min value to the present date value
+const setMinDate = (examStartDate) => {
+  const now = new Date();
+  const formattedDNow = now.toISOString().slice(0, 16);
+  // set the min and max attribute
+  examStartDate.min = formattedDNow;
+};
+
+// This function check that exam start date is filled or not if filled it set the exam end date
+//  min value to exam start date value and max value to 30 day after from start date
+const checkStartDateValue = (examStartDate, examEndDate) => {
+  // console.log("start date value ")
+  if (examStartDate.value.length === 0) {
+    alert("first enter exam start date");
+  } else {
+    const maxGap = 30; //Maximum Gap between exam start and end date in days
+    const examdate = new Date(examStartDate.value);
+    const maxDateTime = new Date(
+      examdate.getTime() + maxGap * 24 * 60 * 60 * 1000
+    );
+    const formattedDMax = maxDateTime.toISOString().slice(0, 16);
+    examEndDate.min = examStartDate.value;
+    examEndDate.max = formattedDMax;
+  }
+};
 
 // Script to handle interactivity
 // Done button logic
@@ -15,7 +48,7 @@ const optionBoxes = document.querySelectorAll(".option-item");
 //   console.log("points : ",points);
 //   console.log("timeLimit : ",timeLimit);
 //   console.log("questions : ",questions);
-  
+
 //   fetch('http://localhost:3000/exams/create-exam',{
 //     headers:{
 //       'content-type':'application/json'
@@ -45,14 +78,32 @@ const optionBoxes = document.querySelectorAll(".option-item");
 // });
 
 document.querySelector(".done").addEventListener("click", () => {
-  const department = document.getElementById("department").value;
-  const customDepartment = document.getElementById("custom-department").value.trim();
-  const subject = document.getElementById("subject").value;
+  // Department inputs
+  const department = document.getElementById("department");
+  const customDepartment = document
+    .getElementById("custom-department")
+    .value.trim();
+  // subject inputs
+  const subject = document.getElementById("subject");
   const customSubject = document.getElementById("custom-subject").value.trim();
-  const totalTime = document.getElementById("time-per-question").value;
-  const customTotalTime = document.getElementById("custom-total-time").value.trim();
-  const points = document.getElementById("points").value;
+  // topic input
+  const topic = document.getElementById("topic");
+  // Description input
+  const description = document.getElementById("description");
+  // Time limit per quesiton
+  const timePerQuestion = document.getElementById("time-per-question");
+  const customtimePerQuestion = document
+    .getElementById("custom-total-time")
+    .value.trim();
+  // Points per question
+  const points = document.getElementById("points");
   const customPoints = document.getElementById("custom-points").value.trim();
+  // Exam start date and time
+  const startDateAndTime = document.getElementById("eventOpeningDay");
+  // Exam End date and time
+  const endDateAndTime = document.getElementById("eventClosingDay");
+
+  //
 
   let isValid = true;
 
@@ -71,9 +122,9 @@ document.querySelector(".done").addEventListener("click", () => {
   }
 
   // Validate total time
-  if (totalTime === "other" && !customTotalTime) {
+  if (timePerQuestion === "other" && !customtimePerQuestion) {
     isValid = false;
-  } else if (!totalTime) {
+  } else if (!timePerQuestion) {
     isValid = false;
   }
 
@@ -93,19 +144,144 @@ document.querySelector(".done").addEventListener("click", () => {
   // Hide error message if validation passes
   document.getElementById("form-error").style.display = "none";
 
-  // Submit data
-  console.log({
-    department: department === "other" ? customDepartment : department,
-    subject: subject === "other" ? customSubject : subject,
-    totalTime: totalTime === "other" ? customTotalTime : totalTime,
-    points: points === "other" ? customPoints : points,
-  });
+  // validate the form
+  const isValidForm = validateForm(
+    department,
+    subject,
+    topic,
+    description,
+    timePerQuestion,
+    points,
+    startDateAndTime,
+    endDateAndTime,
+    questions
+  );
+  if (isValidForm) {
+    // Submit data
+    console.log("topic : ", topic);
+    console.log("description : ", description);
+    console.log({
+      department: department === "other" ? customDepartment : department,
+      subject: subject === "other" ? customSubject : subject,
+      timePerQuestion:
+        timePerQuestion === "other" ? customtimePerQuestion : timePerQuestion,
+      points: points === "other" ? customPoints : points,
+    });
+    console.log("startDateAndTime : ", startDateAndTime);
+    console.log("endDateAndTime : ", endDateAndTime);
+    console.log("questions : ", questions);
 
-  alert("Form submitted successfully!");
+    alert("Form submitted successfully!");
+  } else {
+    console.log("Not submitted....");
+  }
 });
 
 // Done button end
 
+// validae form fields
+document.getElementById("department").onchange = () => {
+  chageBorder(document.getElementById("department"));
+};
+document.getElementById("custom-department").onchange = () => {
+  chageBorder(document.getElementById("custom-department"));
+};
+// subject inputs
+document.getElementById("subject").onchange = () => {
+  chageBorder(document.getElementById("subject"));
+};
+document.getElementById("custom-subject").onchange = () => {
+  chageBorder(document.getElementById("custom-subject"));
+};
+// topic input
+document.getElementById("topic").onchange = () => {
+  chageBorder(document.getElementById("topic"));
+};
+// Description input
+document.getElementById("description").onchange = () => {
+  chageBorder(document.getElementById("description"));
+};
+// Time limit per quesiton
+document.getElementById("time-per-question").onchange = () => {
+  chageBorder(document.getElementById("time-per-question"));
+};
+document.getElementById("custom-total-time").onchange = () => {
+  chageBorder(document.getElementById("custom-total-time"));
+};
+// Points per question
+document.getElementById("points").onchange = () => {
+  chageBorder(document.getElementById("points"));
+};
+document.getElementById("custom-points").onchange = () => {
+  chageBorder(document.getElementById("custom-points"));
+};
+// Exam start date and time
+document.getElementById("eventOpeningDay").onchange = () => {
+  chageBorder(document.getElementById("eventOpeningDay"));
+};
+// Exam End date and time
+document.getElementById("eventClosingDay").onchange = () => {
+  chageBorder(document.getElementById("eventClosingDay"));
+};
+
+const validateForm = (
+  department,
+  subject,
+  topic,
+  description,
+  timePerQuestion,
+  points,
+  startDateAndTime,
+  endDateAndTime,
+  questions
+) => {
+  if (department.value.length === 0) {
+    chageBorder(department, true);
+    return false;
+  }
+  if (subject.value.length === 0) {
+    chageBorder(subject, true);
+    return false;
+  }
+  if (topic.value.length === 0) {
+    chageBorder(topic, true);
+    return false;
+  }
+  if (description.value.length === 0) {
+    chageBorder(description, true);
+    return false;
+  }
+  if (timePerQuestion.value.length === 0) {
+    chageBorder(timePerQuestion, true);
+    return false;
+  }
+  if (points.value.length === 0) {
+    chageBorder(points, true);
+    return false;
+  }
+  if (startDateAndTime.value.length === 0) {
+    chageBorder(startDateAndTime, true);
+    return false;
+  }
+  if (endDateAndTime.value.length === 0) {
+    chageBorder(endDateAndTime, true);
+    return false;
+  }
+  if (questions.length === 0) {
+    const previewQuestionBox = document.querySelector(".recent-question");
+    chageBorder(previewQuestionBox, true);
+    return false;
+  }
+  return true;
+};
+
+const chageBorder = (element, color = false) => {
+  if (!color) {
+    element.style.border = "none";
+  } else {
+    element.style.border = "2px solid red";
+  }
+};
 
 // Delete button logic start here
 document.querySelector(".delete").addEventListener("click", () => {
@@ -113,7 +289,6 @@ document.querySelector(".delete").addEventListener("click", () => {
     alert("Question deleted!");
   }
 });
-
 
 // Delete button end
 
@@ -125,27 +300,26 @@ document.querySelector(".exit").addEventListener("click", () => {
 });
 
 // Exit button end
-document.getElementById("backToHomeBtn").addEventListener("click",()=>{
-  window.open('../pages/index.html','_parent');
-})
+document.getElementById("backToHomeBtn").addEventListener("click", () => {
+  window.open("../pages/index.html", "_parent");
+});
 
 // validate input fields
-document.getElementById("question").addEventListener('change',()=>{
+document.getElementById("question").addEventListener("change", () => {
   document.getElementById("question").style.border = "none";
-})
-document.getElementById("option1").addEventListener('change',()=>{
+});
+document.getElementById("option1").addEventListener("change", () => {
   optionBoxes[0].style.border = "none";
-})
-document.getElementById("option2").addEventListener('change',()=>{
+});
+document.getElementById("option2").addEventListener("change", () => {
   optionBoxes[1].style.border = "none";
-})
-document.getElementById("option3").addEventListener('change',()=>{
+});
+document.getElementById("option3").addEventListener("change", () => {
   optionBoxes[2].style.border = "none";
-})
-document.getElementById("option4").addEventListener('change',()=>{
+});
+document.getElementById("option4").addEventListener("change", () => {
   optionBoxes[3].style.border = "none";
-})
-
+});
 
 // Function to add question and update the recent question display
 function addQuestion() {
@@ -155,23 +329,23 @@ function addQuestion() {
   const option2 = document.getElementById("option2").value;
   const option3 = document.getElementById("option3").value;
   const option4 = document.getElementById("option4").value;
-  if(questionText.length==0){
+  if (questionText.length == 0) {
     document.getElementById("question").style.border = "3px solid red";
     return;
   }
-  if(option1.length==0){
+  if (option1.length == 0) {
     optionBoxes[0].style.border = "3px solid red";
     return;
   }
-  if(option2.length==0){
+  if (option2.length == 0) {
     optionBoxes[1].style.border = "3px solid red";
     return;
   }
-  if(option3.length==0){
+  if (option3.length == 0) {
     optionBoxes[2].style.border = "3px solid red";
     return;
   }
-  if(option4.length==0){
+  if (option4.length == 0) {
     optionBoxes[3].style.border = "3px solid red";
     return;
   }
@@ -240,25 +414,26 @@ function addQuestion() {
   });
 }
 
-
-
 // Show/hide custom input for "Others" in dropdowns
 document.getElementById("department").addEventListener("change", (e) => {
-  document.getElementById("custom-department").style.display = e.target.value === "other" ? "block" : "none";
+  document.getElementById("custom-department").style.display =
+    e.target.value === "other" ? "block" : "none";
 });
 
 document.getElementById("subject").addEventListener("change", (e) => {
-  document.getElementById("custom-subject").style.display = e.target.value === "other" ? "block" : "none";
+  document.getElementById("custom-subject").style.display =
+    e.target.value === "other" ? "block" : "none";
 });
 
 document.getElementById("time-per-question").addEventListener("change", (e) => {
-  document.getElementById("custom-total-time").style.display = e.target.value === "other" ? "block" : "none";
+  document.getElementById("custom-total-time").style.display =
+    e.target.value === "other" ? "block" : "none";
 });
 
 document.getElementById("points").addEventListener("change", (e) => {
-  document.getElementById("custom-points").style.display = e.target.value === "other" ? "block" : "none";
+  document.getElementById("custom-points").style.display =
+    e.target.value === "other" ? "block" : "none";
 });
-
 
 // This function show the add question preview
 const showPreviewQuestion = (questions) => {
@@ -297,8 +472,8 @@ document.querySelector(".add-more").addEventListener("click", () => {
 // addmore button end
 
 // this function show the exam url
-const showExamLink = (examUrl)=>{
-  const container = document.querySelector(".container")
+const showExamLink = (examUrl) => {
+  const container = document.querySelector(".container");
   const linkContainer = document.querySelector(".linkContainer");
   container.style.display = "none";
   linkContainer.style.display = "block";
@@ -308,8 +483,8 @@ const showExamLink = (examUrl)=>{
   // get the copy button
   const copy = document.getElementById("copyBtn");
 
-  copy.addEventListener("click",()=>{
+  copy.addEventListener("click", () => {
     navigator.clipboard.writeText(examUrl);
-    alert("link is copied ...")
-  })
-}
+    alert("link is copied ...");
+  });
+};

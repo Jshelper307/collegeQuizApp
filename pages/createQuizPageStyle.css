@@ -213,13 +213,23 @@
   /* Header Buttons */
   .header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 10px;
     /* background-color: #333; */
     background-color: var(--content-box-color);
     padding: 10px;
     border-radius: 10px;
+  }
+
+  .btnHolder{
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    align-items: center;
   }
   
   .btn {
@@ -426,6 +436,10 @@
     }
     .option-item input[type="text"] {
       width: 100%;
+    }
+    .btnHolder{
+      width: 100%;
+      justify-content: space-around;
     }
   }
   
