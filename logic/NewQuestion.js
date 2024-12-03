@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       else{
         if(data.message === 'session expeired'){
           window.location.href = "register.html"
+          localStorage.removeItem("token");
         }
       }
     })

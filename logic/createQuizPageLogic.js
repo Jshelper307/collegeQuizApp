@@ -1,63 +1,150 @@
 let totalQuestions = 0;
 let questions = [];
-
+const optionBoxes = document.querySelectorAll(".option-item");
 
 
 // Script to handle interactivity
-document.querySelector(".done").addEventListener("click", () => {
-  const title = document.getElementById("title").value;
-  const description = document.getElementById("description").value;
-  const points = document.getElementById("points").value;
-  const timeLimit = document.getElementById("time-limit").value;
-  console.log("title : ",title);
-  console.log("description : ",description);
-  console.log("points : ",points);
-  console.log("timeLimit : ",timeLimit);
-  console.log("questions : ",questions);
+// Done button logic
+// document.querySelector(".done").addEventListener("click", () => {
+//   const title = document.getElementById("title").value;
+//   const description = document.getElementById("description").value;
+//   const points = document.getElementById("points").value;
+//   const timeLimit = document.getElementById("time-limit").value;
+//   console.log("title : ",title);
+//   console.log("description : ",description);
+//   console.log("points : ",points);
+//   console.log("timeLimit : ",timeLimit);
+//   console.log("questions : ",questions);
   
-  fetch('http://localhost:3000/exams/create-exam',{
-    headers:{
-      'content-type':'application/json'
-    },
-    method:"POST",
-    body: JSON.stringify({title:title,description:description,points_per_question:points,time_limit:timeLimit,questionsWithAns:questions})
-  })
-  .then(response=>{
-    if(!response.ok){
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then(data=>{
-    console.log("log from teacherPageLogic : ",data);
-    if(data['success']){
-      showExamLink(data['examUrl']);
-    }
-    else{
-      console.log("some error occure");
-    }
-  })
-  .catch(error=>{
-    console.log(error);
-  })
-  // alert("Test saved successfully!");
+//   fetch('http://localhost:3000/exams/create-exam',{
+//     headers:{
+//       'content-type':'application/json'
+//     },
+//     method:"POST",
+//     body: JSON.stringify({title:title,description:description,points_per_question:points,time_limit:timeLimit,questionsWithAns:questions})
+//   })
+//   .then(response=>{
+//     if(!response.ok){
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
+//     return response.json();
+//   })
+//   .then(data=>{
+//     console.log("log from teacherPageLogic : ",data);
+//     if(data['success']){
+//       showExamLink(data['examUrl']);
+//     }
+//     else{
+//       console.log("some error occure");
+//     }
+//   })
+//   .catch(error=>{
+//     console.log(error);
+//   })
+//   // alert("Test saved successfully!");
+// });
+
+document.querySelector(".done").addEventListener("click", () => {
+  const department = document.getElementById("department").value;
+  const customDepartment = document.getElementById("custom-department").value.trim();
+  const subject = document.getElementById("subject").value;
+  const customSubject = document.getElementById("custom-subject").value.trim();
+  const totalTime = document.getElementById("time-per-question").value;
+  const customTotalTime = document.getElementById("custom-total-time").value.trim();
+  const points = document.getElementById("points").value;
+  const customPoints = document.getElementById("custom-points").value.trim();
+
+  let isValid = true;
+
+  // Validate department
+  if (department === "other" && !customDepartment) {
+    isValid = false;
+  } else if (!department) {
+    isValid = false;
+  }
+
+  // Validate subject
+  if (subject === "other" && !customSubject) {
+    isValid = false;
+  } else if (!subject) {
+    isValid = false;
+  }
+
+  // Validate total time
+  if (totalTime === "other" && !customTotalTime) {
+    isValid = false;
+  } else if (!totalTime) {
+    isValid = false;
+  }
+
+  // Validate points
+  if (points === "other" && !customPoints) {
+    isValid = false;
+  } else if (!points) {
+    isValid = false;
+  }
+
+  // Show error message if validation fails
+  if (!isValid) {
+    document.getElementById("form-error").style.display = "block";
+    return;
+  }
+
+  // Hide error message if validation passes
+  document.getElementById("form-error").style.display = "none";
+
+  // Submit data
+  console.log({
+    department: department === "other" ? customDepartment : department,
+    subject: subject === "other" ? customSubject : subject,
+    totalTime: totalTime === "other" ? customTotalTime : totalTime,
+    points: points === "other" ? customPoints : points,
+  });
+
+  alert("Form submitted successfully!");
 });
 
+// Done button end
+
+
+// Delete button logic start here
 document.querySelector(".delete").addEventListener("click", () => {
   if (confirm("Are you sure you want to delete this question?")) {
     alert("Question deleted!");
   }
 });
+
+
+// Delete button end
+
+// Exit button logic start here
 document.querySelector(".exit").addEventListener("click", () => {
   if (confirm("Are you sure you want to Exit this page ?")) {
     window.location.href = "adminPanel.html";
   }
 });
 
+// Exit button end
 document.getElementById("backToHomeBtn").addEventListener("click",()=>{
   window.open('../pages/index.html','_parent');
 })
 
+// validate input fields
+document.getElementById("question").addEventListener('change',()=>{
+  document.getElementById("question").style.border = "none";
+})
+document.getElementById("option1").addEventListener('change',()=>{
+  optionBoxes[0].style.border = "none";
+})
+document.getElementById("option2").addEventListener('change',()=>{
+  optionBoxes[1].style.border = "none";
+})
+document.getElementById("option3").addEventListener('change',()=>{
+  optionBoxes[2].style.border = "none";
+})
+document.getElementById("option4").addEventListener('change',()=>{
+  optionBoxes[3].style.border = "none";
+})
 
 
 // Function to add question and update the recent question display
@@ -68,6 +155,26 @@ function addQuestion() {
   const option2 = document.getElementById("option2").value;
   const option3 = document.getElementById("option3").value;
   const option4 = document.getElementById("option4").value;
+  if(questionText.length==0){
+    document.getElementById("question").style.border = "3px solid red";
+    return;
+  }
+  if(option1.length==0){
+    optionBoxes[0].style.border = "3px solid red";
+    return;
+  }
+  if(option2.length==0){
+    optionBoxes[1].style.border = "3px solid red";
+    return;
+  }
+  if(option3.length==0){
+    optionBoxes[2].style.border = "3px solid red";
+    return;
+  }
+  if(option4.length==0){
+    optionBoxes[3].style.border = "3px solid red";
+    return;
+  }
 
   const correct1 = document.getElementById("correct1");
   const correct2 = document.getElementById("correct2");
@@ -132,65 +239,8 @@ function addQuestion() {
     console.log(e);
   });
 }
-document.querySelector(".done").addEventListener("click", () => {
-  const department = document.getElementById("department").value;
-  const customDepartment = document.getElementById("custom-department").value.trim();
-  const subject = document.getElementById("subject").value;
-  const customSubject = document.getElementById("custom-subject").value.trim();
-  const totalTime = document.getElementById("total-time").value;
-  const customTotalTime = document.getElementById("custom-total-time").value.trim();
-  const points = document.getElementById("points").value;
-  const customPoints = document.getElementById("custom-points").value.trim();
 
-  let isValid = true;
 
-  // Validate department
-  if (department === "other" && !customDepartment) {
-    isValid = false;
-  } else if (!department) {
-    isValid = false;
-  }
-
-  // Validate subject
-  if (subject === "other" && !customSubject) {
-    isValid = false;
-  } else if (!subject) {
-    isValid = false;
-  }
-
-  // Validate total time
-  if (totalTime === "other" && !customTotalTime) {
-    isValid = false;
-  } else if (!totalTime) {
-    isValid = false;
-  }
-
-  // Validate points
-  if (points === "other" && !customPoints) {
-    isValid = false;
-  } else if (!points) {
-    isValid = false;
-  }
-
-  // Show error message if validation fails
-  if (!isValid) {
-    document.getElementById("form-error").style.display = "block";
-    return;
-  }
-
-  // Hide error message if validation passes
-  document.getElementById("form-error").style.display = "none";
-
-  // Submit data
-  console.log({
-    department: department === "other" ? customDepartment : department,
-    subject: subject === "other" ? customSubject : subject,
-    totalTime: totalTime === "other" ? customTotalTime : totalTime,
-    points: points === "other" ? customPoints : points,
-  });
-
-  alert("Form submitted successfully!");
-});
 
 // Show/hide custom input for "Others" in dropdowns
 document.getElementById("department").addEventListener("change", (e) => {
@@ -201,7 +251,7 @@ document.getElementById("subject").addEventListener("change", (e) => {
   document.getElementById("custom-subject").style.display = e.target.value === "other" ? "block" : "none";
 });
 
-document.getElementById("total-time").addEventListener("change", (e) => {
+document.getElementById("time-per-question").addEventListener("change", (e) => {
   document.getElementById("custom-total-time").style.display = e.target.value === "other" ? "block" : "none";
 });
 
@@ -209,6 +259,8 @@ document.getElementById("points").addEventListener("change", (e) => {
   document.getElementById("custom-points").style.display = e.target.value === "other" ? "block" : "none";
 });
 
+
+// This function show the add question preview
 const showPreviewQuestion = (questions) => {
   const preview_area = document.getElementById("recent-questions");
   preview_area.innerHTML = "";
@@ -237,11 +289,14 @@ const showPreviewQuestion = (questions) => {
   });
 };
 
+// Add More button logic start herer
 document.querySelector(".add-more").addEventListener("click", () => {
   addQuestion();
 });
 
+// addmore button end
 
+// this function show the exam url
 const showExamLink = (examUrl)=>{
   const container = document.querySelector(".container")
   const linkContainer = document.querySelector(".linkContainer");
