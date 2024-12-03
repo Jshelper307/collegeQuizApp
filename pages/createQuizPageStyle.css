@@ -7,11 +7,13 @@
   :root {
     --background-color: black;
     --text-color: hsl(0, 0%, 100%);
+    --content-box-color : #052740;
   }
   
   body,html {
     font-family: Arial, sans-serif;
-    background-color: #000000;
+    /* background-color: #000000; */
+    background-color: rgb(23, 62, 107);
     color: #b8b8b8;
   }
   
@@ -20,7 +22,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    /*display: none;*/
+    /* display: none; */
   }
 
   .linkContainer{
@@ -32,7 +34,8 @@
   }
 
   .messageHolder{
-    background-color: #333;
+    /* background-color: #333; */
+    background-color: var(--content-box-color);
     padding: 10px;
     border-radius: 20px;
     text-align: center;
@@ -179,13 +182,14 @@
 .wrapper {
   display: grid;
   place-content: center;
-  background-color: var(--background-color);
+  background-color: var(--content-box-color);
   min-height: 60vh;
   font-family: "Oswald", sans-serif;
   font-size: clamp(1.5rem, 1rem + 12vw, 10rem);
   font-weight: 700;
   text-transform: uppercase;
   color: var(--text-color);
+  border-radius: 20px;
 }
 
 .wrapper > div {
@@ -212,7 +216,8 @@
     justify-content: flex-end;
     gap: 10px;
     margin-bottom: 10px;
-    background-color: #333;
+    /* background-color: #333; */
+    background-color: var(--content-box-color);
     padding: 10px;
     border-radius: 10px;
   }
@@ -234,8 +239,8 @@
   .test-details {
     display: flex;
     justify-content: space-between;
-    background-color: #333;
-    /* background-color: #d9e7ff; */
+    /* background-color: #333; */
+    background-color: var(--content-box-color);
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 10px;
@@ -278,7 +283,8 @@
   
   .recent-question {
     flex: 1;
-    background-color: #333;
+    /* background-color: #333; */
+    background-color: var(--content-box-color);
     padding: 20px;
     border-radius: 8px;
     max-height: 100%;
@@ -287,7 +293,8 @@
   
   .add-question {
     flex: 1;
-    background-color: #333;
+    /* background-color: #333; */
+    background-color: var(--content-box-color);
     padding: 20px;
     border-radius: 8px;
     display: flex;
