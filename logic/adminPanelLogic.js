@@ -62,3 +62,6 @@ document.getElementById('download-btn').addEventListener('click', () => {
   document.body.removeChild(link);
 });
 
+document.querySelector(".action-button").addEventListener("click",()=>{
+  window.location.href = "createQuizPage.html";
+})

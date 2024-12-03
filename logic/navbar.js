@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded",()=>{
           Academic
           <ul class="dropdown-menu">
               <li><a href="./academic.html">Question Practice</a></li>
-              <li><a href="./Teacharpage.html">Create Test</a></li>
+              <li><a href="./adminPanel.html">Admin Panel</a></li>
           </ul>
        </li>
         <li><a href="contact.html">Contact</a></li>

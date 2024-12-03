@@ -48,6 +48,11 @@ document.querySelector(".delete").addEventListener("click", () => {
     alert("Question deleted!");
   }
 });
+document.querySelector(".exit").addEventListener("click", () => {
+  if (confirm("Are you sure you want to Exit this page ?")) {
+    window.location.href = "adminPanel.html";
+  }
+});
 
 document.getElementById("backToHomeBtn").addEventListener("click",()=>{
   window.open('../pages/index.html','_parent');
