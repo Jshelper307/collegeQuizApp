@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./adminPanelDesign.css" />
+  </head>
+  <body>
+    <header>
+      <ul>
+        <li>
+          <h3>Welcome User</h3>
+        </li>
+        <li>
+          <a href="#"> <h3>Home</h3></a>
+        </li>
+      </ul>
+    </header>
+    <div class="content">
+      <div class="container">
+        <div class="createdTests">
+          <h2>Recently Created Tests</h2>
+          <hr>
+          <div class="scrollable-div">
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+          </div>
+        </div>
+        <div class="single-box-div">
+          <div class="box">
+            <h2>Create Test</h2>
+            <h3><button class="action-button">+</button></h3>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="finishedTests">
+          <h2>Recently Finished Tests</h2>
+          <hr>
+          <div class="scrollable-div">
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+            <div class="box">
+              <h3>Test Name</h3>
+              <h4>Date</h4>
+            </div>
+          </div>
+        </div>
+        <div class="h-auto scrollable-div">
+          <!-- <p class="message">Leaderboard shows here . Please click any recently finished tests .</p> -->
+          <div class="leaderboard">
+            <div class="leaderboard-header">
+              Quiz Leaderboard
+              <button id="download-btn">Download Leaderboard</button>
+            </div>
+            <ul class="leaderboard-list" id="leaderboard">
+              <!-- leaderboaed visible here -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../logic/adminPanelLogic.js"></script>
+  </body>
+</html>
