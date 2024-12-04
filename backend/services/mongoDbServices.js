@@ -22,9 +22,25 @@ async function hasUserResponded(examId, userName) {
 
 async function checkExamStartDate(examId) {
     const exam = await Exam.findOne({
-        examId: examId,
+        exam_id: examId,
     });
-    console.log(exam);
+    
+    const startDate = new Date(exam.exam_start_date); // Ensure it's a Date object
+    const endDate = new Date(exam.exam_end_date); // Ensure it's a Date object
+    
+    const now = new Date(); // Get the current date and time
+    // console.log("exam : ",exam);
+    console.log("Exam start date from checkExam: ", startDate);
+    console.log("Exam end date from checkExam: ", endDate);
+    console.log("Current dateTime now: ", now);
+    
+    if (now < startDate) {
+        console.log("Exam not started");
+    } else if (now >= startDate && now <= endDate) {
+        console.log("Exam running ....");
+    } else {
+        console.log("Exam ended.");
+    }   
 }
 
 module.exports = {hasUserResponded,checkExamStartDate};

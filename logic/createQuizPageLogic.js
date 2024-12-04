@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const setMinDate = (examStartDate) => {
   const now = new Date();
   const formattedDNow = now.toISOString().slice(0, 16);
+  console.log("dateTIme now from setMinDate : ",formattedDNow);
   // set the min and max attribute
   examStartDate.min = formattedDNow;
 };
@@ -124,7 +125,7 @@ document.querySelector(".done").addEventListener("click", () => {
           'content-type':'application/json'
         },
         method:"POST",
-        body: JSON.stringify({department :departmentAns,subject:subjectAns,title :topic,description:description,time_limit_perQuestion:timePerQuestionAns,points_per_question :pointsPerQuestionAns,exam_start_date:startDateAndTime,exam_end_date:endDateAndTime,questionsWithAns:questions})
+        body: JSON.stringify({department :departmentAns.value,subject:subjectAns.value,title :topic.value,description:description.value,time_limit_perQuestion:timePerQuestionAns.value,points_per_question :pointsPerQuestionAns.value,exam_start_date:startDateAndTime.value,exam_end_date:endDateAndTime.value,questionsWithAns:questions})
       })
       .then(response=>{
         if(!response.ok){
