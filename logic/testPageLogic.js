@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded",async ()=>{
     if(!userResponded){
         heading.innerHTML = examData["exams"]["exam"]["title"];
         loadQuestion(currentInd);
-        startTimer(60);
+        // startTimer(60);
     }
     else{
         showResponded();
@@ -35,22 +35,67 @@ document.addEventListener("DOMContentLoaded",async ()=>{
 
 
 const loadData = async (examId)=>{
-    await fetch(`http://localhost:3000/exams/exam/${examId}`).then(response=>response.json()).then(data=>{
-        if(data.error){
-            // console.log("data form loaddata error : ",data);
-            console.log(data.error);
-            userResponded = true;
+    // await fetch(`http://localhost:3000/exams/exam/${examId}`).then(response=>response.json()).then(data=>{
+    //     if(data.error){
+    //         // console.log("data form loaddata error : ",data);
+    //         console.log(data.error);
+    //         userResponded = true;
+    //     }
+    //     else{
+    //         examData = data;
+    //         console.log(examData);
+    //         totalQuestions = examData["exams"]["exam"]["questionsWithAns"].length;
+    //     }
+    // })
+    // .catch(error=>{
+    //     console.log(error);
+    // })
+    examData= {
+        "success": true,
+        "exams": {
+        "_id": "674fcfc12820bbeeb7f8cbe8",
+        "exam_id": "63613db9-a1fc-48f9-9a4c-87286a63c315",
+        "exam_start_date": "2024-12-04T09:56",
+        "exam_end_date": "2024-12-04T09:59",
+        "exam": {
+        "department": "CE",
+        "subject": "DSA",
+        "title": "Array",
+        "description": "adsf adsfv",
+        "points_per_question": 1,
+        "time_limit_perQuestion": 30,
+        "questionsWithAns": [
+        {
+        "question": "THis is question1",
+        "options": [
+        "a",
+        "aa",
+        "aaa",
+        "aaaa"
+        ],
+        "answer": "aa",
+        "_id": "674fcfc12820bbeeb7f8cbea"
+        },
+        {
+        "question": "asfd adfg adf sdf",
+        "options": [
+        "fd",
+        "cxc",
+        "yt",
+        "sd"
+        ],
+        "answer": "cxc",
+        "_id": "674fcfc12820bbeeb7f8cbeb"
         }
-        else{
-            examData = data;
-            console.log(examData);
-            totalQuestions = examData["exams"]["exam"]["questionsWithAns"].length;
+        ],
+        "_id": "674fcfc12820bbeeb7f8cbe9"
+        },
+        "__v": 0
         }
-    })
-    .catch(error=>{
-        console.log(error);
-    })
+    }
+    totalQuestions = examData["exams"]["exam"]["questionsWithAns"].length;
 }
+
 
 
 const startTimer = (timeInSeconds=0)=>{
@@ -129,3 +174,50 @@ const showResponded = ()=>{
     question_text.innerHTML = "You already responded for this exam !!!"
     next.style.display = "none";
 }
+
+// new function---------
+
+
+
+loadData();
+function handleExam(examData) {
+    const questions = examData.exams.exam.questionsWithAns;
+    const timeLimit = examData.exams.exam.time_limit_perQuestion; // Time limit per question
+    let currentQuestionIndex = 0;
+    let timerInterval = null;
+  
+    function startTimer(duration) {
+      let timeRemaining = duration;
+  
+      console.log(`Question ${currentQuestionIndex + 1}: ${questions[currentQuestionIndex].question}`);
+      timerInterval = setInterval(() => {
+        console.log(`Time Left: ${timeRemaining}s`);
+        timeRemaining--;
+  
+        if (timeRemaining < 0) {
+          clearInterval(timerInterval);
+          currentQuestionIndex++;
+  
+          if (currentQuestionIndex >= questions.length) {
+            console.log("All questions completed. Submitting the test...");
+            finishTest(); // Finish the test
+          } else {
+            startTimer(timeLimit);
+          }
+        }
+      }, 1000);
+    }
+  
+    function finishTest() {
+      console.log("Test Finished. Submit answers.");
+      // Add submission logic here
+    }
+  
+    // Start the exam with the first question
+    startTimer(timeLimit);
+  }
+  
+  // Example usage with the provided `examData`
+  handleExam(examData);
+  
+  

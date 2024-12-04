@@ -25,11 +25,15 @@ body {
 
 /* timer */
 
-.timer {
+#timer {
     font-size: 18px;
     color: #ff0000;
     margin-left: auto;
     padding-right: 20px;
+    
+}
+#timer p{
+    color: #ff0000;
 }
 
 .hamburger-menu {
