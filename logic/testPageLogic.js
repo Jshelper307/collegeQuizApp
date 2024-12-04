@@ -6,7 +6,7 @@ let answerWithTime = [];
 let totalQuestions = 0;
 let timerId;
 const path = window.location.pathname;
-let userResponded;
+let isError;
 
 const heading = document.getElementById("heading");
 const question_text = document.getElementById("question-text");
@@ -23,13 +23,13 @@ document.addEventListener("DOMContentLoaded",async ()=>{
     // console.log("id : ",examId);
     // check user already give his answer or not
     await loadData(examId);
-    if(!userResponded){
+    if(!isError.Error){
         heading.innerHTML = examData["exams"]["exam"]["title"];
         loadQuestion(currentInd);
         startTimer(60);
     }
     else{
-        showResponded();
+        showResponded(isError.message);
     }
 })
 
@@ -38,13 +38,20 @@ const loadData = async (examId)=>{
     await fetch(`http://localhost:3000/exams/exam/${examId}`).then(response=>response.json()).then(data=>{
         if(data.error){
             // console.log("data form loaddata error : ",data);
-            console.log(data.error);
-            userResponded = true;
+            console.log("Error from data : ",data.error);
+            isError = {
+                Error:true,
+                message:data.error
+            }
         }
         else{
             examData = data;
-            console.log(examData);
+            console.log("Examdata from loadData : ",examData);
             totalQuestions = examData["exams"]["exam"]["questionsWithAns"].length;
+            isError = {
+                Error:false,
+                message:"Exam is Live"
+            }
         }
     })
     .catch(error=>{
@@ -108,7 +115,7 @@ next.addEventListener("click",()=>{
 const storeResult = ()=>{
     console.log("exam id : ",examId);
     console.log(answerWithTime);
-    const userName = '27600121003DP'
+    const userName = '27600121023JS'
     const url =`http://localhost:3000/exams/exam/${examId}/store_result/${userName}`;
     fetch(url,{
         headers:{
@@ -125,7 +132,7 @@ const storeResult = ()=>{
     })
 }
 
-const showResponded = ()=>{
-    question_text.innerHTML = "You already responded for this exam !!!"
+const showResponded = (message)=>{
+    question_text.innerHTML = message;
     next.style.display = "none";
 }
