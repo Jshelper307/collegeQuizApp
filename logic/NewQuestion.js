@@ -26,12 +26,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const subjectId = localStorage.getItem("subjectId");
   
   url = `http://localhost:3000/api//getSubject/${subjectId}`;
-  fetch(url)
+  const token = localStorage.getItem("token");
+  fetch(url,{
+    method:'POST',
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      subjectName.innerHTML = data['subject']['subjectName'];
-      loadUnits(data['subject']['units']);
+      // console.log(data);
+      if(data.success){
+        subjectName.innerHTML = data['subject']['subjectName'];
+        loadUnits(data['subject']['units']);
+      }
+      else{
+        if(data.message === 'session expeired'){
+          window.location.href = "register.html"
+          localStorage.removeItem("token");
+        }
+      }
     })
     .catch((error) => {
       console.log(error);

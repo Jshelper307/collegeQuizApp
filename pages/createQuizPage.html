@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Creation Page</title>
+    <link rel="stylesheet" href="./createQuizPageStyle.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header Buttons -->
+      <div class="header">
+        <p class="error-message" id="form-error" style="color: red">
+          Please fill all (*) mandatory fields
+        </p>
+        <div class="btnHolder">
+          <button class="btn delete">Delete</button>
+          <button class="btn exit">Exit</button>
+          <button class="btn done">Done</button>
+        </div>
+      </div>
+
+      <!-- Test Details Section -->
+      <div class="test-details">
+        <div class="test-info">
+          <!-- Add dropdown for department -->
+          <label for="department"
+            >Department
+            <span class="mandatory" style="color: red">*</span></label
+          >
+          <select id="department" class="SelectInput">
+            <option value="">Select Department</option>
+            <option value="CE">CE</option>
+            <option value="CSE">CSE</option>
+            <option value="ME">ME</option>
+            <option value="ECE">ECE</option>
+            <option value="EE">EE</option>
+            <option value="other">Others(Please Enter)</option>
+          </select>
+          <input
+            type="text"
+            id="custom-department"
+            placeholder="Enter custom department"
+            style="display: none"
+          />
+
+          <!-- Add dropdown for subjects -->
+          <label for="subject"
+            >Subject <span class="mandatory" style="color: red">*</span></label
+          >
+          <select id="subject" class="SelectInput">
+            <option value="">Select Subject</option>
+            <option value="DSA">DSA</option>
+            <option value="OS">OS</option>
+            <option value="DAA">DAA</option>
+            <option value="OOPS">OOPS</option>
+            <option value="Water Resources Engineering">
+              Water Resources Engineering
+            </option>
+            <option value="Basic Electronics">Basic Electronics</option>
+            <option value="Solid Mechanics">Solid Mechanics</option>
+            <option value="other">Others (Please Enter)</option>
+          </select>
+          <input
+            type="text"
+            id="custom-subject"
+            placeholder="Enter custom subject"
+            style="display: none"
+          />
+          <label for="topic"
+            >Topic<span class="mandatory" style="color: red">*</span></label
+          >
+          <input type="text" id="topic" placeholder="Enter Specific topic" />
+          <label for="description"
+            >description<span class="mandatory" style="color: red"
+              >*</span
+            ></label
+          >
+          <textarea
+            id="description"
+            rows="3"
+            placeholder="Enter suitable test description"
+          ></textarea>
+        </div>
+        <div class="test-settings">
+          <!-- Add dropdown for total time -->
+          <label for="time-per-question"
+            >Time limit per Question<span class="mandatory" style="color: red"
+              >*</span
+            ></label
+          >
+          <select id="time-per-question" class="SelectInput">
+            <option value="">Select Time</option>
+            <option value="15">20 sec</option>
+            <option value="30">30 sec</option>
+            <option value="45">45 sec</option>
+            <option value="60">60 sec</option>
+            <option value="other">Others</option>
+          </select>
+          <input
+            type="text"
+            id="custom-total-time"
+            placeholder="Enter custom time in minutes"
+            style="display: none"
+          />
+          <!-- Add dropdown for points -->
+          <label for="points"
+            >Points Per Question
+            <span class="mandatory" style="color: red">*</span></label
+          >
+          <select id="points" class="SelectInput">
+            <option value="">Select Points</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="5">5</option>
+            <option value="other">Others</option>
+          </select>
+          <input
+            type="text"
+            id="custom-points"
+            placeholder="Enter custom points per question"
+            style="display: none"
+          />
+          <label for="eventOpeningDay"
+            >Event Opening Day<span class="mandatory" style="color: red"
+              >*</span
+            ></label
+          >
+          <input type="datetime-local" id="eventOpeningDay" />
+          <label for="eventClosingDay"
+            >Event Closing Day<span class="mandatory" style="color: red"
+              >*</span
+            ></label
+          >
+          <input type="datetime-local" id="eventClosingDay" />
+        </div>
+      </div>
+
+      <!-- Question Section -->
+      <!-- Recent Question Display -->
+      <div class="main-view">
+        <div class="recent-question">
+          <p id="recent-total">
+            Total Number of Questions Added :
+            <span id="total-questions">0</span>
+          </p>
+          <hr />
+          <p><strong>Recently Added Questions:</strong></p>
+          <div id="recent-questions">
+            <!-- Dynamically added questions will appear here -->
+          </div>
+        </div>
+
+        <!-- Add Question Section -->
+        <div class="add-question">
+          <label for="question"
+            >Question<span class="mandatory" style="color: red">*</span></label
+          >
+          <label for="question">Enter your question:</label>
+          <textarea
+            type="text"
+            id="question"
+            placeholder="Enter question here"
+          ></textarea>
+
+          <!-- Options Section -->
+          <div class="options-section">
+            <div class="option-item">
+              <input type="text" id="option1" placeholder="Option 1" />
+              <input type="radio" name="correctOption" id="correct1" />
+            </div>
+            <div class="option-item">
+              <input type="text" id="option2" placeholder="Option 2" />
+              <input type="radio" name="correctOption" id="correct2" />
+            </div>
+            <div class="option-item">
+              <input type="text" id="option3" placeholder="Option 3" />
+              <input type="radio" name="correctOption" id="correct3" />
+            </div>
+            <div class="option-item">
+              <input type="text" id="option4" placeholder="Option 4" />
+              <input type="radio" name="correctOption" id="correct4" />
+            </div>
+          </div>
+
+          <!-- Add More Button -->
+          <button class="btn add-more">Add More</button>
+        </div>
+      </div>
+    </div>
+    <div class="linkContainer">
+      <div class="messageHolder">
+        <p class="message">.... Thank you for using our Platform ....</p>
+        <p>Please copy the link and send students for giving the exam</p>
+        <div class="link">
+          <p></p>
+          <button id="copyBtn">copy</button>
+        </div>
+        <button id="backToHomeBtn">Back to Home Page</button>
+      </div>
+      <section class="wrapper">
+        <div class="top">ThankYou</div>
+        <div class="bottom" aria-hidden="true">ThankYou</div>
+      </section>
+    </div>
+    <script src="../logic/createQuizPageLogic.js"></script>
+  </body>
+</html>

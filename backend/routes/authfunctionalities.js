@@ -24,18 +24,19 @@ router.post('/signup', async (req, res) => {
 // Login Route
 router.post('/login', async (req, res) => {
     const {userName,password} = req.body;
-    const user = {
-        userName : userName,
-        isTeacher:false
-    }
+    
     const db = dbService.getDbServiceInstance();
     const result = db.login(userName,password);
     result.then((data) =>{
+        const user = {
+            userName : userName,
+            isTeacher:false,
+            fullName : data.userNameresult
+        }
         const token = jwt.sign(user,JWT_SECRET,{expiresIn: '1h'});
-        localStorage.setItem("token",token);
-        console.log("token : ",token);
-        res.json({ success: true });
-    }).catch((error) => console.log(error));
+        // console.log("token : ",token);
+        res.json({ success: true,token:token,data:data });
+    }).catch((error) => console.log("error is : ",error));
 });
 
 module.exports = router;
