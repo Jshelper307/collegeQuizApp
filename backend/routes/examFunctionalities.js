@@ -2,7 +2,7 @@ const express = require('express')
 const connectMongoDB = require('../db/mongoConnection')
 const Exam = require('../models/exam'); // Import the Exam model
 const Results = require('../models/resultSchema'); // Import the Result model
-const hasUserResponded = require('../services/mongoDbServices')
+const {hasUserResponded,checkExamStartDate} = require('../services/mongoDbServices')
 const {v4 : uuidv4} = require('uuid');
 
 const router = express.Router();
@@ -18,12 +18,14 @@ connectMongoDB();
 // API to create an exam
 router.post('/create-exam', async (req, res) => {
     try {
-        const {title,description,points_per_question,time_limit,questionsWithAns} = req.body;
+        const {department,subject,title,description,time_limit_perQuestion,points_per_question,exam_start_date,exam_end_date,questionsWithAns} = req.body;
 
         const examId = uuidv4(); // Generate a unique ID for the exam
         exams = {
             exam_id : examId,
-            exam : {title,description,points_per_question,time_limit,questionsWithAns}
+            exam_start_date:exam_start_date,
+            exam_end_date:exam_end_date,
+            exam : {department,subject,title,description,time_limit_perQuestion,points_per_question,questionsWithAns}
         };
         const examResult = {
             examId:examId,
@@ -46,7 +48,8 @@ router.get('/exam/:exam_id', async (req, res) => {
     try {
         const userName = "27600121023JS";
         const { exam_id } = req.params;
-
+        // check exam started or not
+        const examStarted = await checkExamStartDate(exam_id);
         const alreadyResponded = await hasUserResponded(exam_id,userName);
         if(alreadyResponded){
             console.log("You complete this test already ....");

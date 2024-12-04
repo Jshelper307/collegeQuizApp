@@ -80,97 +80,85 @@ const checkStartDateValue = (examStartDate, examEndDate) => {
 document.querySelector(".done").addEventListener("click", () => {
   // Department inputs
   const department = document.getElementById("department");
-  const customDepartment = document
-    .getElementById("custom-department")
-    .value.trim();
+  const customDepartment = document.getElementById("custom-department");
   // subject inputs
   const subject = document.getElementById("subject");
-  const customSubject = document.getElementById("custom-subject").value.trim();
+  const customSubject = document.getElementById("custom-subject");
   // topic input
   const topic = document.getElementById("topic");
   // Description input
   const description = document.getElementById("description");
   // Time limit per quesiton
   const timePerQuestion = document.getElementById("time-per-question");
-  const customtimePerQuestion = document
-    .getElementById("custom-total-time")
-    .value.trim();
+  const customtimePerQuestion = document.getElementById("custom-total-time");
   // Points per question
   const points = document.getElementById("points");
-  const customPoints = document.getElementById("custom-points").value.trim();
+  const customPoints = document.getElementById("custom-points");
   // Exam start date and time
   const startDateAndTime = document.getElementById("eventOpeningDay");
   // Exam End date and time
   const endDateAndTime = document.getElementById("eventClosingDay");
-
-  //
-
-  let isValid = true;
-
-  // Validate department
-  if (department === "other" && !customDepartment) {
-    isValid = false;
-  } else if (!department) {
-    isValid = false;
-  }
-
-  // Validate subject
-  if (subject === "other" && !customSubject) {
-    isValid = false;
-  } else if (!subject) {
-    isValid = false;
-  }
-
-  // Validate total time
-  if (timePerQuestion === "other" && !customtimePerQuestion) {
-    isValid = false;
-  } else if (!timePerQuestion) {
-    isValid = false;
-  }
-
-  // Validate points
-  if (points === "other" && !customPoints) {
-    isValid = false;
-  } else if (!points) {
-    isValid = false;
-  }
-
-  // Show error message if validation fails
-  if (!isValid) {
-    document.getElementById("form-error").style.display = "block";
-    return;
-  }
-
-  // Hide error message if validation passes
-  document.getElementById("form-error").style.display = "none";
+// 
+  const departmentAns = department.value === "other" ? customDepartment : department;
+  const subjectAns = subject.value === "other" ? customSubject : subject;
+  const timePerQuestionAns = timePerQuestion.value === "other" ? customtimePerQuestion : timePerQuestion;
+  const pointsPerQuestionAns = points.value === "other" ? customPoints : points;
 
   // validate the form
   const isValidForm = validateForm(
-    department,
-    subject,
+    departmentAns,
+    subjectAns,
     topic,
     description,
-    timePerQuestion,
-    points,
+    timePerQuestionAns,
+    pointsPerQuestionAns,
     startDateAndTime,
     endDateAndTime,
     questions
   );
+
   if (isValidForm) {
+  // Submit the data in database
+  fetch('http://localhost:3000/exams/create-exam',{
+        headers:{
+          'content-type':'application/json'
+        },
+        method:"POST",
+        body: JSON.stringify({department :departmentAns,subject:subjectAns,title :topic,description:description,time_limit_perQuestion:timePerQuestionAns,points_per_question :pointsPerQuestionAns,exam_start_date:startDateAndTime,exam_end_date:endDateAndTime,questionsWithAns:questions})
+      })
+      .then(response=>{
+        if(!response.ok){
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data=>{
+        console.log("log from teacherPageLogic : ",data);
+        if(data['success']){
+          showExamLink(data['examUrl']);
+        }
+        else{
+          console.log("some error occure");
+        }
+      })
+      .catch(error=>{
+        console.log(error);
+      })
+
     // Submit data
-    console.log("topic : ", topic);
-    console.log("description : ", description);
+    console.log("topic : ", topic.value);
+    console.log("description : ", description.value);
     console.log({
-      department: department === "other" ? customDepartment : department,
-      subject: subject === "other" ? customSubject : subject,
-      timePerQuestion:
-        timePerQuestion === "other" ? customtimePerQuestion : timePerQuestion,
-      points: points === "other" ? customPoints : points,
+      department: departmentAns.value,
+      subject: subjectAns.value,
+      timePerQuestion: timePerQuestionAns.value,
+      points: pointsPerQuestionAns.value,
     });
-    console.log("startDateAndTime : ", startDateAndTime);
-    console.log("endDateAndTime : ", endDateAndTime);
+    console.log("startDateAndTime : ", startDateAndTime.value);
+    console.log("endDateAndTime : ", endDateAndTime.value);
     console.log("questions : ", questions);
 
+    clearForm(department,customDepartment,subject,customSubject,topic,description,timePerQuestion,customtimePerQuestion,points,customPoints,startDateAndTime,endDateAndTime);
     alert("Form submitted successfully!");
   } else {
     console.log("Not submitted....");
@@ -180,47 +168,47 @@ document.querySelector(".done").addEventListener("click", () => {
 // Done button end
 
 // validae form fields
-document.getElementById("department").onchange = () => {
+document.getElementById("department").onclick = () => {
   chageBorder(document.getElementById("department"));
 };
-document.getElementById("custom-department").onchange = () => {
+document.getElementById("custom-department").onclick = () => {
   chageBorder(document.getElementById("custom-department"));
 };
 // subject inputs
-document.getElementById("subject").onchange = () => {
+document.getElementById("subject").onclick = () => {
   chageBorder(document.getElementById("subject"));
 };
-document.getElementById("custom-subject").onchange = () => {
+document.getElementById("custom-subject").onclick = () => {
   chageBorder(document.getElementById("custom-subject"));
 };
 // topic input
-document.getElementById("topic").onchange = () => {
+document.getElementById("topic").onclick = () => {
   chageBorder(document.getElementById("topic"));
 };
 // Description input
-document.getElementById("description").onchange = () => {
+document.getElementById("description").onclick = () => {
   chageBorder(document.getElementById("description"));
 };
 // Time limit per quesiton
-document.getElementById("time-per-question").onchange = () => {
+document.getElementById("time-per-question").onclick = () => {
   chageBorder(document.getElementById("time-per-question"));
 };
-document.getElementById("custom-total-time").onchange = () => {
+document.getElementById("custom-total-time").onclick = () => {
   chageBorder(document.getElementById("custom-total-time"));
 };
 // Points per question
-document.getElementById("points").onchange = () => {
+document.getElementById("points").onclick = () => {
   chageBorder(document.getElementById("points"));
 };
-document.getElementById("custom-points").onchange = () => {
+document.getElementById("custom-points").onclick = () => {
   chageBorder(document.getElementById("custom-points"));
 };
 // Exam start date and time
-document.getElementById("eventOpeningDay").onchange = () => {
+document.getElementById("eventOpeningDay").onclick = () => {
   chageBorder(document.getElementById("eventOpeningDay"));
 };
 // Exam End date and time
-document.getElementById("eventClosingDay").onchange = () => {
+document.getElementById("eventClosingDay").onclick = () => {
   chageBorder(document.getElementById("eventClosingDay"));
 };
 
@@ -283,6 +271,18 @@ const chageBorder = (element, color = false) => {
   }
 };
 
+// after submitting the form clear the form
+const clearForm = (department,customDepartment,subject,customSubject,topic,description,timePerQuestion,customtimePerQuestion,points,customPoints,startDateAndTime,endDateAndTime)=>{
+  let formFields = [department,customDepartment,subject,customSubject,topic,description,timePerQuestion,customtimePerQuestion,points,customPoints,startDateAndTime,endDateAndTime];
+  formFields.map(item=>{
+    return item.value = "";
+  })
+  questions = [];
+  totalQuestions = 0;
+  document.getElementById('total-questions').innerHTML = totalQuestions;
+  document.getElementById("recent-questions").innerHTML = "";
+}
+
 // Delete button logic start here
 document.querySelector(".delete").addEventListener("click", () => {
   if (confirm("Are you sure you want to delete this question?")) {
@@ -323,6 +323,9 @@ document.getElementById("option4").addEventListener("change", () => {
 
 // Function to add question and update the recent question display
 function addQuestion() {
+  if(document.querySelector(".recent-question").style.border){
+    chageBorder(document.querySelector(".recent-question"));
+  }
   // Get input values
   const questionText = document.getElementById("question").value;
   const option1 = document.getElementById("option1").value;

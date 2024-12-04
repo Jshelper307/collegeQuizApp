@@ -1,4 +1,5 @@
 const Results = require('../models/resultSchema'); // Assuming the schema is already defined elsewhere
+const Exam = require('../models/exam');
 
 async function hasUserResponded(examId, userName) {
     try {
@@ -19,4 +20,11 @@ async function hasUserResponded(examId, userName) {
     }
 }
 
-module.exports = hasUserResponded;
+async function checkExamStartDate(examId) {
+    const exam = await Exam.findOne({
+        examId: examId,
+    });
+    console.log(exam);
+}
+
+module.exports = {hasUserResponded,checkExamStartDate};
