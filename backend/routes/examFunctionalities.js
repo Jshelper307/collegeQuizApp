@@ -50,20 +50,25 @@ router.get('/exam/:exam_id', async (req, res) => {
         const { exam_id } = req.params;
         // check exam started or not
         const examStarted = await checkExamStartDate(exam_id);
-        const alreadyResponded = await hasUserResponded(exam_id,userName);
-        if(alreadyResponded){
-            console.log("You complete this test already ....");
-            return res.send({success:false,error:"User already responded"})
+        if(examStarted.success){
+            const alreadyResponded = await hasUserResponded(exam_id,userName);
+            if(alreadyResponded){
+                console.log("You complete this test already ....");
+                return res.send({success:false,error:"You already responded for this exam !!!"})
+            }
+            
+            // Find the exam by ID
+            const exam = await Exam.findOne({ exam_id });
+    
+            if (!exam) {
+                return res.status(404).send({ success: false, error: 'Exam not found' });
+            }
+            
+            res.send({ success: true, exams:exam });
         }
-        
-        // Find the exam by ID
-        const exam = await Exam.findOne({ exam_id });
-
-        if (!exam) {
-            return res.status(404).send({ success: false, error: 'Exam not found' });
+        else{
+            res.send({success:false,error:examStarted.message});
         }
-        
-        res.send({ success: true, exams:exam });
     } catch (error) {
         console.error('Error fetching exam:', error.message);
         res.status(500).send({ success: false, error: 'Internal Server Error' });

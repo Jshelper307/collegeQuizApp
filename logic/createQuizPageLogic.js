@@ -38,46 +38,7 @@ const checkStartDateValue = (examStartDate, examEndDate) => {
 };
 
 // Script to handle interactivity
-// Done button logic
-// document.querySelector(".done").addEventListener("click", () => {
-//   const title = document.getElementById("title").value;
-//   const description = document.getElementById("description").value;
-//   const points = document.getElementById("points").value;
-//   const timeLimit = document.getElementById("time-limit").value;
-//   console.log("title : ",title);
-//   console.log("description : ",description);
-//   console.log("points : ",points);
-//   console.log("timeLimit : ",timeLimit);
-//   console.log("questions : ",questions);
-
-//   fetch('http://localhost:3000/exams/create-exam',{
-//     headers:{
-//       'content-type':'application/json'
-//     },
-//     method:"POST",
-//     body: JSON.stringify({title:title,description:description,points_per_question:points,time_limit:timeLimit,questionsWithAns:questions})
-//   })
-//   .then(response=>{
-//     if(!response.ok){
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-//     return response.json();
-//   })
-//   .then(data=>{
-//     console.log("log from teacherPageLogic : ",data);
-//     if(data['success']){
-//       showExamLink(data['examUrl']);
-//     }
-//     else{
-//       console.log("some error occure");
-//     }
-//   })
-//   .catch(error=>{
-//     console.log(error);
-//   })
-//   // alert("Test saved successfully!");
-// });
-
+// Done button work starts here
 document.querySelector(".done").addEventListener("click", () => {
   // Department inputs
   const department = document.getElementById("department");
@@ -147,23 +108,24 @@ document.querySelector(".done").addEventListener("click", () => {
       })
 
     // Submit data
-    console.log("topic : ", topic.value);
-    console.log("description : ", description.value);
-    console.log({
-      department: departmentAns.value,
-      subject: subjectAns.value,
-      timePerQuestion: timePerQuestionAns.value,
-      points: pointsPerQuestionAns.value,
-    });
-    console.log("startDateAndTime : ", startDateAndTime.value);
-    console.log("endDateAndTime : ", endDateAndTime.value);
-    console.log("questions : ", questions);
+    // console.log("topic : ", topic.value);
+    // console.log("description : ", description.value);
+    // console.log({
+    //   department: departmentAns.value,
+    //   subject: subjectAns.value,
+    //   timePerQuestion: timePerQuestionAns.value,
+    //   points: pointsPerQuestionAns.value,
+    // });
+    // console.log("startDateAndTime : ", startDateAndTime.value);
+    // console.log("endDateAndTime : ", endDateAndTime.value);
+    // console.log("questions : ", questions);
 
     clearForm(department,customDepartment,subject,customSubject,topic,description,timePerQuestion,customtimePerQuestion,points,customPoints,startDateAndTime,endDateAndTime);
     alert("Form submitted successfully!");
-  } else {
-    console.log("Not submitted....");
-  }
+  } 
+  // else {
+  //   console.log("Not submitted....");
+  // }
 });
 
 // Done button end
@@ -286,8 +248,29 @@ const clearForm = (department,customDepartment,subject,customSubject,topic,descr
 
 // Delete button logic start here
 document.querySelector(".delete").addEventListener("click", () => {
+   // Department inputs
+   const department = document.getElementById("department");
+   const customDepartment = document.getElementById("custom-department");
+   // subject inputs
+   const subject = document.getElementById("subject");
+   const customSubject = document.getElementById("custom-subject");
+   // topic input
+   const topic = document.getElementById("topic");
+   // Description input
+   const description = document.getElementById("description");
+   // Time limit per quesiton
+   const timePerQuestion = document.getElementById("time-per-question");
+   const customtimePerQuestion = document.getElementById("custom-total-time");
+   // Points per question
+   const points = document.getElementById("points");
+   const customPoints = document.getElementById("custom-points");
+   // Exam start date and time
+   const startDateAndTime = document.getElementById("eventOpeningDay");
+   // Exam End date and time
+   const endDateAndTime = document.getElementById("eventClosingDay");
   if (confirm("Are you sure you want to delete this question?")) {
-    alert("Question deleted!");
+    clearForm(department,customDepartment,subject,customSubject,topic,description,timePerQuestion,customtimePerQuestion,points,customPoints,startDateAndTime,endDateAndTime);
+    window.location.href = "adminPanel.html";
   }
 });
 

@@ -30,16 +30,19 @@ async function checkExamStartDate(examId) {
     
     const now = new Date(); // Get the current date and time
     // console.log("exam : ",exam);
-    console.log("Exam start date from checkExam: ", startDate);
-    console.log("Exam end date from checkExam: ", endDate);
-    console.log("Current dateTime now: ", now);
+    // console.log("Exam start date from checkExam: ", startDate);
+    // console.log("Exam end date from checkExam: ", endDate);
+    // console.log("Current dateTime now: ", now);
     
     if (now < startDate) {
-        console.log("Exam not started");
+        // console.log("Exam not started");
+        return ({success:false,message:"Exam Not Started Yet . Please Come Some Time after."});
     } else if (now >= startDate && now <= endDate) {
-        console.log("Exam running ....");
+        // console.log("Exam running ....");
+        return ({success:true,message:"Exam is live..."})
     } else {
-        console.log("Exam ended.");
+        // console.log("Exam ended.");
+        return ({success:false,message:"Exam is already finished ..."})
     }   
 }
 
