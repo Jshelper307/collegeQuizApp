@@ -5,6 +5,7 @@ let currentInd = 0;
 let answerWithTime = [];
 let totalQuestions = 0;
 let timerId;
+let timeGapId;
 const path = window.location.pathname;
 let isError;
 let perQuestionTimeLimit;
@@ -31,7 +32,7 @@ const showStartPage =()=>{
     let time = 10;
     const startGap = document.getElementById("startGap");
     startGap.innerHTML = time;
-    const timeGapId = setInterval(() => {
+    timeGapId = setInterval(() => {
         if(time > 0){
             time = time-1;
             startGap.innerHTML = time;
@@ -44,6 +45,7 @@ const showStartPage =()=>{
 }
 
 document.getElementById("playQuiz").addEventListener("click",()=>{
+    clearInterval(timeGapId);
     startQuiz();
 })
 

@@ -63,7 +63,9 @@ router.get('/exam/:exam_id', async (req, res) => {
             if (!exam) {
                 return res.status(404).send({ success: false, error: 'Exam not found' });
             }
-            
+            // When the exam data come from database this function shuffle all the questions
+            // For this when any user click call this they got every time new question sequence
+            exam.exam.questionsWithAns=shuffleQuestion([...exam.exam.questionsWithAns]);
             res.send({ success: true, exams:exam });
         }
         else{
@@ -116,4 +118,19 @@ router.post('/exam/:exam_id/store_result/:username', async (req, res) => {
         res.status(500).send({ success: false, error: 'Internal Server Error' });
     }
 });
+
+// This function shuffle the question array using fisher-yates shuffle algorithm
+function shuffleQuestion(questions){
+    for(let i=questions.length-1;i>0;i--){
+        let j =Math.floor(Math.random()*(i+1));
+        let temp = questions[i];
+        questions[i]=questions[j];
+        questions[j] = temp;
+    }
+    return questions;
+}
+
+
+
+
 module.exports = router;
