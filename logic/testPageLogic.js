@@ -24,7 +24,6 @@ let examId;
 
 document.addEventListener("DOMContentLoaded",async ()=>{
     showStartPage();
-    
 })
 
 // This function show the starting counter page
