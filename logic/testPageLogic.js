@@ -23,6 +23,7 @@ const params = new URLSearchParams(window.location.search);
 let examId;
 
 document.addEventListener("DOMContentLoaded",async ()=>{
+    showStartPage();
     userResponded = false;
     examId = params.get("id");
     // console.log("id : ",examId);
@@ -41,6 +42,33 @@ document.addEventListener("DOMContentLoaded",async ()=>{
     }
 })
 
+// This function show the starting counter page
+const showStartPage =()=>{
+    let time = 10;
+    const startGap = document.getElementById("startGap");
+    startGap.innerHTML = time;
+    const timeGapId = setInterval(() => {
+        if(time > 0){
+            time = time-1;
+            startGap.innerHTML = time;
+        }
+        else{
+            clearInterval(timeGapId);
+            startQuiz();
+        }
+    }, 1000);
+}
+
+document.getElementById("playQuiz").addEventListener("click",()=>{
+    startQuiz();
+})
+
+const startQuiz = ()=>{
+    const starting = document.querySelector(".starting");
+    const examContent = document.querySelector(".examContent");
+    starting.style.display = "none";
+    examContent.style.display = "block";
+}
 
 const loadData = async (examId)=>{
     await fetch(`http://localhost:3000/exams/exam/${examId}`).then(response=>response.json()).then(data=>{
