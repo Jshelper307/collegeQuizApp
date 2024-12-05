@@ -6,7 +6,7 @@ let answerWithTime = [];
 let totalQuestions = 0;
 let timerId;
 const path = window.location.pathname;
-let userResponded;
+let isError;
 
 const heading = document.getElementById("heading");
 const question_text = document.getElementById("question-text");
@@ -23,13 +23,13 @@ document.addEventListener("DOMContentLoaded",async ()=>{
     // console.log("id : ",examId);
     // check user already give his answer or not
     await loadData(examId);
-    if(!userResponded){
+    if(!isError.Error){
         heading.innerHTML = examData["exams"]["exam"]["title"];
         loadQuestion(currentInd);
         // startTimer(60);
     }
     else{
-        showResponded();
+        showResponded(isError.message);
     }
 })
 
@@ -50,47 +50,23 @@ const loadData = async (examId)=>{
     // .catch(error=>{
     //     console.log(error);
     // })
-    examData= {
-        "success": true,
-        "exams": {
-        "_id": "674fcfc12820bbeeb7f8cbe8",
-        "exam_id": "63613db9-a1fc-48f9-9a4c-87286a63c315",
-        "exam_start_date": "2024-12-04T09:56",
-        "exam_end_date": "2024-12-04T09:59",
-        "exam": {
-        "department": "CE",
-        "subject": "DSA",
-        "title": "Array",
-        "description": "adsf adsfv",
-        "points_per_question": 1,
-        "time_limit_perQuestion": 30,
-        "questionsWithAns": [
-        {
-        "question": "THis is question1",
-        "options": [
-        "a",
-        "aa",
-        "aaa",
-        "aaaa"
-        ],
-        "answer": "aa",
-        "_id": "674fcfc12820bbeeb7f8cbea"
-        },
-        {
-        "question": "asfd adfg adf sdf",
-        "options": [
-        "fd",
-        "cxc",
-        "yt",
-        "sd"
-        ],
-        "answer": "cxc",
-        "_id": "674fcfc12820bbeeb7f8cbeb"
+    await fetch(`http://localhost:3000/exams/exam/${examId}`).then(response=>response.json()).then(data=>{
+        if(data.error){
+            // console.log("data form loaddata error : ",data);
+            console.log("Error from data : ",data.error);
+            isError = {
+                Error:true,
+                message:data.error
+            }
         }
-        ],
-        "_id": "674fcfc12820bbeeb7f8cbe9"
-        },
-        "__v": 0
+        else{
+            examData = data;
+            console.log("Examdata from loadData : ",examData);
+            totalQuestions = examData["exams"]["exam"]["questionsWithAns"].length;
+            isError = {
+                Error:false,
+                message:"Exam is Live"
+            }
         }
     }
     totalQuestions = examData["exams"]["exam"]["questionsWithAns"].length;
@@ -153,7 +129,7 @@ next.addEventListener("click",()=>{
 const storeResult = ()=>{
     console.log("exam id : ",examId);
     console.log(answerWithTime);
-    const userName = '27600121003DP'
+    const userName = '27600121023JS'
     const url =`http://localhost:3000/exams/exam/${examId}/store_result/${userName}`;
     fetch(url,{
         headers:{
@@ -170,8 +146,8 @@ const storeResult = ()=>{
     })
 }
 
-const showResponded = ()=>{
-    question_text.innerHTML = "You already responded for this exam !!!"
+const showResponded = (message)=>{
+    question_text.innerHTML = message;
     next.style.display = "none";
 }
 
