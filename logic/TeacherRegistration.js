@@ -1,22 +1,18 @@
-const form = document.querySelector('.registration-form');
-form.addEventListener('submit', (event) => {
-  const password = document.getElementById('password').value;
-  const confirmPassword = document.getElementById('confirm-password').value;
+document.getElementById('registrationForm').addEventListener('submit', function (event) {
+  event.preventDefault();
 
-  if (password !== confirmPassword) {
-    event.preventDefault(); // Prevent form submission
-    alert('Password and confirm Password do not match. Please try again.');
-  }
-});
-    
+  let isValid = true;
 
-// Function to toggle password visibility
-function togglePassword(id) {
-    const input = document.getElementById(id);
-    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-    input.setAttribute('type', type);
-  }
-  
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const department = document.getElementById('department').value.trim();
+  const contact = document.getElementById('contact').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const confirmPassword = document.getElementById('confirm-password').value.trim();
+
+  document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+  document.querySelectorAll('input, select').forEach(el => el.style.borderColor = '');
+
 // Form validation
 document.getElementById('registrationForm').addEventListener('submit', function(event) {
   
@@ -92,6 +88,39 @@ if (departmentValue === 'Select the Department') { // Default option value
 });
       
 // Toggle Password Visibility
+function togglePassword(id) {
+  const input = document.getElementById(id);
+  const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+  input.setAttribute('type', type);
+}
+
+  fetch('http://localhost:3000/auth/teacher/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, department, contact, password }),
+  })
+      .then(response => {
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          return response.json();
+      })
+      .then(data => {
+          alert(data.message);
+          document.getElementById('registrationForm').reset();
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred during registration. Please try again.');
+      });
+});
+
+function showError(id, message) {
+  const input = document.getElementById(id);
+  const error = input.nextElementSibling;
+  input.style.borderColor = 'red';
+  error.textContent = message;
+  error.style.color = 'red';
+}
+
 function togglePassword(id) {
   const input = document.getElementById(id);
   const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
