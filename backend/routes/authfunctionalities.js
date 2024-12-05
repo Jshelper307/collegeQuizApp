@@ -39,12 +39,17 @@ router.post('/login', async (req, res) => {
     }).catch((error) => console.log("error is : ",error));
 });
 // Sign-up Route
-router.post('teacher/signup', async (req, res) => {
-    const {firstName,lastName,emailAddress,phone,collegeName,universityRollno,password} = req.body;
-    const db = dbService.getDbServiceInstance();
-    const result = db.registerUser(password,firstName,lastName,emailAddress,phone,collegeName,universityRollno);
+router.post('/teacher/signup', async (req, res) => {
+    const { name, email, department, contact, password } = req.body;
 
-    result.then((data) => res.json({ success: true })).catch((error) => console.log(error));
+    try {
+        const db = dbService.getDbServiceInstance();
+        await db.addTeacher(name, email, department, contact, password);
+        res.json({ success: true, message: 'Teacher registered successfully' });
+    } catch (error) {
+        console.error('Error in /teacher/signup:', error.message);
+        res.status(500).json({ success: false, message: error.message });
+    }
 });
 
 // Login Route
