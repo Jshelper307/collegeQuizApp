@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded",async ()=>{
     if(!isError.Error){
         heading.innerHTML = examData["exams"]["exam"]["title"];
         loadQuestion(currentInd);
-        startTimer(60);
+        // startTimer(60);
     }
     else{
         showResponded(isError.message);
@@ -35,6 +35,21 @@ document.addEventListener("DOMContentLoaded",async ()=>{
 
 
 const loadData = async (examId)=>{
+    // await fetch(`http://localhost:3000/exams/exam/${examId}`).then(response=>response.json()).then(data=>{
+    //     if(data.error){
+    //         // console.log("data form loaddata error : ",data);
+    //         console.log(data.error);
+    //         userResponded = true;
+    //     }
+    //     else{
+    //         examData = data;
+    //         console.log(examData);
+    //         totalQuestions = examData["exams"]["exam"]["questionsWithAns"].length;
+    //     }
+    // })
+    // .catch(error=>{
+    //     console.log(error);
+    // })
     await fetch(`http://localhost:3000/exams/exam/${examId}`).then(response=>response.json()).then(data=>{
         if(data.error){
             // console.log("data form loaddata error : ",data);
@@ -53,11 +68,10 @@ const loadData = async (examId)=>{
                 message:"Exam is Live"
             }
         }
-    })
-    .catch(error=>{
-        console.log(error);
-    })
+    }
+    totalQuestions = examData["exams"]["exam"]["questionsWithAns"].length;
 }
+
 
 
 const startTimer = (timeInSeconds=0)=>{
@@ -136,3 +150,50 @@ const showResponded = (message)=>{
     question_text.innerHTML = message;
     next.style.display = "none";
 }
+
+// new function---------
+
+
+
+loadData();
+function handleExam(examData) {
+    const questions = examData.exams.exam.questionsWithAns;
+    const timeLimit = examData.exams.exam.time_limit_perQuestion; // Time limit per question
+    let currentQuestionIndex = 0;
+    let timerInterval = null;
+  
+    function startTimer(duration) {
+      let timeRemaining = duration;
+  
+      console.log(`Question ${currentQuestionIndex + 1}: ${questions[currentQuestionIndex].question}`);
+      timerInterval = setInterval(() => {
+        console.log(`Time Left: ${timeRemaining}s`);
+        timeRemaining--;
+  
+        if (timeRemaining < 0) {
+          clearInterval(timerInterval);
+          currentQuestionIndex++;
+  
+          if (currentQuestionIndex >= questions.length) {
+            console.log("All questions completed. Submitting the test...");
+            finishTest(); // Finish the test
+          } else {
+            startTimer(timeLimit);
+          }
+        }
+      }, 1000);
+    }
+  
+    function finishTest() {
+      console.log("Test Finished. Submit answers.");
+      // Add submission logic here
+    }
+  
+    // Start the exam with the first question
+    startTimer(timeLimit);
+  }
+  
+  // Example usage with the provided `examData`
+  handleExam(examData);
+  
+  
