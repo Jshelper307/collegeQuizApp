@@ -46,7 +46,7 @@ router.post('/create-exam', async (req, res) => {
 
 router.get('/exam/:exam_id', async (req, res) => {
     try {
-        const userName = "27600121023JS";
+        const userName = "27600121023JK";
         const { exam_id } = req.params;
         // check exam started or not
         const examStarted = await checkExamStartDate(exam_id);
