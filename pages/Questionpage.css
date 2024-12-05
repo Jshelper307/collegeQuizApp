@@ -141,7 +141,6 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-height: 88vh;
     width: 50vw;
-    min-width: 500px;
 }
 
 .content h2 {
@@ -431,6 +430,9 @@ body {
     }
     .Options{
         text-align: center;
+    }
+    .questionHolder{
+        width: 100%;
     }
 }
 @media (max-width: 560px) {
