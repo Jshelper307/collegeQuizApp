@@ -24,22 +24,7 @@ let examId;
 
 document.addEventListener("DOMContentLoaded",async ()=>{
     showStartPage();
-    userResponded = false;
-    examId = params.get("id");
-    // console.log("id : ",examId);
-    // check user already give his answer or not
-    await loadData(examId);
-    if(!isError.Error){
-        heading.innerHTML = examData["exams"]["exam"]["title"];
-        totalQuestionSpan.innerHTML = totalQuestions;
-        updateTotalAnswred(currentInd);
-        perQuestionTimeLimit = examData.exams.exam.time_limit_perQuestion;
-        loadQuestion(currentInd);
-        // startTimer(60);
-    }
-    else{
-        showResponded(isError.message);
-    }
+    
 })
 
 // This function show the starting counter page
@@ -63,11 +48,29 @@ document.getElementById("playQuiz").addEventListener("click",()=>{
     startQuiz();
 })
 
-const startQuiz = ()=>{
+const startQuiz =async ()=>{
     const starting = document.querySelector(".starting");
     const examContent = document.querySelector(".examContent");
     starting.style.display = "none";
     examContent.style.display = "block";
+
+    // start quiz
+    userResponded = false;
+    examId = params.get("id");
+    // console.log("id : ",examId);
+    // check user already give his answer or not
+    await loadData(examId);
+    if(!isError.Error){
+        heading.innerHTML = examData["exams"]["exam"]["title"];
+        totalQuestionSpan.innerHTML = totalQuestions;
+        updateTotalAnswred(currentInd);
+        perQuestionTimeLimit = examData.exams.exam.time_limit_perQuestion;
+        loadQuestion(currentInd);
+        // startTimer(60);
+    }
+    else{
+        showResponded(isError.message);
+    }
 }
 
 const loadData = async (examId)=>{
@@ -172,7 +175,7 @@ const saveAnswerAndGoNextQuestion = (currentInd,isClicked)=>{
     }
     updateTotalAnswred(currentInd);
 }
-
+// This function store the result in the database
 const storeResult = ()=>{
     console.log("exam id : ",examId);
     console.log(answerWithTime);
