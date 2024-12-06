@@ -2,6 +2,7 @@ const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
 const nodemailer = require("nodemailer");
+const validator = require('validator');
 let instance = null;
 dotenv.config();
 // create connection
@@ -105,6 +106,67 @@ class DbService{
     } 
 
 
+
+        // Add a teacher to the database and send a welcome email
+        async addTeacher(name, email, department, contact, password) {
+            // Validate email format
+            if (!validator.isEmail(email)) {
+                throw new Error("Invalid email format.");
+            }
+        
+            // Validate phone number format
+            if (!validator.isMobilePhone(contact, 'any')) {
+                throw new Error("Invalid contact number.");
+            }
+        
+            const teacherId = this.calculateteacherId(name, contact);
+        
+            // Configure nodemailer transporter
+            const transporter = nodemailer.createTransport({
+                host: process.env.SMTP_HOST,
+                port: process.env.SMTP_PORT || 587,
+                secure: process.env.SMTP_PORT === '465',
+                auth: {
+                    user: process.env.SMTP_USER,
+                    pass: process.env.SMTP_PASS,
+                },
+            });
+        
+            const mailOptions = {
+                from: `"QuizMania" <${process.env.SMTP_USER}>`,
+                to: email,
+                subject: "Welcome to Our Platform!",
+                text: `Hello ${name},\n\nThank you for registering!\n\nYour credentials are:\nUsername: ${teacherId}\nPassword: ${password}\n\nPlease keep this information secure.\n\nBest Regards,\nQuizMania Team`,
+            };
+        
+            try {
+                // Send email before database insertion
+                const info = await transporter.sendMail(mailOptions);
+                console.log("Email sent successfully:", info.response);
+        
+                // Hash the password and insert into the database
+                const hashedPassword = this.hashPassword(password);
+                const query = `
+                    INSERT INTO teacherdetails (teacherid, name, email, department, contact, password)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                `;
+                const result = await connection.promise().execute(query, [teacherId, name, email, department, contact, hashedPassword]);
+                return { message: "Teacher registered successfully!", result };
+            } catch (error) {
+                console.error("Failed to register teacher:", error);
+                throw new Error("Registration failed. Please try again.");
+            }
+        }
+        
+        // Add this method to the DbService class
+        calculateteacherId(name, contact) {
+            const contactNumber = contact; // Use the contact number directly
+            const nameInitials = name
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase())
+                .join(''); // Combine the initials of the name
+            return `${contactNumber}${nameInitials}`;
+        }
 
 
     async verifyUser(username, inputPassword){
