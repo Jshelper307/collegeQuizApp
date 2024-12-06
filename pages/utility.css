@@ -52,6 +52,7 @@ nav{
     color: var(--color-warning);
 }
 .dropdown-menu {
+    position: absolute;
     display: none;
     top: 100%;
     left: 0;
@@ -59,7 +60,7 @@ nav{
     padding: 0;
     margin: 0;
     background-color: #1e1e1e;
-    width: 300%;
+    width: max-content;
 }
 
 .dropdown-menu li a {
@@ -80,11 +81,15 @@ nav{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 #userDetails img{
     filter: invert();
 }
 
+#logout{
+    margin: 5px;
+}
 /* Show dropdown on hover */
 .dropdown:hover{
     color: #f7c94b;

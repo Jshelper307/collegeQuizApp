@@ -13,7 +13,24 @@ document.addEventListener("DOMContentLoaded",()=>{
       setUserName(token);
       loggedIn = true;
     }
-    navbar.innerHTML = `<a href="index.html"><h4>QuizMania</h4></a>
+    navbar.innerHTML = getNavbar(loggedIn);
+    if(loggedIn){
+      document.getElementById("userDetails").addEventListener("click",()=>{
+        showMenu();
+      })
+    }
+
+    document.getElementById("logout").addEventListener("click",()=>{
+      localStorage.removeItem("token");
+      loggedIn = false;
+      navbar.innerHTML = getNavbar(loggedIn);
+      window.location.reload();
+    })
+      
+})
+
+const getNavbar = (loggedIn)=>{
+  return `<a href="index.html"><h4>QuizMania</h4></a>
      <ul  class="nav__menue">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
@@ -25,9 +42,13 @@ document.addEventListener("DOMContentLoaded",()=>{
           </ul>
        </li>
         <li><a href="contact.html">Contact</a></li>
-        <li id="userDetails">${loggedIn?`<img src="../icons/user.svg" alt="userImage" height="25">${nameOfUser}`:`<a href="./register.html">Login/Regester</a>`}</li>
+        <li id="userDetails">${loggedIn?`<img src="../icons/user.svg" alt="userImage" height="25">${nameOfUser}`:`<a href="./register.html">Login/Regester</a>`}
+          <ul class="clickDrop dropdown-menu" style="display: none;">
+              <li id="logout">Logout</li>
+          </ul>
+        </li>
       </ul>`
-})
+}
 
 const setUserName =(token)=>{
   try {
@@ -38,6 +59,17 @@ const setUserName =(token)=>{
       console.log('Invalid token',error);
       localStorage.removeItem('token');
       loggedIn = false;
-      window.location.href = 'login.html'; // Redirect on invalid token
+      window.location.href = 'register.html'; // Redirect on invalid token
   } 
+}
+
+
+
+const showMenu = ()=>{
+  if(document.querySelector(".clickDrop").style.display === "block"){
+    document.querySelector(".clickDrop").style.display = "none";
+  }
+  else{
+    document.querySelector(".clickDrop").style.display = "block";
+  }
 }

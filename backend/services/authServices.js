@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
 const nodemailer = require("nodemailer");
 const validator = require('validator');
+const teachers = require('../models/teachers');
 let instance = null;
 dotenv.config();
 // create connection
@@ -36,32 +37,11 @@ class DbService{
     async registerUser(password,firstname,lastname,email,phone,college,universityrollnumber){
         const username = this.calculateStudentId(firstname,lastname,universityrollnumber);
 
-        // Configure the transport using SMTP settings from .env
-        const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,  // Gmail's SMTP host
-            port: process.env.SMTP_PORT || 587,  // Use port 587 for TLS or 465 for SSL
-            secure: process.env.SMTP_PORT === '465',  // true for SSL (port 465)
-            auth: {
-                user: process.env.SMTP_USER,  // Your Gmail email address
-                pass: process.env.SMTP_PASS,  // App password or Gmail password (depending on 2FA)
-            },
-        });
-    
-        // Set up the email options
-        const mailOptions = {
-            from: `"QuizMania" <${process.env.SMTP_USER}>`, // Sender's email
-            to: email,  // Receiver's email (user's email)
-            subject: "Welcome to Our Platform!",  // Email subject
-            text: `Hello ${firstname} ${lastname},\n\nThank you for registering!\n\nYour credentials are:\nUsername: ${username}\nPassword: ${password}\n\nPlease keep this information secure.\n\nBest Regards,\nQuizMania Team`, // Email body in plain text
-        };
-    
-        // Send the email
-        try {
-            const info = await transporter.sendMail(mailOptions);
-            console.log("Email sent successfully:", info.response);
-        } catch (error) {
-            console.error("Failed to send email:", error);
-            throw new Error("Failed to send registration email.");
+        try{
+            sendMailToUser(username,password);
+        }
+        catch(error){
+            console.log("Error for sending mail : ",error);
         }
 
         // Hash the password before storing it
@@ -107,71 +87,53 @@ class DbService{
 
 
 
-        // Add a teacher to the database and send a welcome email
-        async addTeacher(name, email, department, contact, password) {
-            // Validate email format
-            if (!validator.isEmail(email)) {
-                throw new Error("Invalid email format.");
-            }
-        
-            // Validate phone number format
-            if (!validator.isMobilePhone(contact, 'any')) {
-                throw new Error("Invalid contact number.");
-            }
-        
-            const teacherId = this.calculateteacherId(name, contact);
-        
-            // Configure nodemailer transporter
-            const transporter = nodemailer.createTransport({
-                host: process.env.SMTP_HOST,
-                port: process.env.SMTP_PORT || 587,
-                secure: process.env.SMTP_PORT === '465',
-                auth: {
-                    user: process.env.SMTP_USER,
-                    pass: process.env.SMTP_PASS,
-                },
-            });
-        
-            const mailOptions = {
-                from: `"QuizMania" <${process.env.SMTP_USER}>`,
-                to: email,
-                subject: "Welcome to Our Platform!",
-                text: `Hello ${name},\n\nThank you for registering!\n\nYour credentials are:\nUsername: ${teacherId}\nPassword: ${password}\n\nPlease keep this information secure.\n\nBest Regards,\nQuizMania Team`,
-            };
-        
-            try {
-                // Send email before database insertion
-                const info = await transporter.sendMail(mailOptions);
-                console.log("Email sent successfully:", info.response);
-                // Hash the password and insert into the database
-                const hashedPassword = this.hashPassword(password);
-
-                const queryforstudentlogin = "INSERT INTO loginCredentials (username, password,isTeacher) VALUES (?, ?,?)";
-                const setLogin = await new Promise((resolve,reject)=>{
-                    connection.execute(queryforstudentlogin, [teacherId, hashedPassword,true], (err, results) => {
-                    if (err) {
-                        console.error("Error inserting userlogin:", err);
-                        reject(new Error(err.message))
-                    } else {
-                        console.log("User successfully registered!");
-                        //Here code for sending message of the username and password in user's phone
-                        resolve(results);
-                    }
-                    });
-                })
-               if(setLogin){
-                   const query = `
-                       INSERT INTO teacherdetails (teacherid, name, email, department, contact)
-                       VALUES (?, ?, ?, ?, ?)
-                   `;
-                   const result = await connection.promise().execute(query, [teacherId, name, email, department, contact]);
-                   return { message: "Teacher registered successfully!", result };
-               }
-            } catch (error) {
-                console.error("Failed to register teacher:", error);
-                throw new Error("Registration failed. Please try again.");
-            }
+    // Add a teacher to the database and send a welcome email
+    async addTeacher(name, email, department, contact, password) {
+        // Validate email format
+        if (!validator.isEmail(email)) {
+            throw new Error("Invalid email format.");
         }
+    
+        // Validate phone number format
+        if (!validator.isMobilePhone(contact, 'any')) {
+            throw new Error("Invalid contact number.");
+        }
+    
+        const teacherId = this.calculateteacherId(name, contact);
+    
+        try {
+            // sendMail(teacherId,password);
+            // Hash the password and insert into the database
+            const hashedPassword = this.hashPassword(password);
+
+            const queryforstudentlogin = "INSERT INTO loginCredentials (username, password,isTeacher) VALUES (?, ?,?)";
+            const setLogin = await new Promise((resolve,reject)=>{
+                connection.execute(queryforstudentlogin, [teacherId, hashedPassword,true], (err, results) => {
+                if (err) {
+                    console.error("Error inserting userlogin:", err);
+                    reject(new Error(err.message))
+                } else {
+                    console.log("User successfully registered!");
+                    //Here code for sending message of the username and password in user's phone
+                    resolve(results);
+                }
+                });
+            })
+            if(setLogin){
+                const query = `
+                    INSERT INTO teacherdetails (teacherid, name, email, department, contact)
+                    VALUES (?, ?, ?, ?, ?)
+                `;
+                const result = await connection.promise().execute(query, [teacherId, name, email, department, contact]);
+                const newTeacher = new teachers({teacher_id:teacherId,created_exams:[]});
+                await newTeacher.save() ;
+                return { message: "Teacher registered successfully!", result };
+            }
+        } catch (error) {
+            console.error("Failed to register teacher:", error);
+            throw new Error("Registration failed. Please try again.");
+        }
+    }
         
         // Add this method to the DbService class
         calculateteacherId(name, contact) {
@@ -260,6 +222,36 @@ class DbService{
             })
         })
         return userFullName;
+    }
+
+    sendMailToUser =async(id,password)=>{
+        // Configure the transport using SMTP settings from .env
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,  // Gmail's SMTP host
+            port: process.env.SMTP_PORT || 587,  // Use port 587 for TLS or 465 for SSL
+            secure: process.env.SMTP_PORT === '465',  // true for SSL (port 465)
+            auth: {
+                user: process.env.SMTP_USER,  // Your Gmail email address
+                pass: process.env.SMTP_PASS,  // App password or Gmail password (depending on 2FA)
+            },
+        });
+    
+        // Set up the email options
+        const mailOptions = {
+            from: `"QuizMania" <${process.env.SMTP_USER}>`, // Sender's email
+            to: email,  // Receiver's email (user's email)
+            subject: "Welcome to Our Platform!",  // Email subject
+            text: `Hello ${firstname} ${lastname},\n\nThank you for registering!\n\nYour credentials are:\nUsername: ${id}\nPassword: ${password}\n\nPlease keep this information secure.\n\nBest Regards,\nQuizMania Team`, // Email body in plain text
+        };
+    
+        // Send the email
+        try {
+            const info = await transporter.sendMail(mailOptions);
+            console.log("Email sent successfully:", info.response);
+        } catch (error) {
+            console.error("Failed to send email:", error);
+            throw new Error("Failed to send registration email.");
+        }
     }
 }
 
