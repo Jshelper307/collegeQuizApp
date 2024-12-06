@@ -32,16 +32,16 @@ function verifyUser(req,res,next){
 // get subjects
 router.post('/getSubject/:subjectId',verifyUser,async(req,res)=>{
     // console.log("secret key : ",process.env.SECRET_KEY);
-    const isValidUser = jwt.verify(req.token,process.env.SECRET_KEY,(error,data)=>{
+    const User = jwt.verify(req.token,process.env.SECRET_KEY,(error,data)=>{
         if(error){
             // console.log("Invalid token");
-            return false;
+            return ({isValid:false});
         }else{
             // console.log("valid user from getSubject....",data)
-            return true;
+            return ({isValid:true,isTeacher:data.isTeacher});
         }
     })
-    if(isValidUser){
+    if(User.isValid){
         try {
             const { subjectId } = req.params;
             // Find the exam by ID
@@ -51,7 +51,7 @@ router.post('/getSubject/:subjectId',verifyUser,async(req,res)=>{
                 return res.status(404).send({ success: false, error: 'Subject not found' });
             }
             
-            res.send({ success: true, subject:subject });
+            res.send({ success: true, subject:subject ,isTeacher:User.isTeacher });
         } catch (error) {
             console.error('Error fetching subject:', error.message);
             res.status(500).send({ success: false, error: 'Internal Server Error' });

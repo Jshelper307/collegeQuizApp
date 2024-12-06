@@ -8,8 +8,9 @@ let isTeacher = false;
 let addedQuestions = [];
 
 // when page load
-document.addEventListener("DOMContentLoaded", () => {
-
+document.addEventListener("DOMContentLoaded", async () => {
+    await getData();
+    console.log(isTeacher);
     // check who is user teache or student
     if(isTeacher){
         document.getElementById("teacherContent").style.display = "block";
@@ -22,12 +23,16 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector(".hello").style.display = "flex";
     }
 
+ 
+});
+
+const getData = async ()=>{
   const subjectName = document.getElementById("subjectName");
   const subjectId = localStorage.getItem("subjectId");
   
-  url = `http://localhost:3000/api//getSubject/${subjectId}`;
+  url = `http://localhost:3000/api/getSubject/${subjectId}`;
   const token = localStorage.getItem("token");
-  fetch(url,{
+  await fetch(url,{
     method:'POST',
     headers:{
       'Content-Type': 'application/json',
@@ -36,8 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
   })
     .then((response) => response.json())
     .then((data) => {
-      // console.log(data);
+      console.log(data);
       if(data.success){
+        isTeacher = data.isTeacher;
         subjectName.innerHTML = data['subject']['subjectName'];
         loadUnits(data['subject']['units']);
       }
@@ -51,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((error) => {
       console.log(error);
     });
-});
+}
 
 const loadUnits = (units) => {
     const unitContainer = document.getElementById("dropdown-content");

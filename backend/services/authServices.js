@@ -68,12 +68,12 @@ class DbService{
         const hashedPassword = this.hashPassword(password);
     
         // SQL query to insert username and hashed password
-        const queryforstudentlogin = "INSERT INTO studentlogin (username, password) VALUES (?, ?)";
+        const queryforstudentlogin = "INSERT INTO loginCredentials (username, password,isTeacher) VALUES (?, ?,?)";
         const queryforstudentdetails = "INSERT INTO studentdetails (studentid,firstname,lastname,email,phone,college,universityrollnumber) VALUES (? , ? , ? , ? , ? , ? , ?)"
     
         // Execute the MySQL query
         const setLogin = await new Promise((resolve,reject)=>{
-            connection.execute(queryforstudentlogin, [username, hashedPassword], (err, results) => {
+            connection.execute(queryforstudentlogin, [username, hashedPassword,false], (err, results) => {
             if (err) {
                 console.error("Error inserting userlogin:", err);
                 reject(new Error(err.message))
@@ -143,15 +143,30 @@ class DbService{
                 // Send email before database insertion
                 const info = await transporter.sendMail(mailOptions);
                 console.log("Email sent successfully:", info.response);
-        
                 // Hash the password and insert into the database
                 const hashedPassword = this.hashPassword(password);
-                const query = `
-                    INSERT INTO teacherdetails (teacherid, name, email, department, contact, password)
-                    VALUES (?, ?, ?, ?, ?, ?)
-                `;
-                const result = await connection.promise().execute(query, [teacherId, name, email, department, contact, hashedPassword]);
-                return { message: "Teacher registered successfully!", result };
+
+                const queryforstudentlogin = "INSERT INTO loginCredentials (username, password,isTeacher) VALUES (?, ?,?)";
+                const setLogin = await new Promise((resolve,reject)=>{
+                    connection.execute(queryforstudentlogin, [teacherId, hashedPassword,true], (err, results) => {
+                    if (err) {
+                        console.error("Error inserting userlogin:", err);
+                        reject(new Error(err.message))
+                    } else {
+                        console.log("User successfully registered!");
+                        //Here code for sending message of the username and password in user's phone
+                        resolve(results);
+                    }
+                    });
+                })
+               if(setLogin){
+                   const query = `
+                       INSERT INTO teacherdetails (teacherid, name, email, department, contact)
+                       VALUES (?, ?, ?, ?, ?)
+                   `;
+                   const result = await connection.promise().execute(query, [teacherId, name, email, department, contact]);
+                   return { message: "Teacher registered successfully!", result };
+               }
             } catch (error) {
                 console.error("Failed to register teacher:", error);
                 throw new Error("Registration failed. Please try again.");
@@ -171,7 +186,7 @@ class DbService{
 
     async verifyUser(username, inputPassword){
         // SQL query to get the hashed password by username
-        const query = 'SELECT password FROM studentlogin WHERE username = ?';
+        const query = 'SELECT password,isTeacher FROM loginCredentials WHERE username = ?';
         // Execute the query
         const result = await new Promise((resolve,reject)=>{
             connection.execute(query, [username], (err, results) => {
@@ -187,7 +202,7 @@ class DbService{
             
                     if (isPasswordCorrect) {
                         // console.log('Password is correct!');
-                        resolve({success:true,message:"logged in..."});
+                        resolve({success:true,message:"logged in...",isTeacher:results[0].isTeacher});
                     } else {
                         // console.log('Incorrect password.');
                         reject({success:false,message:"Invalid Password"});
@@ -205,25 +220,40 @@ class DbService{
         
 
     async login(userName,password){
-        const {success,message} = await this.verifyUser(userName,password);
-        const userNameresult = await this.getUserName(userName);
+        const {success,message,isTeacher} = await this.verifyUser(userName,password);
+        const teacher = isTeacher===0?false:true;
+        const userNameresult = await this.getUserName(userName,teacher);
         const result = {
             success:success,
             message:message,
+            isTeacher:teacher,
             userNameresult:userNameresult
         }
+        // console.log("Result from login : ",result)
         return result;
     }
 
-    async getUserName(userName){
+    async getUserName(userName,isTeacher){
+        let query;
+        let name;
+        if(isTeacher){
+            query = "SELECT name FROM teacherdetails WHERE teacherid=?"
+        }
+        else{
+            query = "SELECT firstname,lastname FROM studentdetails WHERE studentid=?"
+        }
         const userFullName =await new Promise((resolve,reject)=>{
-            let query = "SELECT firstname,lastname FROM studentdetails WHERE studentid=?"
             connection.execute(query,[userName],(error,results)=>{
                 if(error){
                     reject(error.message);
                 }
                 else{
-                    const name = `${results[0].firstname} ${results[0].lastname}`
+                    if(isTeacher){
+                        name = results[0].name
+                    }
+                    else{
+                        name = `${results[0].firstname} ${results[0].lastname}`
+                    }
                     // console.log("name form getUserName : ",name);
                     resolve(name);
                 }
