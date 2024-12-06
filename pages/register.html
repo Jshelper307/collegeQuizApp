@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="utf-8">
     <title>QuizMania</title>
@@ -7,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
     <div class="wrapper">
         <div class="title-text">
@@ -22,12 +24,14 @@
                 <div class="slider-tab"></div>
             </div>
             <div class="form-inner">
-                <form class="loginForm">
+                <form class="loginForm" onsubmit="return validateLoginForm()">
                     <div class="field">
                         <input type="text" id="userNameInp" placeholder="Username" required>
+                        <span class="error-message" id="usernameError"></span>
                     </div>
                     <div class="field">
                         <input type="password" id="loginPassword" placeholder="Password" required>
+                        <span class="error-message"></span>
                         <i id="toggleLoginPassword" class="fas fa-eye"></i>
                     </div>
                     <div class="pass-link"><a href="#">Forgot password?</a></div>
@@ -36,21 +40,25 @@
                         <input type="submit" id="loginBtn" value="Login">
                     </div>
                     <div class="signup-link">Not a member? <a href="#">Signup now</a></div>
-                    <div class="signup-link">You are a Teacher? Then regester Here <a href="#">Signup now</a></div>
+                    <div class="signup-link">You are a Teacher? Then register Here <a href="#">Signup now</a></div>
                     <div class="signup-link">Go To <a href="./index.html">Home Page</a></div>
                 </form>
-                <form class="signupForm">
+
+                <form class="signupForm" onsubmit="return validateSignupForm()">
                     <div class="field">
                         <input type="text" id="firstNameInp" placeholder="First Name" required>
+                        <span class="error-message" id="firstNameError"></span>
                     </div>
                     <div class="field">
                         <input type="text" id="lastNameInp" placeholder="Last Name" required>
+                        <span class="error-message" id="lastNameError"></span>
                     </div>
                     <div class="field">
                         <input type="text" id="emailAddressInp" placeholder="Email Address" required>
                     </div>
                     <div class="field">
                         <input type="text" id="phoneInp" placeholder="Phone" required>
+                        <span class="error-message" id="phoneError"></span>
                     </div>
                     <div class="field">
                         <input type="text" id="collegeNameInp" placeholder="College Name" required>
@@ -67,12 +75,72 @@
                     </div>
                     <div class="field btn">
                         <div class="btn-layer"></div>
-                        <input type="submit" id="signupBtn" value="Singup">
+                        <input type="submit" id="signupBtn" value="Signup">
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
     <script src="../logic/loginAndRegisterPageLogic.js"></script>
+
+    <script>
+        function validateLoginForm() {
+            const username = document.getElementById('userNameInp').value;
+            const usernameError = document.getElementById('usernameError');
+
+            if (!/^[A-Za-z]+$/.test(username)) {
+                usernameError.textContent = "Username must contain only alphabets.";
+                return false;
+            }
+            usernameError.textContent = ""; // Clear error message
+            return true;
+        }
+
+        function validateSignupForm() {
+            const firstName = document.getElementById('firstNameInp').value;
+            const lastName = document.getElementById('lastNameInp').value;
+            const phoneInput = document.getElementById('phoneInp');
+            const phoneError = document.getElementById('phoneError');
+            const validContactRegex = /^[0-9]{10}$/;
+
+            let isValid = true;
+
+            // First Name Validation
+            if (!/^[A-Za-z]+$/.test(firstName)) {
+                document.getElementById('firstNameError').textContent = "First name must contain only alphabets.";
+                isValid = false;
+            } else {
+                document.getElementById('firstNameError').textContent = "";
+            }
+
+            // Last Name Validation
+            if (!/^[A-Za-z]+$/.test(lastName)) {
+                document.getElementById('lastNameError').textContent = "Last name must contain only alphabets.";
+                isValid = false;
+            } else {
+                document.getElementById('lastNameError').textContent = "";
+            }
+
+            // Contact Number Validation
+            const contactValue = phoneInput.value.trim();
+            if (contactValue === '') {
+                isValid = false;
+                phoneError.textContent = 'Contact number is required.';
+                phoneInput.style.borderColor = 'red';
+            } else if (!validContactRegex.test(contactValue)) {
+                isValid = false;
+                phoneError.textContent = 'Contact number must be exactly 10 digits with no alphabets or special characters.';
+                phoneInput.style.borderColor = 'red';
+            } else {
+                phoneError.textContent = '';
+                phoneInput.style.borderColor = '';
+            }
+
+            return isValid;
+        }
+    </script>
 </body>
+
 </html>
