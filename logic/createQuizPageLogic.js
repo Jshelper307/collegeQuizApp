@@ -66,6 +66,9 @@ document.querySelector(".done").addEventListener("click", () => {
   const timePerQuestionAns = timePerQuestion.value === "other" ? customtimePerQuestion : timePerQuestion;
   const pointsPerQuestionAns = points.value === "other" ? customPoints : points;
 
+  // get the token from localstorage
+  const token = localStorage.getItem("token");
+
   // validate the form
   const isValidForm = validateForm(
     departmentAns,
@@ -83,7 +86,8 @@ document.querySelector(".done").addEventListener("click", () => {
   // Submit the data in database
   fetch('http://localhost:3000/exams/create-exam',{
         headers:{
-          'content-type':'application/json'
+          'content-type':'application/json',
+          'Authorization': `Bearer ${token}`
         },
         method:"POST",
         body: JSON.stringify({department :departmentAns.value,subject:subjectAns.value,title :topic.value,description:description.value,time_limit_perQuestion:timePerQuestionAns.value,points_per_question :pointsPerQuestionAns.value,exam_start_date:startDateAndTime.value,exam_end_date:endDateAndTime.value,questionsWithAns:questions})

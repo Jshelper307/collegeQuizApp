@@ -4,6 +4,8 @@ const Exam = require('../models/exam'); // Import the Exam model
 const Results = require('../models/resultSchema'); // Import the Result model
 const {hasUserResponded,checkExamStartDate} = require('../services/mongoDbServices')
 const {v4 : uuidv4} = require('uuid');
+const teachers = require('../models/teachers');
+const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
@@ -13,34 +15,63 @@ let exams = {};
 // connect with mongodb
 connectMongoDB();
 
-
+// check the user is regestard or not
+function verifyUser(req,res,next){
+    const bearerHeader = req.headers['authorization'];
+    // console.log("bear : ",bearerHeader)
+    if(typeof bearerHeader !== 'undefined'){
+      const token = bearerHeader.split(" ")[1];
+    //   console.log("token from verify user : ",token);
+      req.token = token;
+      next();
+    }
+    else{
+      res.send({
+        result : "Token is not valid"
+      })
+    }
+  }
 
 // API to create an exam
-router.post('/create-exam', async (req, res) => {
-    try {
-        const {department,subject,title,description,time_limit_perQuestion,points_per_question,exam_start_date,exam_end_date,questionsWithAns} = req.body;
-
-        const examId = uuidv4(); // Generate a unique ID for the exam
-        exams = {
-            exam_id : examId,
-            exam_start_date:exam_start_date,
-            exam_end_date:exam_end_date,
-            exam : {department,subject,title,description,time_limit_perQuestion,points_per_question,questionsWithAns}
-        };
-        const examResult = {
-            examId:examId,
-            results:[]
+router.post('/create-exam',verifyUser,async (req, res) => {
+    const User = jwt.verify(req.token,process.env.SECRET_KEY,(error,data)=>{
+        if(error){
+            // console.log("Invalid token");
+            return ({isValid:false,error});
+        }else{
+            // console.log("valid user from getSubject....",data)
+            return ({isValid:true,isTeacher:data.isTeacher,teacherId:data.userName});
         }
-        // Create a new exam
-        const newExam = new Exam(exams);
-        const newResult = new Results(examResult);
-        // Save to MongoDB
-        await newExam.save();
-        await newResult.save();
-        res.status(201).send({ success: true, message: 'Exam created successfully!',examUrl: `http://localhost:5500/pages/test.html?id=${examId}` });
-    } catch (error) {
-        console.error('Error creating exam:', error.message);
-        res.status(500).send({ success: false, error: 'Internal Server Error' });
+    })
+    if(User.isValid && User.isTeacher){
+        try {
+            const {department,subject,title,description,time_limit_perQuestion,points_per_question,exam_start_date,exam_end_date,questionsWithAns} = req.body;
+            const examId = uuidv4(); // Generate a unique ID for the exam
+            exams = {
+                exam_id : examId,
+                exam_start_date:exam_start_date,
+                exam_end_date:exam_end_date,
+                exam : {department,subject,title,description,time_limit_perQuestion,points_per_question,questionsWithAns}
+            };
+            const examResult = {
+                examId:examId,
+                results:[]
+            }
+            // Create a new exam
+            const newExam = new Exam(exams);
+            const newResult = new Results(examResult);
+            
+            // Save to MongoDB
+            await newExam.save();
+            await newResult.save();
+            const teachersDB = await teachers.findOne({teacher_id:User.teacherId});
+            teachersDB.created_exams.push(examId);
+            teachersDB.save();
+            res.status(201).send({ success: true, message: 'Exam created successfully!',examUrl: `http://localhost:5500/pages/test.html?id=${examId}` });
+        } catch (error) {
+            console.error('Error creating exam:', error.message);
+            res.status(500).send({ success: false, error: 'Internal Server Error' });
+        }
     }
 });
 
