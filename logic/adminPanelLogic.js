@@ -7,6 +7,85 @@ const leaderboardData = [
   { rank: 5, name: 'Neha', score: 75,time:'24s' },
 ];
 
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const token = localStorage.getItem("token");
+  getTeacherData(token);
+})
+
+const getTeacherData = (token)=>{
+  const url = `http://localhost:3000/teacher/getTeacher`;
+  fetch(url,{
+    headers:{
+      'content-type':'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    method:"POST",
+  }).then(response=>response.json())
+  .then(data=>{
+    console.log("Data from adminpanel.js : ",data);
+    if(data.success){
+      loadData(data.exams);
+    }
+  })
+  .catch(error=>{
+    console.log("Error from adminpanel.js : ",error);
+  })
+}
+
+// load the exam data to frontend
+const loadData = (examData)=>{
+  examData.map(exam=>{
+    if(exam.status === "Not Started"){
+      addUpcomming(exam);
+    }
+    else{
+      addLiveAndFinished(exam);
+    }
+  })
+
+}
+
+const addUpcomming = (exam)=>{
+  const upcommingTestsDiv = document.getElementById("upcommingTests");
+  const div = document.createElement("div");
+  div.className = "box";
+  div.innerHTML = `<h3>${exam.details.exam_title}</h3>
+              <h4>${exam.details.examStartDate} to ${exam.details.examEndDate}</h4>`
+  div.addEventListener("click",()=>{
+    console.log("clicked in : ",exam.examId);
+  })
+  upcommingTestsDiv.appendChild(div);
+}
+
+const addLiveAndFinished = (exam)=>{
+  const liveAndFinishedTestsDiv = document.getElementById("liveAndFinishedTests");
+  const div = document.createElement("div");
+  div.className = "box";
+  div.innerHTML = `<h3>${exam.details.exam_title}</h3>
+              <h4>${exam.details.examStartDate} to ${exam.details.examEndDate}</h4>`
+  div.addEventListener("click",()=>{
+    console.log("clicked in : ",exam.examId);
+  })
+  liveAndFinishedTestsDiv.appendChild(div);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Reference to the leaderboard list
 const leaderboardList = document.getElementById('leaderboard');
 

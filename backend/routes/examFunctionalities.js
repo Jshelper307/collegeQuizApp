@@ -2,7 +2,7 @@ const express = require('express')
 const connectMongoDB = require('../db/mongoConnection')
 const Exam = require('../models/exam'); // Import the Exam model
 const Results = require('../models/resultSchema'); // Import the Result model
-const {hasUserResponded,checkExamStartDate} = require('../services/mongoDbServices')
+const {hasUserResponded,checkExamStartDate,verifyUser} = require('../services/mongoDbServices')
 const {v4 : uuidv4} = require('uuid');
 const teachers = require('../models/teachers');
 const jwt = require('jsonwebtoken');
@@ -14,23 +14,6 @@ let exams = {};
 
 // connect with mongodb
 connectMongoDB();
-
-// check the user is regestard or not
-function verifyUser(req,res,next){
-    const bearerHeader = req.headers['authorization'];
-    // console.log("bear : ",bearerHeader)
-    if(typeof bearerHeader !== 'undefined'){
-      const token = bearerHeader.split(" ")[1];
-    //   console.log("token from verify user : ",token);
-      req.token = token;
-      next();
-    }
-    else{
-      res.send({
-        result : "Token is not valid"
-      })
-    }
-  }
 
 // API to create an exam
 router.post('/create-exam',verifyUser,async (req, res) => {

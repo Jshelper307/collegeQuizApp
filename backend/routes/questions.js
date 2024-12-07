@@ -2,6 +2,7 @@
 const express = require('express');
 const Subject = require('../models/subjects');
 const connectMongoDB = require('../db/mongoConnection');
+const {verifyUser} = require('../services/mongoDbServices');
 const DbService = require('../services/dbService');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
@@ -10,24 +11,6 @@ const jwt = require('jsonwebtoken');
 
 // create connection with mongodb
 connectMongoDB();
-
-// check the user is regestard or not
-function verifyUser(req,res,next){
-    const bearerHeader = req.headers['authorization'];
-    // console.log("bear : ",bearerHeader)
-    if(typeof bearerHeader !== 'undefined'){
-      const token = bearerHeader.split(" ")[1];
-    //   console.log("token from verify user : ",token);
-      req.token = token;
-      next();
-    }
-    else{
-      res.send({
-        result : "Token is not valid"
-      })
-    }
-  }
-  
 
 // get subjects
 router.post('/getSubject/:subjectId',verifyUser,async(req,res)=>{
