@@ -10,10 +10,10 @@ const leaderboardData = [
 
 document.addEventListener('DOMContentLoaded',()=>{
   const token = localStorage.getItem("token");
-  getTeacherData(token);
+  loadTeacherData(token);
 })
 
-const getTeacherData = (token)=>{
+const loadTeacherData = (token)=>{
   const url = `http://localhost:3000/teacher/getTeacher`;
   fetch(url,{
     headers:{
@@ -50,11 +50,34 @@ const addUpcomming = (exam)=>{
   const upcommingTestsDiv = document.getElementById("upcommingTests");
   const div = document.createElement("div");
   div.className = "box";
-  div.innerHTML = `<h3>${exam.details.exam_title}</h3>
-              <h4>${exam.details.examStartDate} to ${exam.details.examEndDate}</h4>`
-  div.addEventListener("click",()=>{
-    console.log("clicked in : ",exam.examId);
+  const descDiv = document.createElement("div");
+  descDiv.className = "descriptionContainer";
+  descDiv.innerHTML = `Description<p>${exam.details.exam_description}</p>`
+  const titleDiv = document.createElement("h3");
+  titleDiv.innerHTML = `Title : ${exam.details.exam_title}`;
+  const datesDiv = document.createElement("div");
+  datesDiv.innerHTML = `Start : <span>${exam.details.examStartDate}</span><br>End : <span>${exam.details.examEndDate}</span>`;
+  const buttonHolderDiv = document.createElement("div");
+  buttonHolderDiv.className = "buttonHolder";
+  const editBtn = document.createElement("button");
+  editBtn.className = "Btn";
+  editBtn.innerHTML = `<img src="../icons/icons8-edit.svg" alt="edit">`
+  editBtn.addEventListener("click",()=>{
+    console.log("Edited : ",exam.examId);
   })
+  const deleteBtn = document.createElement("button");
+  deleteBtn.className = "Btn";
+  deleteBtn.innerHTML = `<img src="../icons/icons8-delete.svg" alt="delete">`
+  deleteBtn.addEventListener("click",()=>{
+    console.log("Deleted : ",exam.examId);
+  })
+  buttonHolderDiv.appendChild(editBtn);
+  buttonHolderDiv.appendChild(deleteBtn);
+
+  div.appendChild(descDiv);
+  div.appendChild(titleDiv);
+  div.appendChild(datesDiv);
+  div.appendChild(buttonHolderDiv);
   upcommingTestsDiv.appendChild(div);
 }
 
@@ -62,11 +85,19 @@ const addLiveAndFinished = (exam)=>{
   const liveAndFinishedTestsDiv = document.getElementById("liveAndFinishedTests");
   const div = document.createElement("div");
   div.className = "box";
-  div.innerHTML = `<h3>${exam.details.exam_title}</h3>
-              <h4>${exam.details.examStartDate} to ${exam.details.examEndDate}</h4>`
-  div.addEventListener("click",()=>{
-    console.log("clicked in : ",exam.examId);
-  })
+  const descDiv = document.createElement("div");
+  descDiv.className = "descriptionContainer";
+  descDiv.innerHTML = `Description<p>${exam.details.exam_description}</p>`
+  const titleDiv = document.createElement("h3");
+  titleDiv.innerHTML = `Title : ${exam.details.exam_title}`;
+  const datesDiv = document.createElement("div");
+  datesDiv.innerHTML = `Start : <span>${exam.details.examStartDate}</span><br>End : <span>${exam.details.examEndDate}</span>`;
+  const statusDiv = document.createElement("div");
+  statusDiv.innerHTML=`🔴 Live`;
+  datesDiv.appendChild(statusDiv);
+  div.appendChild(descDiv);
+  div.appendChild(titleDiv);
+  div.appendChild(datesDiv);
   liveAndFinishedTestsDiv.appendChild(div);
 }
 
