@@ -1,8 +1,8 @@
 
 let examData = {};
-
 let currentInd = 0;
-let answerWithTime = [];
+let totalMarks = 0;
+let totalTimeTaken = 0;
 let totalQuestions = 0;
 let timerId;
 let timeGapId;
@@ -139,15 +139,16 @@ next.addEventListener("click",()=>{
 const saveAnswerAndGoNextQuestion = (currentInd,isClicked)=>{
     if(isClicked){
         const options = document.getElementsByName("option");
+        const correctAns = examData.exams.exam.questionsWithAns[currentInd-1].answer;
         let isAnswered = false;
         for(let i=0;i<options.length;i++){
             if(options[i].checked){
                 console.log("ans is : ",options[i].value);
                 console.log("time taken : ",perQuestionTimeLimit-remainingTime);
-                answerWithTime.push({
-                    answer:options[i].value,
-                    timeTaken:(perQuestionTimeLimit-remainingTime)
-                })
+                if(correctAns===options[i].value){
+                    totalMarks += examData.exams.exam.points_per_question;
+                }
+                totalTimeTaken += (perQuestionTimeLimit-remainingTime);
                 isAnswered = true;
             }
         }
@@ -156,20 +157,15 @@ const saveAnswerAndGoNextQuestion = (currentInd,isClicked)=>{
             return;
         }
     }
-    else{
-        answerWithTime.push({
-            answer:null,
-            timeTaken:perQuestionTimeLimit
-        })
-    }
     if(currentInd == totalQuestions){
         next.style.display = "none";
         optionsContainer.innerHTML = "";
-        // storeResult();
+        storeResult();
         question_text.innerHTML = "Thankyou For participating...! We recorder your response. Result will be declared soon....";
         clearInterval(timerId);
         timer.innerHTML = "";
-        console.log("Answer with time : ",answerWithTime);
+        console.log("total marks : ",totalMarks);
+        console.log("time taken : ",totalTimeTaken);
     }
     else{
         loadQuestion(currentInd);
@@ -179,7 +175,6 @@ const saveAnswerAndGoNextQuestion = (currentInd,isClicked)=>{
 // This function store the result in the database
 const storeResult = ()=>{
     console.log("exam id : ",examId);
-    console.log(answerWithTime);
     const userName = '27600121023JS'
     const url =`http://localhost:3000/exams/exam/${examId}/store_result/${userName}`;
     fetch(url,{
@@ -187,7 +182,7 @@ const storeResult = ()=>{
             'content-type':'application/json'
         },
         method: 'POST',
-        body: JSON.stringify({answerWithTime:answerWithTime})
+        body: JSON.stringify({totalMarks,totalTimeTaken})
     })
     .then(response=>{
         return response.json();

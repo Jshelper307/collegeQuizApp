@@ -113,12 +113,13 @@ router.post('/exam/:exam_id/store_result/:username', async (req, res) => {
     try {
         const exam_id = req.params.exam_id;
         const userName = req.params.username;
-        const {answerWithTime} = req.body;
+        const {totalMarks,totalTimeTaken} = req.body;
         // console.log("examID from server : ",exam_id);
         const resultsDb = await Results.findOne({examId:exam_id});
         const studentResult = {
             userName:userName,
-            answerWithTime:answerWithTime
+            totalMarks:totalMarks,
+            totalTimeTaken:totalTimeTaken
         }
         // console.log(resultsDb);
         resultsDb.results.push(studentResult);

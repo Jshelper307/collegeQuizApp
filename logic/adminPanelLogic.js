@@ -92,12 +92,17 @@ const addLiveAndFinished = (exam)=>{
   titleDiv.innerHTML = `Title : ${exam.details.exam_title}`;
   const datesDiv = document.createElement("div");
   datesDiv.innerHTML = `Start : <span>${exam.details.examStartDate}</span><br>End : <span>${exam.details.examEndDate}</span>`;
-  const statusDiv = document.createElement("div");
-  statusDiv.innerHTML=`🔴 Live`;
-  datesDiv.appendChild(statusDiv);
+  if(exam.status === "Live"){
+    const statusDiv = document.createElement("div");
+    statusDiv.innerHTML=`🔴 Live`;
+    datesDiv.appendChild(statusDiv);
+  }
   div.appendChild(descDiv);
   div.appendChild(titleDiv);
   div.appendChild(datesDiv);
+  div.addEventListener("click",()=>{
+    console.log("Exam id : ",exam.examId);
+  })
   liveAndFinishedTestsDiv.appendChild(div);
 }
 
