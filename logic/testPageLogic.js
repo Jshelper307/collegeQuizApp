@@ -24,8 +24,20 @@ const params = new URLSearchParams(window.location.search);
 let examId;
 
 document.addEventListener("DOMContentLoaded",async ()=>{
-    showStartPage();
+    const token = localStorage.getItem("token");
+    if(!token){
+        window.location.href = "register.html";
+    }
+    else{
+        checkValidUser(token);
+        showStartPage();
+    }
 })
+
+// Check user is valid or not
+const checkValidUser = (token)=>{
+    console.log(token);
+}
 
 // This function show the starting counter page
 const showStartPage =()=>{
@@ -75,9 +87,20 @@ const startQuiz =async ()=>{
 }
 
 const loadData = async (examId)=>{
-    await fetch(`http://localhost:3000/exams/exam/${examId}`).then(response=>response.json()).then(data=>{
+    const token = localStorage.getItem("token");
+    await fetch(`http://localhost:3000/exams/exam/${examId}`,{
+        headers:{
+            'content-type':'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        method: 'POST',
+    }).then(response=>response.json()).then(data=>{
         if(data.error){
             // console.log("data form loaddata error : ",data);
+            if(data.error === 'Not a Valid user'){
+                window.location.href = "register.html";
+                return;
+            }
             console.log("Error from data : ",data.error);
             isError = {
                 Error:true,
@@ -175,11 +198,12 @@ const saveAnswerAndGoNextQuestion = (currentInd,isClicked)=>{
 // This function store the result in the database
 const storeResult = ()=>{
     console.log("exam id : ",examId);
-    const userName = '27600121023JS'
-    const url =`http://localhost:3000/exams/exam/${examId}/store_result/${userName}`;
+    const token = localStorage.getItem("token");
+    const url =`http://localhost:3000/exams/exam/${examId}/store_result`;
     fetch(url,{
         headers:{
-            'content-type':'application/json'
+            'content-type':'application/json',
+            'Authorization': `Bearer ${token}`
         },
         method: 'POST',
         body: JSON.stringify({totalMarks,totalTimeTaken})

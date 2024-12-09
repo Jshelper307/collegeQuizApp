@@ -58,36 +58,50 @@ router.post('/create-exam',verifyUser,async (req, res) => {
     }
 });
 
-router.get('/exam/:exam_id', async (req, res) => {
-    try {
-        const userName = "27600121023JK";
-        const { exam_id } = req.params;
-        // check exam started or not
-        const examStarted = await checkExamStartDate(exam_id);
-        if(examStarted.success){
-            const alreadyResponded = await hasUserResponded(exam_id,userName);
-            if(alreadyResponded){
-                console.log("You complete this test already ....");
-                return res.send({success:false,error:"You already responded for this exam !!!"})
-            }
-            
-            // Find the exam by ID
-            const exam = await Exam.findOne({ exam_id });
-    
-            if (!exam) {
-                return res.status(404).send({ success: false, error: 'Exam not found' });
-            }
-            // When the exam data come from database this function shuffle all the questions
-            // For this when any user click call this they got every time new question sequence
-            exam.exam.questionsWithAns=shuffleQuestion([...exam.exam.questionsWithAns]);
-            res.send({ success: true, exams:exam });
+router.post('/exam/:exam_id',verifyUser, async (req, res) => {
+    const User = jwt.verify(req.token,process.env.SECRET_KEY,(error,data)=>{
+        if(error){
+            // console.log("Invalid token");
+            return ({isValid:false,error});
+        }else{
+            // console.log("valid user from getSubject....",data)
+            return ({isValid:true,fullName:data.fullName,studentId:data.userName});
         }
-        else{
-            res.send({success:false,error:examStarted.message});
+    })
+    if(User.isValid){
+        try {
+            const userName = User.studentId;
+            const { exam_id } = req.params;
+            // check exam started or not
+            const examStarted = await checkExamStartDate(exam_id);
+            if(examStarted.success){
+                const alreadyResponded = await hasUserResponded(exam_id,userName);
+                if(alreadyResponded){
+                    console.log("You complete this test already ....");
+                    return res.send({success:false,error:"You already responded for this exam !!!"})
+                }
+                
+                // Find the exam by ID
+                const exam = await Exam.findOne({ exam_id });
+        
+                if (!exam) {
+                    return res.status(404).send({ success: false, error: 'Exam not found' });
+                }
+                // When the exam data come from database this function shuffle all the questions
+                // For this when any user click call this they got every time new question sequence
+                exam.exam.questionsWithAns=shuffleQuestion([...exam.exam.questionsWithAns]);
+                res.send({ success: true, exams:exam });
+            }
+            else{
+                res.send({success:false,error:examStarted.message});
+            }
+        } catch (error) {
+            console.error('Error fetching exam:', error.message);
+            res.status(500).send({ success: false, error: 'Internal Server Error' });
         }
-    } catch (error) {
-        console.error('Error fetching exam:', error.message);
-        res.status(500).send({ success: false, error: 'Internal Server Error' });
+    }
+    else{
+        res.send({ success: false, error: 'Not a Valid user' });
     }
 });
 
@@ -109,28 +123,42 @@ router.get('/exam/:exam_id/get_results', async (req, res) => {
     }
 });
 
-router.post('/exam/:exam_id/store_result/:username', async (req, res) => {
-    try {
-        const exam_id = req.params.exam_id;
-        const userName = req.params.username;
-        const {totalMarks,totalTimeTaken} = req.body;
-        // console.log("examID from server : ",exam_id);
-        const resultsDb = await Results.findOne({examId:exam_id});
-        const studentResult = {
-            userName:userName,
-            totalMarks:totalMarks,
-            totalTimeTaken:totalTimeTaken
+router.post('/exam/:exam_id/store_result',verifyUser, async (req, res) => {
+    const User = jwt.verify(req.token,process.env.SECRET_KEY,(error,data)=>{
+        if(error){
+            // console.log("Invalid token");
+            return ({isValid:false,error});
+        }else{
+            // console.log("valid user from getSubject....",data)
+            return ({isValid:true,fullName:data.fullName,studentId:data.userName});
         }
-        // console.log(resultsDb);
-        resultsDb.results.push(studentResult);
-        // console.log(studentResult);
-        // Save to MongoDB
-        const newResult = await resultsDb.save();
-
-        res.status(201).send({ success: true, message: 'userresult saved successfully..',newResult:newResult});
-    } catch (error) {
-        console.error('Error saving user response :', error.message);
-        res.status(500).send({ success: false, error: 'Internal Server Error' });
+    })
+    if(User.isValid){
+        try {
+            const exam_id = req.params.exam_id;
+            const {totalMarks,totalTimeTaken} = req.body;
+            // console.log("examID from server : ",exam_id);
+            const resultsDb = await Results.findOne({examId:exam_id});
+            const studentResult = {
+                userName:User.studentId,
+                fullName:User.fullName,
+                totalMarks:totalMarks,
+                totalTimeTaken:totalTimeTaken
+            }
+            // console.log(resultsDb);
+            resultsDb.results.push(studentResult);
+            // console.log(studentResult);
+            // Save to MongoDB
+            const newResult = await resultsDb.save();
+    
+            res.status(201).send({ success: true, message: 'user result saved successfully..',newResult:newResult});
+        } catch (error) {
+            console.error('Error saving user response :', error.message);
+            res.status(500).send({ success: false, error: 'Internal Server Error' });
+        }
+    }
+    else{
+        res.send({ success: false, error: 'Not a Valid user' });
     }
 });
 

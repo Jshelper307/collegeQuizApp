@@ -102,12 +102,24 @@ const addLiveAndFinished = (exam)=>{
   div.appendChild(datesDiv);
   div.addEventListener("click",()=>{
     console.log("Exam id : ",exam.examId);
+    showLeaderBoard(exam.examId);
   })
   liveAndFinishedTestsDiv.appendChild(div);
 }
 
 
-
+const showLeaderBoard = (examId)=>{
+  const url = `http://localhost:3000/exams/exam/${examId}/get_results`
+  fetch(url)
+  .then(response=>response.json())
+  .then(data=>{
+    console.log("results : ",data.examResults.results);
+    renderLeaderboard(data.examResults.results);
+  })
+  .catch(error=>{
+    console.log("error from showLeaderBoard : ",error);
+  })
+}
 
 
 
@@ -131,15 +143,15 @@ function renderLeaderboard(data) {
   leaderboardList.innerHTML = '';
 
   // Iterate over the data and create list items
-  data.forEach(player => {
+  data.forEach((player,index) => {
     const listItem = document.createElement('li');
     listItem.classList.add('leaderboard-item');
 
     listItem.innerHTML = `
-      <span class="rank">${player.rank}</span>
-      <span class="name">${player.name}</span>
-      <span class="score">${player.score}</span>
-      <span class="time">${player.time}</span>
+      <span class="rank">${index+1}</span>
+      <span class="name">${player.fullName}</span>
+      <span class="score">${player.totalMarks}</span>
+      <span class="time">${player.totalTimeTaken} S</span>
     `;
 
     // Append the item to the leaderboard list
@@ -148,7 +160,7 @@ function renderLeaderboard(data) {
 }
 
 // Render the leaderboard on page load
-renderLeaderboard(leaderboardData);
+// renderLeaderboard(leaderboardData);
 
 
 // Download the Leader board in csv format
