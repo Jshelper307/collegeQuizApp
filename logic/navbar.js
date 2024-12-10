@@ -1,5 +1,6 @@
 let loggedIn = false;
 let nameOfUser = "";
+let isTeacher = false;
 
 document.addEventListener("DOMContentLoaded",()=>{
     const navbar = document.querySelector(".nav__container");
@@ -38,7 +39,7 @@ const getNavbar = (loggedIn)=>{
           Academic
           <ul class="dropdown-menu">
               <li><a href="./academic.html">Question Practice</a></li>
-              <li><a href="./adminPanel.html">Admin Panel</a></li>
+              <li>${isTeacher?`<a href="./adminPanel.html">Admin Panel</a>`:`<p>Admin Panel</p>`}</li>
           </ul>
        </li>
         <li><a href="contact.html">Contact</a></li>
@@ -54,6 +55,7 @@ const setUserName =(token)=>{
   try {
       const decoded = jwt_decode(token);
       nameOfUser = decoded.fullName.split(" ")[0];
+      isTeacher = decoded.isTeacher;
       // console.log(decoded);
   } catch (error) {
       console.log('Invalid token',error);

@@ -124,42 +124,30 @@ router.get('/exam/:exam_id/get_results', async (req, res) => {
 });
 
 router.post('/exam/:exam_id/store_result',verifyUser, async (req, res) => {
-    const User = jwt.verify(req.token,process.env.SECRET_KEY,(error,data)=>{
-        if(error){
-            // console.log("Invalid token");
-            return ({isValid:false,error});
-        }else{
-            // console.log("valid user from getSubject....",data)
-            return ({isValid:true,fullName:data.fullName,studentId:data.userName});
+    const User = jwt.decode(req.token);
+    try {
+        const exam_id = req.params.exam_id;
+        const {totalMarks,totalTimeTaken} = req.body;
+        // console.log("examID from server : ",exam_id);
+        const resultsDb = await Results.findOne({examId:exam_id});
+        const studentResult = {
+            userName:User.userName,
+            fullName:User.fullName,
+            totalMarks:totalMarks,
+            totalTimeTaken:totalTimeTaken
         }
-    })
-    if(User.isValid){
-        try {
-            const exam_id = req.params.exam_id;
-            const {totalMarks,totalTimeTaken} = req.body;
-            // console.log("examID from server : ",exam_id);
-            const resultsDb = await Results.findOne({examId:exam_id});
-            const studentResult = {
-                userName:User.studentId,
-                fullName:User.fullName,
-                totalMarks:totalMarks,
-                totalTimeTaken:totalTimeTaken
-            }
-            // console.log(resultsDb);
-            resultsDb.results.push(studentResult);
-            // console.log(studentResult);
-            // Save to MongoDB
-            const newResult = await resultsDb.save();
+        // console.log(resultsDb);
+        resultsDb.results.push(studentResult);
+        // console.log(studentResult);
+        // Save to MongoDB
+        const newResult = await resultsDb.save();
+
+        res.status(201).send({ success: true, message: 'user result saved successfully..',newResult:newResult});
+    } catch (error) {
+        console.error('Error saving user response :', error.message);
+        res.status(500).send({ success: false, error: 'Internal Server Error' });
+    }
     
-            res.status(201).send({ success: true, message: 'user result saved successfully..',newResult:newResult});
-        } catch (error) {
-            console.error('Error saving user response :', error.message);
-            res.status(500).send({ success: false, error: 'Internal Server Error' });
-        }
-    }
-    else{
-        res.send({ success: false, error: 'Not a Valid user' });
-    }
 });
 
 // This function shuffle the question array using fisher-yates shuffle algorithm

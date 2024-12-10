@@ -4,8 +4,8 @@ const Exam = require('../models/exam');
 async function hasUserResponded(examId, userName) {
     try {
         // Search for the specific exam and check if the user exists in the results
-        console.log("exam id : ",examId);
-        console.log("Userid id : ",userName);
+        // console.log("exam id : ",examId);
+        // console.log("Userid id : ",userName);
 
         const exam = await Results.findOne({
             examId: examId,

@@ -27,10 +27,18 @@ const loadTeacherData = (token)=>{
     if(data.success){
       loadData(data.exams);
     }
+    else if(data.error==='Access Denied'){
+      showError(data.error);
+    }
   })
   .catch(error=>{
     console.log("Error from adminpanel.js : ",error);
   })
+}
+
+// show error
+const showError=(error)=>{
+
 }
 
 // load the exam data to frontend
