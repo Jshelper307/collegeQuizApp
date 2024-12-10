@@ -60,6 +60,7 @@ nav{
     padding: 0;
     margin: 0;
     background-color: #1e1e1e;
+    border-radius: 10px;
     width: max-content;
 }
 
@@ -79,7 +80,7 @@ nav{
     height: 1.7rem;
     position: relative;
 }
-.dropdown-menu li a:hover,.dropdown-menu li p:hover {
+.dropdown-menu li a:hover,.dropdown-menu li p:hover,#logout:hover {
     background-color: #555;
 }
 #userDetails{
@@ -95,12 +96,21 @@ nav{
 
 #logout{
     margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
 }
 /* Show dropdown on hover */
-.dropdown:hover{
+.dropdown:hover,#logout:hover{
     color: #f7c94b;
 }
 .dropdown:hover .dropdown-menu {
+    position: absolute;
+    display: block;
+    z-index: 1;
+}
+#userDetails:hover .dropdown-menu {
     position: absolute;
     display: block;
     z-index: 1;

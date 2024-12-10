@@ -11,16 +11,10 @@ document.addEventListener("DOMContentLoaded",()=>{
       // window.location.href = 'login.html'; // Redirect if no token
       console.log("no token");
     } else if(!loggedIn){
-      setUserName(token);
-      loggedIn = true;
+      const isSet=setUserName(token);
+      isSet?loggedIn = true:loggedIn=false;
     }
     navbar.innerHTML = getNavbar(loggedIn);
-    if(loggedIn){
-      document.getElementById("userDetails").addEventListener("click",()=>{
-        showMenu();
-      })
-    }
-
     document.getElementById("logout").addEventListener("click",()=>{
       localStorage.removeItem("token");
       loggedIn = false;
@@ -43,9 +37,9 @@ const getNavbar = (loggedIn)=>{
           </ul>
        </li>
         <li><a href="contact.html">Contact</a></li>
-        <li id="userDetails">${loggedIn?`<img src="../icons/user.svg" alt="userImage" height="25">${nameOfUser}`:`<a href="./register.html">Login/Regester</a>`}
-          <ul class="clickDrop dropdown-menu" style="display: none;">
-              <li id="logout">Logout</li>
+        <li ${loggedIn?`id="userDetails"`:""}>${loggedIn?`<img src="../icons/user.svg" alt="userImage" height="25">${nameOfUser}`:`<a href="./register.html">Login/Regester</a>`}
+          <ul class="dropdown-menu">
+              <li id="logout"><img src="../icons/logout.svg" alt="logoutLogo" height="25">Logout</li>
           </ul>
         </li>
       </ul>`
@@ -56,6 +50,7 @@ const setUserName =(token)=>{
       const decoded = jwt_decode(token);
       nameOfUser = decoded.fullName.split(" ")[0];
       isTeacher = decoded.isTeacher;
+      return true;
       // console.log(decoded);
   } catch (error) {
       console.log('Invalid token',error);
@@ -63,15 +58,4 @@ const setUserName =(token)=>{
       loggedIn = false;
       window.location.href = 'register.html'; // Redirect on invalid token
   } 
-}
-
-
-
-const showMenu = ()=>{
-  if(document.querySelector(".clickDrop").style.display === "block"){
-    document.querySelector(".clickDrop").style.display = "none";
-  }
-  else{
-    document.querySelector(".clickDrop").style.display = "block";
-  }
 }
