@@ -30,12 +30,12 @@ router.post('/login', async (req, res) => {
     result.then((data) =>{
         const user = {
             userName : userName,
-            isTeacher:false,
+            isTeacher: data.isTeacher,
             fullName : data.userNameresult
         }
         const token = jwt.sign(user,JWT_SECRET,{expiresIn: '1h'});
         // console.log("token : ",token);
-        res.json({ success: true,token:token,data:data });
+        res.json({ success: true,token:token});
     }).catch((error) => console.log("error is : ",error));
 });
 // Sign-up Route
@@ -50,24 +50,6 @@ router.post('/teacher/signup', async (req, res) => {
         console.error('Error in /teacher/signup:', error.message);
         res.status(500).json({ success: false, message: error.message });
     }
-});
-
-// Login Route
-router.post('teacher/login', async (req, res) => {
-    const {userName,password} = req.body;
-    
-    const db = dbService.getDbServiceInstance();
-    const result = db.login(userName,password);
-    result.then((data) =>{
-        const user = {
-            userName : userName,
-            isTeacher:false,
-            fullName : data.userNameresult
-        }
-        const token = jwt.sign(user,JWT_SECRET,{expiresIn: '1h'});
-        // console.log("token : ",token);
-        res.json({ success: true,token:token,data:data });
-    }).catch((error) => console.log("error is : ",error));
 });
 
 module.exports = router;

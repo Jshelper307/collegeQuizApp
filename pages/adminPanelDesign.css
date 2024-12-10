@@ -90,15 +90,122 @@
 
   .scrollable-div .box {
     width: 48%; /* Two boxes per row */
-    height: 100px;
+    /* height: 110px; */
     background-color: #007BFF;
     color: white;
-    place-items: center;
-    border-radius: 5px;
-    padding: 25px;
+    border-radius: 25px;
+    padding: 10px;
     margin: 1%;
     float: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
   }
+
+  .box div{
+    font-size: 1.09rem;
+    font-weight: bold;
+  }
+  .box span{ 
+    color: #f7c94b;
+  }
+  .box p{
+    height: 70%;
+    overflow-y: auto;
+    font-size: small;
+    font-weight: normal;
+    background-color: #f7c94b;
+    opacity: 0;
+  }
+
+  .descriptionContainer{
+    position: absolute;
+    color: black;
+    background-color: #f7c94b;
+    top: 0;
+    right: 0;
+    border-radius: 0px 25px 0px 25px;
+    height: 23%;
+    width: 18%;
+    overflow: hidden;
+    padding: 5px;
+    animation: spreadIn 1s ease-in-out forwards;
+  }
+  .descriptionContainer:hover{
+    animation: spreadOut 1s ease-in-out forwards;
+  }
+  .descriptionContainer:hover p{
+    opacity: 1;
+  }
+
+  /* descriptionContainer animation */
+  @keyframes spreadOut {
+    from{
+      height: 23%;
+      width: 18%;
+      border-radius: 0px 25px 0px 25px;
+    }
+    to{
+      height: 90%;
+      width: 90%;
+      border-radius: 6px 25px 14px 25px;
+    }
+  }
+  @keyframes spreadIn {
+    from{
+      height: 90%;
+      width: 90%;
+      border-radius: 6px 25px 14px 25px;
+    }
+    to{
+      height: 23%;
+      width: 18%;
+      border-radius: 0px 25px 0px 25px;
+    }
+  }
+
+.buttonHolder{
+  /* border: 2px solid red; */
+  background-color: #65626277;
+  position: absolute;
+  width: 100%;
+  border-radius: 10px 10px 25px 25px;
+  left: 0;
+  bottom: -36px;
+  opacity: 0;
+  display: flex;
+  justify-content: flex-end;
+  animation: slideDown 0.5s ease forwards;
+}
+
+.box:hover .buttonHolder{
+  animation: slideUp 0.5s ease forwards;
+}
+
+/* button holder animation */
+@keyframes slideUp {
+  from{
+    bottom: -36px;
+    opacity: 0;
+  }
+  to{
+    bottom: 0;
+    opacity: 1;
+  }
+}
+@keyframes slideDown {
+  from{
+    bottom: 0;
+    opacity: 1;
+  }
+  to{
+    bottom: -36px;
+    opacity: 0;
+  }
+}
+
   button {
     margin: 5px;
     padding: 5px 10px;
@@ -112,6 +219,12 @@
     margin-top:10px ;
   }
   
+  .Btn{
+    border-radius: 10px;
+  }
+  .Btn img{
+    height: 15px;
+  }
 
   .single-box-div {
     flex: 1; /* Takes up 50% of container width */
@@ -206,11 +319,11 @@
 
   }
 .message{
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
+    padding: 10px;
 }
   .leaderboard-header {
     background-color: #f7c94b;
@@ -219,11 +332,14 @@
     padding: 20px;
     font-size: 24px;
     font-weight: bold;
+    display: none;
   }
 
   .leaderboard-list {
     list-style: none;
     padding: 0;
+    max-height: 270px;
+    overflow-y: auto;
   }
 
   .leaderboard-item {
@@ -279,7 +395,16 @@
   }
  
   
-  .h-auto{
+  .leaderboaedHolder{
     height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* max-height: 353px; */
+  }
+
+  .name{
+    max-width: 30%;
+    overflow-x: auto;
   }
   

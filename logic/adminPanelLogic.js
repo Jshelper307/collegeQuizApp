@@ -6,34 +6,146 @@ const leaderboardData = [
   { rank: 4, name: 'soham', score: 80, time:'25s' },
   { rank: 5, name: 'Neha', score: 75,time:'24s' },
 ];
+// {fullName: "Joy Sarkar",totalMarks: 4 ,totalTimeTaken: 6 ,userName: "27600121023JS"}
 
-// Reference to the leaderboard list
-const leaderboardList = document.getElementById('leaderboard');
+document.addEventListener('DOMContentLoaded',()=>{
+  const token = localStorage.getItem("token");
+  loadTeacherData(token);
+})
+
+const loadTeacherData = (token)=>{
+  const url = `http://localhost:3000/teacher/getTeacher`;
+  fetch(url,{
+    headers:{
+      'content-type':'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    method:"POST",
+  }).then(response=>response.json())
+  .then(data=>{
+    // console.log("Data from adminpanel.js : ",data);
+    if(data.success){
+      document.getElementById("greetingDiv").innerHTML = `Welcome, ${data.fullName}`;
+      loadData(data.exams);
+    }
+  })
+  .catch(error=>{
+    console.log("Error from adminpanel.js : ",error);
+  })
+}
+// load the exam data to frontend
+const loadData = (examData)=>{
+  examData.map(exam=>{
+    if(exam.status === "Not Started"){
+      addUpcomming(exam);
+    }
+    else{
+      addLiveAndFinished(exam);
+    }
+  })
+
+}
+
+const addUpcomming = (exam)=>{
+  const upcommingTestsDiv = document.getElementById("upcommingTests");
+  const div = document.createElement("div");
+  div.className = "box";
+  const descDiv = document.createElement("div");
+  descDiv.className = "descriptionContainer";
+  descDiv.innerHTML = `Description<p>${exam.details.exam_description}</p>`
+  const titleDiv = document.createElement("h3");
+  titleDiv.innerHTML = `Title : ${exam.details.exam_title}`;
+  const datesDiv = document.createElement("div");
+  datesDiv.innerHTML = `Start : <span>${exam.details.examStartDate}</span><br>End : <span>${exam.details.examEndDate}</span>`;
+  const buttonHolderDiv = document.createElement("div");
+  buttonHolderDiv.className = "buttonHolder";
+  const editBtn = document.createElement("button");
+  editBtn.className = "Btn";
+  editBtn.innerHTML = `<img src="../icons/icons8-edit.svg" alt="edit">`
+  editBtn.addEventListener("click",()=>{
+    console.log("Edited : ",exam.examId);
+  })
+  const deleteBtn = document.createElement("button");
+  deleteBtn.className = "Btn";
+  deleteBtn.innerHTML = `<img src="../icons/icons8-delete.svg" alt="delete">`
+  deleteBtn.addEventListener("click",()=>{
+    console.log("Deleted : ",exam.examId);
+  })
+  buttonHolderDiv.appendChild(editBtn);
+  buttonHolderDiv.appendChild(deleteBtn);
+
+  div.appendChild(descDiv);
+  div.appendChild(titleDiv);
+  div.appendChild(datesDiv);
+  div.appendChild(buttonHolderDiv);
+  upcommingTestsDiv.appendChild(div);
+}
+
+const addLiveAndFinished = (exam)=>{
+  const liveAndFinishedTestsDiv = document.getElementById("liveAndFinishedTests");
+  const div = document.createElement("div");
+  div.className = "box";
+  const descDiv = document.createElement("div");
+  descDiv.className = "descriptionContainer";
+  descDiv.innerHTML = `Description<p>${exam.details.exam_description}</p>`
+  const titleDiv = document.createElement("h3");
+  titleDiv.innerHTML = `Title : ${exam.details.exam_title}`;
+  const datesDiv = document.createElement("div");
+  datesDiv.innerHTML = `Start : <span>${exam.details.examStartDate}</span><br>End : <span>${exam.details.examEndDate}</span>`;
+  if(exam.status === "Live"){
+    const statusDiv = document.createElement("div");
+    statusDiv.innerHTML=`🔴 Live`;
+    datesDiv.appendChild(statusDiv);
+  }
+  div.appendChild(descDiv);
+  div.appendChild(titleDiv);
+  div.appendChild(datesDiv);
+  div.addEventListener("click",()=>{
+    showLeaderBoard(exam.examId);
+  })
+  liveAndFinishedTestsDiv.appendChild(div);
+}
+
+
+const showLeaderBoard = (examId)=>{
+  const url = `http://localhost:3000/exams/exam/${examId}/get_results`
+  fetch(url)
+  .then(response=>response.json())
+  .then(data=>{
+    console.log(data.examResults.results);
+    renderLeaderboard(data.examResults.results);
+  })
+  .catch(error=>{
+    console.log("error from showLeaderBoard : ",error);
+  })
+}
 
 // Function to render the leaderboard
 function renderLeaderboard(data) {
+  const leaderboard_header = document.querySelector(".leaderboard-header");
+  const leaderboaedHolder = document.querySelector(".leaderboaedHolder");
+  // Reference to the leaderboard list
+  const leaderboardList = document.querySelector(".leaderboard-list");
   // Clear existing items
   leaderboardList.innerHTML = '';
-
+  leaderboard_header.style.display = "block";
+  leaderboaedHolder.style.display = "block";
   // Iterate over the data and create list items
-  data.forEach(player => {
+  data.forEach((player,index) => {
     const listItem = document.createElement('li');
     listItem.classList.add('leaderboard-item');
 
     listItem.innerHTML = `
-      <span class="rank">${player.rank}</span>
-      <span class="name">${player.name}</span>
-      <span class="score">${player.score}</span>
-      <span class="time">${player.time}</span>
+      <span class="rank">${index+1}</span>
+      <span class="name">${player.fullName}</span>
+      <span class="score">${player.totalMarks}</span>
+      <span class="time">${player.totalTimeTaken} S</span>
     `;
 
     // Append the item to the leaderboard list
     leaderboardList.appendChild(listItem);
   });
 }
-
-// Render the leaderboard on page load
-renderLeaderboard(leaderboardData);
 
 
 // Download the Leader board in csv format

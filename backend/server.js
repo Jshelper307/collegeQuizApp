@@ -5,7 +5,8 @@ const dotenv = require('dotenv')
 const dbService = require("./services/dbService");
 const questions = require("./routes/questions");
 const authService = require('./routes/authfunctionalities');
-const examService = require('./routes/examFunctionalities')
+const examService = require('./routes/examFunctionalities');
+const teacherService = require('./routes/teacherFunctionalities');
 dotenv.config();
 
 const app = express();
@@ -22,6 +23,9 @@ app.use('/auth',authService);
 
 // This is middleware for examServices
 app.use('/exams',examService);
+
+// This is middleware for teacherServices
+app.use('/teacher',teacherService);
 
 
 // Fetch data form acadamics table

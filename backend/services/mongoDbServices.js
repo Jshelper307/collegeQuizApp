@@ -4,8 +4,8 @@ const Exam = require('../models/exam');
 async function hasUserResponded(examId, userName) {
     try {
         // Search for the specific exam and check if the user exists in the results
-        console.log("exam id : ",examId);
-        console.log("Userid id : ",userName);
+        // console.log("exam id : ",examId);
+        // console.log("Userid id : ",userName);
 
         const exam = await Results.findOne({
             examId: examId,
@@ -33,17 +33,40 @@ async function checkExamStartDate(examId) {
     // console.log("Exam start date from checkExam: ", startDate);
     // console.log("Exam end date from checkExam: ", endDate);
     // console.log("Current dateTime now: ", now);
+    const examDetails = {
+      examStartDate : exam.exam_start_date,
+      examEndDate : exam.exam_end_date,
+      exam_title : exam.exam.title,
+      exam_description : exam.exam.description
+    }
     
     if (now < startDate) {
         // console.log("Exam not started");
-        return ({success:false,message:"Exam Not Started Yet . Please Come Some Time after."});
+        return ({success:false,message:"Exam Not Started Yet . Please Come Some Time after.",examDetails,status:"Not Started"});
     } else if (now >= startDate && now <= endDate) {
         // console.log("Exam running ....");
-        return ({success:true,message:"Exam is live..."})
+        return ({success:true,message:"Exam is live",examDetails,status:"Live"})
     } else {
         // console.log("Exam ended.");
-        return ({success:false,message:"Exam is already finished ..."})
+        return ({success:false,message:"Exam is already finished",examDetails,status:"Finished"})
     }   
 }
 
-module.exports = {hasUserResponded,checkExamStartDate};
+// check the user is regestard or not
+function verifyUser(req,res,next){
+    const bearerHeader = req.headers['authorization'];
+    // console.log("bear : ",bearerHeader)
+    if(typeof bearerHeader !== 'undefined'){
+      const token = bearerHeader.split(" ")[1];
+    //   console.log("token from verify user : ",token);
+      req.token = token;
+      next();
+    }
+    else{
+      res.send({
+        result : "Token is not valid"
+      })
+    }
+  }
+
+module.exports = {hasUserResponded,checkExamStartDate,verifyUser};

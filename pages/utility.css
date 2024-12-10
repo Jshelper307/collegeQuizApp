@@ -45,13 +45,14 @@ nav{
     font-weight: 600;
     color: white;
     transition: all 400ms ease;
-    margin:0em 0.5em;
+    /* margin:0em 0.5em; */
     text-decoration: none;
 }
 .nav__menue a:hover{
     color: var(--color-warning);
 }
 .dropdown-menu {
+    position: absolute;
     display: none;
     top: 100%;
     left: 0;
@@ -59,7 +60,8 @@ nav{
     padding: 0;
     margin: 0;
     background-color: #1e1e1e;
-    width: 300%;
+    border-radius: 10px;
+    width: max-content;
 }
 
 .dropdown-menu li a {
@@ -68,11 +70,17 @@ nav{
     padding: 10px 15px;
     display: block;
 }
+.dropdown-menu li p {
+    color: #6e6c6c;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+}
 .dropdown{
     height: 1.7rem;
     position: relative;
 }
-.dropdown-menu li a:hover {
+.dropdown-menu li a:hover,.dropdown-menu li p:hover,#logout:hover {
     background-color: #555;
 }
 #userDetails{
@@ -80,16 +88,29 @@ nav{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 #userDetails img{
     filter: invert();
 }
 
+#logout{
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
 /* Show dropdown on hover */
-.dropdown:hover{
+.dropdown:hover,#logout:hover{
     color: #f7c94b;
 }
 .dropdown:hover .dropdown-menu {
+    position: absolute;
+    display: block;
+    z-index: 1;
+}
+#userDetails:hover .dropdown-menu {
     position: absolute;
     display: block;
     z-index: 1;
