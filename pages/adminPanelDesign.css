@@ -90,7 +90,7 @@
 
   .scrollable-div .box {
     width: 48%; /* Two boxes per row */
-    height: 110px;
+    /* height: 110px; */
     background-color: #007BFF;
     color: white;
     border-radius: 25px;
@@ -319,11 +319,11 @@
 
   }
 .message{
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
+    padding: 10px;
 }
   .leaderboard-header {
     background-color: #f7c94b;
@@ -332,11 +332,14 @@
     padding: 20px;
     font-size: 24px;
     font-weight: bold;
+    display: none;
   }
 
   .leaderboard-list {
     list-style: none;
     padding: 0;
+    max-height: 270px;
+    overflow-y: auto;
   }
 
   .leaderboard-item {
@@ -392,7 +395,16 @@
   }
  
   
-  .h-auto{
+  .leaderboaedHolder{
     height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* max-height: 353px; */
+  }
+
+  .name{
+    max-width: 30%;
+    overflow-x: auto;
   }
   

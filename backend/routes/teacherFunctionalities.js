@@ -12,7 +12,7 @@ router.post("/getTeacher",verifyUser,async (req, res) => {
             return ({isValid:false,error});
         }else{
             // console.log("valid user from getSubject....",data)
-            return ({isValid:true,isTeacher:data.isTeacher,teacherId:data.userName});
+            return ({isValid:true,isTeacher:data.isTeacher,teacherId:data.userName,fullName:data.fullName});
         }
     })
     if(User.isValid && User.isTeacher){
@@ -21,7 +21,7 @@ router.post("/getTeacher",verifyUser,async (req, res) => {
             if (!result) {
                 return res.status(404).send({ success: false, error: "Teacher not found" });
             }
-    
+            const fullName = User.fullName;
             // Use Promise.all to resolve all exam statuses
             const exams = await Promise.all(
                 result.created_exams.map(async (examId) => {
@@ -36,8 +36,7 @@ router.post("/getTeacher",verifyUser,async (req, res) => {
                     }
                 })
             );
-    
-            res.status(200).send({ success: true, exams });
+            res.status(200).send({ success: true, exams ,fullName});
         } catch (error) {
             res.status(500).send({ success: false, error: error.message });
         }

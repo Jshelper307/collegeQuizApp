@@ -6,7 +6,7 @@ const leaderboardData = [
   { rank: 4, name: 'soham', score: 80, time:'25s' },
   { rank: 5, name: 'Neha', score: 75,time:'24s' },
 ];
-
+// {fullName: "Joy Sarkar",totalMarks: 4 ,totalTimeTaken: 6 ,userName: "27600121023JS"}
 
 document.addEventListener('DOMContentLoaded',()=>{
   const token = localStorage.getItem("token");
@@ -23,24 +23,16 @@ const loadTeacherData = (token)=>{
     method:"POST",
   }).then(response=>response.json())
   .then(data=>{
-    console.log("Data from adminpanel.js : ",data);
+    // console.log("Data from adminpanel.js : ",data);
     if(data.success){
+      document.getElementById("greetingDiv").innerHTML = `Welcome, ${data.fullName}`;
       loadData(data.exams);
-    }
-    else if(data.error==='Access Denied'){
-      showError(data.error);
     }
   })
   .catch(error=>{
     console.log("Error from adminpanel.js : ",error);
   })
 }
-
-// show error
-const showError=(error)=>{
-
-}
-
 // load the exam data to frontend
 const loadData = (examData)=>{
   examData.map(exam=>{
@@ -109,7 +101,6 @@ const addLiveAndFinished = (exam)=>{
   div.appendChild(titleDiv);
   div.appendChild(datesDiv);
   div.addEventListener("click",()=>{
-    console.log("Exam id : ",exam.examId);
     showLeaderBoard(exam.examId);
   })
   liveAndFinishedTestsDiv.appendChild(div);
@@ -121,7 +112,7 @@ const showLeaderBoard = (examId)=>{
   fetch(url)
   .then(response=>response.json())
   .then(data=>{
-    console.log("results : ",data.examResults.results);
+    console.log(data.examResults.results);
     renderLeaderboard(data.examResults.results);
   })
   .catch(error=>{
@@ -129,27 +120,16 @@ const showLeaderBoard = (examId)=>{
   })
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Reference to the leaderboard list
-const leaderboardList = document.getElementById('leaderboard');
-
 // Function to render the leaderboard
 function renderLeaderboard(data) {
+  const leaderboard_header = document.querySelector(".leaderboard-header");
+  const leaderboaedHolder = document.querySelector(".leaderboaedHolder");
+  // Reference to the leaderboard list
+  const leaderboardList = document.querySelector(".leaderboard-list");
   // Clear existing items
   leaderboardList.innerHTML = '';
-
+  leaderboard_header.style.display = "block";
+  leaderboaedHolder.style.display = "block";
   // Iterate over the data and create list items
   data.forEach((player,index) => {
     const listItem = document.createElement('li');
@@ -166,9 +146,6 @@ function renderLeaderboard(data) {
     leaderboardList.appendChild(listItem);
   });
 }
-
-// Render the leaderboard on page load
-// renderLeaderboard(leaderboardData);
 
 
 // Download the Leader board in csv format
