@@ -28,6 +28,10 @@ const loadTeacherData = (token)=>{
       document.getElementById("greetingDiv").innerHTML = `Welcome, ${data.fullName}`;
       loadData(data.exams);
     }
+    else{
+      localStorage.removeItem("token");
+      window.location.href = "register.html";
+    }
   })
   .catch(error=>{
     console.log("Error from adminpanel.js : ",error);
@@ -64,6 +68,8 @@ const addUpcomming = (exam)=>{
   editBtn.innerHTML = `<img src="../icons/icons8-edit.svg" alt="edit">`
   editBtn.addEventListener("click",()=>{
     console.log("Edited : ",exam.examId);
+    localStorage.setItem("editedExamId",exam.examId);
+    window.location.href = "createQuizPage.html";
   })
   const deleteBtn = document.createElement("button");
   deleteBtn.className = "Btn";
@@ -175,5 +181,8 @@ document.getElementById('download-btn').addEventListener('click', () => {
 });
 
 document.querySelector(".action-button").addEventListener("click",()=>{
+  if(localStorage.getItem("editedExamId")){
+    localStorage.removeItem("editedExamId");
+  }
   window.location.href = "createQuizPage.html";
 })

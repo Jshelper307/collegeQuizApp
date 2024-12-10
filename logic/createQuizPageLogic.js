@@ -3,12 +3,19 @@ let questions = [];
 const optionBoxes = document.querySelectorAll(".option-item");
 
 document.addEventListener("DOMContentLoaded", () => {
-  const examStartDate = document.getElementById("eventOpeningDay");
-  const examEndDate = document.getElementById("eventClosingDay");
-  setMinDate(examStartDate);
-  examEndDate.addEventListener("click", () => {
-    checkStartDateValue(examStartDate, examEndDate);
-  });
+  if(localStorage.getItem("editedExamId")){
+    console.log("It is from edited item : ",localStorage.getItem("editedExamId"));
+    loadExamData(localStorage.getItem("editedExamId"));
+  }
+  else{
+    console.log("It is from add item ");
+    const examStartDate = document.getElementById("eventOpeningDay");
+    const examEndDate = document.getElementById("eventClosingDay");
+    setMinDate(examStartDate);
+    examEndDate.addEventListener("click", () => {
+      checkStartDateValue(examStartDate, examEndDate);
+    });
+  }
 });
 // this function set the exam start date min value to the present date value
 const setMinDate = (examStartDate) => {
@@ -130,6 +137,9 @@ document.querySelector(".done").addEventListener("click", () => {
   // else {
   //   console.log("Not submitted....");
   // }
+  if(localStorage.getItem("editedExamId")){
+    localStorage.removeItem("editedExamId");
+  }
 });
 
 // Done button end
@@ -284,6 +294,7 @@ document.querySelector(".delete").addEventListener("click", () => {
 document.querySelector(".exit").addEventListener("click", () => {
   if (confirm("Are you sure you want to Exit this page ?")) {
     window.location.href = "adminPanel.html";
+    localStorage.removeItem("editedExamId");
   }
 });
 
@@ -479,3 +490,64 @@ const showExamLink = (examUrl) => {
     alert("link is copied ...");
   });
 };
+
+
+// this function set the exam details for edit
+const loadExamData = async (examId)=>{
+  const token = localStorage.getItem("token");
+  await fetch(`http://localhost:3000/exams/exam/${examId}`,{
+      headers:{
+          'content-type':'application/json',
+          'Authorization': `Bearer ${token}`,
+          'forEdit':true
+      },
+      method: 'POST',
+  }).then(response=>response.json()).then(data=>{
+      if(data.error){
+        // console.log("data form loaddata error : ",data);
+        if(data.error === 'Not a Valid user'){
+            window.location.href = "register.html";
+            return;
+        }
+        console.log("Error from loadExamData : ",data.error);
+      }
+      else{
+        // console.log("Examdata from loadExamData : ",data);
+        fillFormWithData(data.exams);
+      }
+  })
+}
+
+const fillFormWithData = (examData)=>{
+  console.log(examData);
+  // Department inputs
+  const department = document.getElementById("department");
+  const customDepartment = document.getElementById("custom-department");
+  // subject inputs
+  const subject = document.getElementById("subject");
+  const customSubject = document.getElementById("custom-subject");
+  // topic input
+  const topic = document.getElementById("topic");
+  // Description input
+  const description = document.getElementById("description");
+  // Time limit per quesiton
+  const timePerQuestion = document.getElementById("time-per-question");
+  const customtimePerQuestion = document.getElementById("custom-total-time");
+  // Points per question
+  const points = document.getElementById("points");
+  const customPoints = document.getElementById("custom-points");
+  // Exam start date and time
+  const startDateAndTime = document.getElementById("eventOpeningDay");
+  // Exam End date and time
+  const endDateAndTime = document.getElementById("eventClosingDay");
+  department.value = examData.exam.department;
+  subject.value = examData.exam.subject;
+  topic.value = examData.exam.title;
+  description.value = examData.exam.description;
+  timePerQuestion.value = examData.exam.time_limit_perQuestion;
+  points.value = examData.exam.points_per_question;
+  startDateAndTime.value = examData.exam_start_date;
+  endDateAndTime.value = examData.exam_end_date;
+  showPreviewQuestion(examData.exam.questionsWithAns);
+  document.getElementById("total-questions").innerHTML = examData.exam.questionsWithAns.length;
+}

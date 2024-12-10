@@ -91,7 +91,8 @@ const loadData = async (examId)=>{
     await fetch(`http://localhost:3000/exams/exam/${examId}`,{
         headers:{
             'content-type':'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            'forEdit':false
         },
         method: 'POST',
     }).then(response=>response.json()).then(data=>{

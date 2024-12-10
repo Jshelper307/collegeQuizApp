@@ -68,7 +68,8 @@ router.post('/exam/:exam_id',verifyUser, async (req, res) => {
             return ({isValid:true,fullName:data.fullName,studentId:data.userName});
         }
     })
-    if(User.isValid){
+    const forEdit = req.headers.foredit;
+    if(User.isValid && !forEdit){
         try {
             const userName = User.studentId;
             const { exam_id } = req.params;
@@ -99,6 +100,15 @@ router.post('/exam/:exam_id',verifyUser, async (req, res) => {
             console.error('Error fetching exam:', error.message);
             res.status(500).send({ success: false, error: 'Internal Server Error' });
         }
+    }
+    else if(User.isValid && forEdit){
+        const { exam_id } = req.params;
+        const exam = await Exam.findOne({ exam_id });
+        
+        if (!exam) {
+            return res.status(404).send({ success: false, error: 'Exam not found' });
+        }
+        res.send({ success: true, exams:exam });
     }
     else{
         res.send({ success: false, error: 'Not a Valid user' });
