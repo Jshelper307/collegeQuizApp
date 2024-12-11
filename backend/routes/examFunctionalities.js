@@ -114,6 +114,47 @@ router.post('/exam/:exam_id',verifyUser, async (req, res) => {
         res.send({ success: false, error: 'Not a Valid user' });
     }
 });
+// update a question
+// Update Question Endpoint
+router.put("/exam/:examId/update-question/:questionId", async (req, res) => {
+    const { examId, questionId } = req.params;
+    const { question, options, answer } = req.body;
+
+    if (!question || !options || !answer) {
+        return res.status(400).json({ message: "All fields are required." });
+    }
+
+    try {
+        // Find the exam by examId
+        const exam = await Exam.findOne({ exam_id : examId });
+
+        if (!exam) {
+            return res.status(404).json({ message: "Exam not found." });
+        }
+
+        // Find the question within the questionsWithAns array
+        const questionIndex = exam.exam.questionsWithAns.findIndex(
+            (q) => q._id.toString() === questionId
+        );
+
+        if (questionIndex === -1) {
+            return res.status(404).json({ message: "Question not found." });
+        }
+
+        // Update the question fields
+        exam.exam.questionsWithAns[questionIndex].question = question;
+        exam.exam.questionsWithAns[questionIndex].options = options;
+        exam.exam.questionsWithAns[questionIndex].answer = answer;
+
+        // Save the updated exam
+        await exam.save();
+
+        res.status(200).json({ message: "Question updated successfully.", exam });
+    } catch (error) {
+        console.error("Error updating question:", error);
+        res.status(500).json({ message: "Internal server error." });
+    }
+});
 
 router.get('/exam/:exam_id/get_results', async (req, res) => {
     try {

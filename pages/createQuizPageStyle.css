@@ -364,6 +364,10 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.editquestion-btn{
+  display: none;
+}
   
   /* Option Styling for Inputs */
   .input-container {

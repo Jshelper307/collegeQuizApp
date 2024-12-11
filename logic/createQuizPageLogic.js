@@ -4,11 +4,11 @@ const optionBoxes = document.querySelectorAll(".option-item");
 
 document.addEventListener("DOMContentLoaded", () => {
   if(localStorage.getItem("editedExamId")){
-    console.log("It is from edited item : ",localStorage.getItem("editedExamId"));
+    // console.log("It is from edited item : ",localStorage.getItem("editedExamId"));
     loadExamData(localStorage.getItem("editedExamId"));
   }
   else{
-    console.log("It is from add item ");
+    // console.log("It is from add item ");
     const examStartDate = document.getElementById("eventOpeningDay");
     const examEndDate = document.getElementById("eventClosingDay");
     setMinDate(examStartDate);
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const setMinDate = (examStartDate) => {
   const now = new Date();
   const formattedDNow = now.toISOString().slice(0, 16);
-  console.log("dateTIme now from setMinDate : ",formattedDNow);
+  // console.log("dateTIme now from setMinDate : ",formattedDNow);
   // set the min and max attribute
   examStartDate.min = formattedDNow;
 };
@@ -407,13 +407,6 @@ function addQuestion() {
   correct2.value = null;
   correct3.value = null;
   correct4.value = null;
-
-  // add EventListenr to the edit button
-  const editBtn = document.querySelector(".editBtn");
-
-  editBtn.addEventListener("click", (e) => {
-    console.log(e);
-  });
 }
 
 // Show/hide custom input for "Others" in dropdowns
@@ -442,8 +435,27 @@ const showPreviewQuestion = (questions) => {
   const preview_area = document.getElementById("recent-questions");
   preview_area.innerHTML = "";
   questions.map((question) => {
-    return (preview_area.innerHTML += `
-    <div class='question-container'>
+    const buttonHolder = document.createElement("div");
+    buttonHolder.className = "button-Holder"
+    const editBtn = document.createElement("button");
+    editBtn.className = "editBtn";
+    editBtn.innerHTML = `<img src="../icons/icons8-edit.svg" alt="edit" height="20">`;
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "deleteBtn";
+    deleteBtn.innerHTML = `<img src="../icons/icons8-delete.svg" alt="delete" height="20">`;
+    editBtn.addEventListener("click",()=>{
+      setQuestionForEdit(question);
+    })
+    deleteBtn.addEventListener("click",()=>{
+      deleteQuestion(question);
+    })
+    
+    buttonHolder.appendChild(editBtn);
+    buttonHolder.appendChild(deleteBtn);
+    const questionContainer = document.createElement("div");
+    questionContainer.className = "question-container";
+
+    questionContainer.innerHTML = `
       <p><strong>Question :</strong> ${question["question"]}</p>
       <p ${
         question["answer"] === question["options"][0] && "class='green'"
@@ -457,14 +469,73 @@ const showPreviewQuestion = (questions) => {
       <p ${
         question["answer"] === question["options"][3] && "class='green'"
       }'>Option 4: ${question["options"][3]}</p>
-      <div class="button-Holder">
-        <button class="editBtn"><img src="../icons/icons8-edit.svg" alt="edit" height="20"></button>
-        <button class="deleteBtn"><img src="../icons/icons8-delete.svg" alt="delete" height="20"></button>
-      </div>
-    </div>
-  `);
+    `
+  questionContainer.appendChild(buttonHolder);
+    return (preview_area.appendChild(questionContainer));
   });
 };
+
+
+const setQuestionForEdit = (question)=>{
+  console.log("edited question : ",question);
+  const addMoreBtn = document.querySelector(".add-more");
+  const editQuestionBtn = document.querySelector(".editquestion-btn");
+  // set input values
+  document.getElementById("question").value = question.question;
+  document.getElementById("option1").value = question.options[0];
+  document.getElementById("option2").value = question.options[1];
+  document.getElementById("option3").value = question.options[2];
+  document.getElementById("option4").value = question.options[3];
+  const correctOption = document.getElementsByName("correctOption");
+  for(let i=0;i<correctOption.length;i++){
+    if(question.options[i]===question.answer){
+      correctOption[i].checked = true;
+    }
+  }
+  addMoreBtn.style.display = "none";
+  editQuestionBtn.style.display = "block";
+
+  editQuestionBtn.onclick =()=>{editQuestion(question)};
+}
+
+
+
+
+const editQuestion = (quesiton)=>{
+  const ind = questions.indexOf(quesiton);
+  const updatedQuestionAndAns = {
+    question: "",
+    options: [],
+    answer: ""
+  };
+  const examId = localStorage.getItem("editedExamId");
+  const questionId = quesiton._id;
+  // console.log("question Index is : ",ind);
+  const questionText = document.getElementById("question").value;
+  const option1 = document.getElementById("option1").value;
+  const option2 = document.getElementById("option2").value;
+  const option3 = document.getElementById("option3").value;
+  const option4 = document.getElementById("option4").value;
+  const correctOption = document.getElementsByName("correctOption");
+  updatedQuestionAndAns.question = questionText;
+  updatedQuestionAndAns.options = [option1,option2,option3,option4];
+  for(let i=0;i<correctOption.length;i++){
+    if(correctOption[i].checked){
+      updatedQuestionAndAns.answer = updatedQuestionAndAns.options[i];
+    }
+  }
+  updateQuestion(examId,questionId,updatedQuestionAndAns);
+  questions[ind] = {...questions[ind],...updatedQuestionAndAns};
+  showPreviewQuestion(questions);
+}
+
+const deleteQuestion = (question)=>{
+  console.log("deleted question : ",question);
+}
+
+
+
+
 
 // Add More button logic start herer
 document.querySelector(".add-more").addEventListener("click", () => {
@@ -519,7 +590,7 @@ const loadExamData = async (examId)=>{
 }
 
 const fillFormWithData = (examData)=>{
-  console.log(examData);
+  // console.log(examData);
   // Department inputs
   const department = document.getElementById("department");
   const customDepartment = document.getElementById("custom-department");
@@ -548,6 +619,33 @@ const fillFormWithData = (examData)=>{
   points.value = examData.exam.points_per_question;
   startDateAndTime.value = examData.exam_start_date;
   endDateAndTime.value = examData.exam_end_date;
-  showPreviewQuestion(examData.exam.questionsWithAns);
+  questions = examData.exam.questionsWithAns;
+  showPreviewQuestion(questions);
   document.getElementById("total-questions").innerHTML = examData.exam.questionsWithAns.length;
+}
+
+// Function to update a question
+async function updateQuestion(examId, questionId, updatedQuestionData) {
+  try {
+      const response = await fetch(`http://localhost:3000/exams/exam/${examId}/update-question/${questionId}`, {
+          method: "PUT",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify(updatedQuestionData)
+      });
+
+      if (response.ok) {
+          const result = await response.json();
+          console.log("Question updated successfully:", result);
+          alert("Question updated successfully!");
+      } else {
+          const error = await response.json();
+          console.error("Error updating question:", error.message);
+          alert(`Error: ${error.message}`);
+      }
+  } catch (error) {
+      console.error("Network or server error:", error);
+      alert("An error occurred while updating the question.");
+  }
 }
