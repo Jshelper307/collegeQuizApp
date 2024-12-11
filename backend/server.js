@@ -7,6 +7,7 @@ const questions = require("./routes/questions");
 const authService = require('./routes/authfunctionalities');
 const examService = require('./routes/examFunctionalities');
 const teacherService = require('./routes/teacherFunctionalities');
+const passwordResetService = require('./routes/passwordResetService'); // Import password reset service
 dotenv.config();
 
 const app = express();
@@ -26,6 +27,9 @@ app.use('/exams',examService);
 
 // This is middleware for teacherServices
 app.use('/teacher',teacherService);
+
+// for resetpassword
+app.use('/password-reset', passwordResetService);  // Password reset route
 
 
 // Fetch data form acadamics table
