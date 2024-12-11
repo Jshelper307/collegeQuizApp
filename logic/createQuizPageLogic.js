@@ -1,20 +1,20 @@
 let totalQuestions = 0;
 let questions = [];
 const optionBoxes = document.querySelectorAll(".option-item");
+let isExamEdit = false;
 
 document.addEventListener("DOMContentLoaded", () => {
+  // console.log("It is from add item ");
+  const examStartDate = document.getElementById("eventOpeningDay");
+  const examEndDate = document.getElementById("eventClosingDay");
+  setMinDate(examStartDate);
+  examEndDate.addEventListener("click", () => {
+    checkStartDateValue(examStartDate, examEndDate);
+  });
   if(localStorage.getItem("editedExamId")){
     // console.log("It is from edited item : ",localStorage.getItem("editedExamId"));
+    isExamEdit = true;
     loadExamData(localStorage.getItem("editedExamId"));
-  }
-  else{
-    // console.log("It is from add item ");
-    const examStartDate = document.getElementById("eventOpeningDay");
-    const examEndDate = document.getElementById("eventClosingDay");
-    setMinDate(examStartDate);
-    examEndDate.addEventListener("click", () => {
-      checkStartDateValue(examStartDate, examEndDate);
-    });
   }
 });
 // this function set the exam start date min value to the present date value
@@ -90,33 +90,55 @@ document.querySelector(".done").addEventListener("click", () => {
   );
 
   if (isValidForm) {
-  // Submit the data in database
-  fetch('http://localhost:3000/exams/create-exam',{
-        headers:{
-          'content-type':'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        method:"POST",
-        body: JSON.stringify({department :departmentAns.value,subject:subjectAns.value,title :topic.value,description:description.value,time_limit_perQuestion:timePerQuestionAns.value,points_per_question :pointsPerQuestionAns.value,exam_start_date:startDateAndTime.value,exam_end_date:endDateAndTime.value,questionsWithAns:questions})
-      })
-      .then(response=>{
-        if(!response.ok){
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data=>{
-        console.log("log from teacherPageLogic : ",data);
-        if(data['success']){
-          showExamLink(data['examUrl']);
-        }
-        else{
-          console.log("some error occure");
-        }
-      })
-      .catch(error=>{
-        console.log(error);
-      })
+    if(!isExamEdit){
+      // Submit the data in database
+      fetch('http://localhost:3000/exams/create-exam',{
+            headers:{
+              'content-type':'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            method:"POST",
+            body: JSON.stringify({department :departmentAns.value,subject:subjectAns.value,title :topic.value,description:description.value,time_limit_perQuestion:timePerQuestionAns.value,points_per_question :pointsPerQuestionAns.value,exam_start_date:startDateAndTime.value,exam_end_date:endDateAndTime.value,questionsWithAns:questions})
+          })
+          .then(response=>{
+            if(!response.ok){
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data=>{
+            console.log("log from teacherPageLogic : ",data);
+            if(data['success']){
+              showExamLink(data['examUrl']);
+            }
+            else{
+              console.log("some error occure");
+            }
+          })
+          .catch(error=>{
+            console.log(error);
+          })
+    }
+    else{
+      const examId = localStorage.getItem("editedExamId"); // Replace with the actual exam ID
+
+      // Data to update
+      const updatedExamData = {
+          department: departmentAns.value,
+          subject: subjectAns.value,
+          title: topic.value,
+          description: description.value,
+          points_per_question: pointsPerQuestionAns.value,
+          time_limit_perQuestion: timePerQuestionAns.value,
+          questionsWithAns: questions,
+          exam_start_date: startDateAndTime.value,
+          exam_end_date: endDateAndTime.value
+      };
+
+      // Call the update function
+      updateExamDetails(examId, updatedExamData);
+      localStorage.removeItem("editedExamId");
+    }
 
     // Submit data
     // console.log("topic : ", topic.value);
@@ -137,9 +159,6 @@ document.querySelector(".done").addEventListener("click", () => {
   // else {
   //   console.log("Not submitted....");
   // }
-  if(localStorage.getItem("editedExamId")){
-    localStorage.removeItem("editedExamId");
-  }
 });
 
 // Done button end
@@ -477,7 +496,7 @@ const showPreviewQuestion = (questions) => {
 
 
 const setQuestionForEdit = (question)=>{
-  console.log("edited question : ",question);
+  // console.log("edited question : ",question);
   const addMoreBtn = document.querySelector(".add-more");
   const editQuestionBtn = document.querySelector(".editquestion-btn");
   // set input values
@@ -508,8 +527,6 @@ const editQuestion = (quesiton)=>{
     options: [],
     answer: ""
   };
-  const examId = localStorage.getItem("editedExamId");
-  const questionId = quesiton._id;
   // console.log("question Index is : ",ind);
   const questionText = document.getElementById("question").value;
   const option1 = document.getElementById("option1").value;
@@ -522,15 +539,35 @@ const editQuestion = (quesiton)=>{
   for(let i=0;i<correctOption.length;i++){
     if(correctOption[i].checked){
       updatedQuestionAndAns.answer = updatedQuestionAndAns.options[i];
+      correctOption[i].checked = false;
     }
   }
-  updateQuestion(examId,questionId,updatedQuestionAndAns);
   questions[ind] = {...questions[ind],...updatedQuestionAndAns};
   showPreviewQuestion(questions);
+  // clear the fields
+  document.getElementById("question").value = "";
+  document.getElementById("option1").value = "";
+  document.getElementById("option2").value = "";
+  document.getElementById("option3").value = "";
+  document.getElementById("option4").value = "";
+
+  document.querySelector(".add-more").style.display = "block";
+  document.querySelector(".editquestion-btn").style.display = "none";
 }
 
 const deleteQuestion = (question)=>{
   console.log("deleted question : ",question);
+  const ind = questions.indexOf(question);
+  console.log("question Index is : ",ind);
+  if(ind===0){
+    questions.shift();
+  }
+  else{
+    questions.splice(ind,ind);
+  }
+  showPreviewQuestion(questions);
+  totalQuestions--;
+  document.getElementById("total-questions").textContent = totalQuestions;
 }
 
 
@@ -621,31 +658,34 @@ const fillFormWithData = (examData)=>{
   endDateAndTime.value = examData.exam_end_date;
   questions = examData.exam.questionsWithAns;
   showPreviewQuestion(questions);
-  document.getElementById("total-questions").innerHTML = examData.exam.questionsWithAns.length;
+  totalQuestions = examData.exam.questionsWithAns.length;
+  document.getElementById("total-questions").innerHTML = totalQuestions;
 }
 
 // Function to update a question
-async function updateQuestion(examId, questionId, updatedQuestionData) {
+// Function to update exam details
+async function updateExamDetails(examId, updatedExamData) {
   try {
-      const response = await fetch(`http://localhost:3000/exams/exam/${examId}/update-question/${questionId}`, {
+      const response = await fetch(`http://localhost:3000/exams/exam/update-exam/${examId}`, {
           method: "PUT",
           headers: {
               "Content-Type": "application/json"
           },
-          body: JSON.stringify(updatedQuestionData)
+          body: JSON.stringify(updatedExamData)
       });
 
       if (response.ok) {
           const result = await response.json();
-          console.log("Question updated successfully:", result);
-          alert("Question updated successfully!");
+          console.log("Exam updated successfully:", result);
+          alert("Exam updated successfully!");
       } else {
           const error = await response.json();
-          console.error("Error updating question:", error.message);
+          console.error("Error updating exam:", error.message);
           alert(`Error: ${error.message}`);
       }
   } catch (error) {
       console.error("Network or server error:", error);
-      alert("An error occurred while updating the question.");
+      alert("An error occurred while updating the exam.");
   }
 }
+
