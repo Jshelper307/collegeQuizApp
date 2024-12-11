@@ -28,6 +28,10 @@ const loadTeacherData = (token)=>{
       document.getElementById("greetingDiv").innerHTML = `Welcome, ${data.fullName}`;
       loadData(data.exams);
     }
+    else{
+      localStorage.removeItem("token");
+      window.location.href = "register.html";
+    }
   })
   .catch(error=>{
     console.log("Error from adminpanel.js : ",error);
@@ -64,12 +68,15 @@ const addUpcomming = (exam)=>{
   editBtn.innerHTML = `<img src="../icons/icons8-edit.svg" alt="edit">`
   editBtn.addEventListener("click",()=>{
     console.log("Edited : ",exam.examId);
+    localStorage.setItem("editedExamId",exam.examId);
+    window.location.href = "createQuizPage.html";
   })
   const deleteBtn = document.createElement("button");
   deleteBtn.className = "Btn";
   deleteBtn.innerHTML = `<img src="../icons/icons8-delete.svg" alt="delete">`
   deleteBtn.addEventListener("click",()=>{
     console.log("Deleted : ",exam.examId);
+    deleteExam(exam.examId);
   })
   buttonHolderDiv.appendChild(editBtn);
   buttonHolderDiv.appendChild(deleteBtn);
@@ -175,5 +182,35 @@ document.getElementById('download-btn').addEventListener('click', () => {
 });
 
 document.querySelector(".action-button").addEventListener("click",()=>{
+  if(localStorage.getItem("editedExamId")){
+    localStorage.removeItem("editedExamId");
+  }
   window.location.href = "createQuizPage.html";
 })
+
+
+const deleteExam =async (examId)=>{
+  const token = localStorage.getItem("token");
+  try {
+    const response = await fetch(`http://localhost:3000/exams/delete-exam/${examId}`, {
+      headers:{
+        'content-type':'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+        method: "DELETE"
+    });
+
+    if (response.ok) {
+        const result = await response.json();
+        console.log("Exam deleted successfully:", result);
+        alert("Exam deleted successfully!");
+    } else {
+        const error = await response.json();
+        console.error("Error deleting exam:", error.message);
+        alert(`Error: ${error.message}`);
+    }
+  } catch (error) {
+      console.error("Network or server error:", error);
+      alert("An error occurred while deleting the exam.");
+  }
+}

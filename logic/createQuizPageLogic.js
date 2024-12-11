@@ -1,20 +1,27 @@
 let totalQuestions = 0;
 let questions = [];
 const optionBoxes = document.querySelectorAll(".option-item");
+let isExamEdit = false;
 
 document.addEventListener("DOMContentLoaded", () => {
+  // console.log("It is from add item ");
   const examStartDate = document.getElementById("eventOpeningDay");
   const examEndDate = document.getElementById("eventClosingDay");
   setMinDate(examStartDate);
   examEndDate.addEventListener("click", () => {
     checkStartDateValue(examStartDate, examEndDate);
   });
+  if(localStorage.getItem("editedExamId")){
+    // console.log("It is from edited item : ",localStorage.getItem("editedExamId"));
+    isExamEdit = true;
+    loadExamData(localStorage.getItem("editedExamId"));
+  }
 });
 // this function set the exam start date min value to the present date value
 const setMinDate = (examStartDate) => {
   const now = new Date();
   const formattedDNow = now.toISOString().slice(0, 16);
-  console.log("dateTIme now from setMinDate : ",formattedDNow);
+  // console.log("dateTIme now from setMinDate : ",formattedDNow);
   // set the min and max attribute
   examStartDate.min = formattedDNow;
 };
@@ -83,33 +90,55 @@ document.querySelector(".done").addEventListener("click", () => {
   );
 
   if (isValidForm) {
-  // Submit the data in database
-  fetch('http://localhost:3000/exams/create-exam',{
-        headers:{
-          'content-type':'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        method:"POST",
-        body: JSON.stringify({department :departmentAns.value,subject:subjectAns.value,title :topic.value,description:description.value,time_limit_perQuestion:timePerQuestionAns.value,points_per_question :pointsPerQuestionAns.value,exam_start_date:startDateAndTime.value,exam_end_date:endDateAndTime.value,questionsWithAns:questions})
-      })
-      .then(response=>{
-        if(!response.ok){
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data=>{
-        console.log("log from teacherPageLogic : ",data);
-        if(data['success']){
-          showExamLink(data['examUrl']);
-        }
-        else{
-          console.log("some error occure");
-        }
-      })
-      .catch(error=>{
-        console.log(error);
-      })
+    if(!isExamEdit){
+      // Submit the data in database
+      fetch('http://localhost:3000/exams/create-exam',{
+            headers:{
+              'content-type':'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            method:"POST",
+            body: JSON.stringify({department :departmentAns.value,subject:subjectAns.value,title :topic.value,description:description.value,time_limit_perQuestion:timePerQuestionAns.value,points_per_question :pointsPerQuestionAns.value,exam_start_date:startDateAndTime.value,exam_end_date:endDateAndTime.value,questionsWithAns:questions})
+          })
+          .then(response=>{
+            if(!response.ok){
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data=>{
+            console.log("log from teacherPageLogic : ",data);
+            if(data['success']){
+              showExamLink(data['examUrl']);
+            }
+            else{
+              console.log("some error occure");
+            }
+          })
+          .catch(error=>{
+            console.log(error);
+          })
+    }
+    else{
+      const examId = localStorage.getItem("editedExamId"); // Replace with the actual exam ID
+
+      // Data to update
+      const updatedExamData = {
+          department: departmentAns.value,
+          subject: subjectAns.value,
+          title: topic.value,
+          description: description.value,
+          points_per_question: pointsPerQuestionAns.value,
+          time_limit_perQuestion: timePerQuestionAns.value,
+          questionsWithAns: questions,
+          exam_start_date: startDateAndTime.value,
+          exam_end_date: endDateAndTime.value
+      };
+
+      // Call the update function
+      updateExamDetails(examId, updatedExamData);
+      localStorage.removeItem("editedExamId");
+    }
 
     // Submit data
     // console.log("topic : ", topic.value);
@@ -284,6 +313,7 @@ document.querySelector(".delete").addEventListener("click", () => {
 document.querySelector(".exit").addEventListener("click", () => {
   if (confirm("Are you sure you want to Exit this page ?")) {
     window.location.href = "adminPanel.html";
+    localStorage.removeItem("editedExamId");
   }
 });
 
@@ -396,13 +426,6 @@ function addQuestion() {
   correct2.value = null;
   correct3.value = null;
   correct4.value = null;
-
-  // add EventListenr to the edit button
-  const editBtn = document.querySelector(".editBtn");
-
-  editBtn.addEventListener("click", (e) => {
-    console.log(e);
-  });
 }
 
 // Show/hide custom input for "Others" in dropdowns
@@ -431,8 +454,27 @@ const showPreviewQuestion = (questions) => {
   const preview_area = document.getElementById("recent-questions");
   preview_area.innerHTML = "";
   questions.map((question) => {
-    return (preview_area.innerHTML += `
-    <div class='question-container'>
+    const buttonHolder = document.createElement("div");
+    buttonHolder.className = "button-Holder"
+    const editBtn = document.createElement("button");
+    editBtn.className = "editBtn";
+    editBtn.innerHTML = `<img src="../icons/icons8-edit.svg" alt="edit" height="20">`;
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "deleteBtn";
+    deleteBtn.innerHTML = `<img src="../icons/icons8-delete.svg" alt="delete" height="20">`;
+    editBtn.addEventListener("click",()=>{
+      setQuestionForEdit(question);
+    })
+    deleteBtn.addEventListener("click",()=>{
+      deleteQuestion(question);
+    })
+    
+    buttonHolder.appendChild(editBtn);
+    buttonHolder.appendChild(deleteBtn);
+    const questionContainer = document.createElement("div");
+    questionContainer.className = "question-container";
+
+    questionContainer.innerHTML = `
       <p><strong>Question :</strong> ${question["question"]}</p>
       <p ${
         question["answer"] === question["options"][0] && "class='green'"
@@ -446,14 +488,91 @@ const showPreviewQuestion = (questions) => {
       <p ${
         question["answer"] === question["options"][3] && "class='green'"
       }'>Option 4: ${question["options"][3]}</p>
-      <div class="button-Holder">
-        <button class="editBtn"><img src="../icons/icons8-edit.svg" alt="edit" height="20"></button>
-        <button class="deleteBtn"><img src="../icons/icons8-delete.svg" alt="delete" height="20"></button>
-      </div>
-    </div>
-  `);
+    `
+  questionContainer.appendChild(buttonHolder);
+    return (preview_area.appendChild(questionContainer));
   });
 };
+
+
+const setQuestionForEdit = (question)=>{
+  // console.log("edited question : ",question);
+  const addMoreBtn = document.querySelector(".add-more");
+  const editQuestionBtn = document.querySelector(".editquestion-btn");
+  // set input values
+  document.getElementById("question").value = question.question;
+  document.getElementById("option1").value = question.options[0];
+  document.getElementById("option2").value = question.options[1];
+  document.getElementById("option3").value = question.options[2];
+  document.getElementById("option4").value = question.options[3];
+  const correctOption = document.getElementsByName("correctOption");
+  for(let i=0;i<correctOption.length;i++){
+    if(question.options[i]===question.answer){
+      correctOption[i].checked = true;
+    }
+  }
+  addMoreBtn.style.display = "none";
+  editQuestionBtn.style.display = "block";
+
+  editQuestionBtn.onclick =()=>{editQuestion(question)};
+}
+
+
+
+
+const editQuestion = (quesiton)=>{
+  const ind = questions.indexOf(quesiton);
+  const updatedQuestionAndAns = {
+    question: "",
+    options: [],
+    answer: ""
+  };
+  // console.log("question Index is : ",ind);
+  const questionText = document.getElementById("question").value;
+  const option1 = document.getElementById("option1").value;
+  const option2 = document.getElementById("option2").value;
+  const option3 = document.getElementById("option3").value;
+  const option4 = document.getElementById("option4").value;
+  const correctOption = document.getElementsByName("correctOption");
+  updatedQuestionAndAns.question = questionText;
+  updatedQuestionAndAns.options = [option1,option2,option3,option4];
+  for(let i=0;i<correctOption.length;i++){
+    if(correctOption[i].checked){
+      updatedQuestionAndAns.answer = updatedQuestionAndAns.options[i];
+      correctOption[i].checked = false;
+    }
+  }
+  questions[ind] = {...questions[ind],...updatedQuestionAndAns};
+  showPreviewQuestion(questions);
+  // clear the fields
+  document.getElementById("question").value = "";
+  document.getElementById("option1").value = "";
+  document.getElementById("option2").value = "";
+  document.getElementById("option3").value = "";
+  document.getElementById("option4").value = "";
+
+  document.querySelector(".add-more").style.display = "block";
+  document.querySelector(".editquestion-btn").style.display = "none";
+}
+
+const deleteQuestion = (question)=>{
+  console.log("deleted question : ",question);
+  const ind = questions.indexOf(question);
+  console.log("question Index is : ",ind);
+  if(ind===0){
+    questions.shift();
+  }
+  else{
+    questions.splice(ind,ind);
+  }
+  showPreviewQuestion(questions);
+  totalQuestions--;
+  document.getElementById("total-questions").textContent = totalQuestions;
+}
+
+
+
+
 
 // Add More button logic start herer
 document.querySelector(".add-more").addEventListener("click", () => {
@@ -479,3 +598,94 @@ const showExamLink = (examUrl) => {
     alert("link is copied ...");
   });
 };
+
+
+// this function set the exam details for edit
+const loadExamData = async (examId)=>{
+  const token = localStorage.getItem("token");
+  await fetch(`http://localhost:3000/exams/exam/${examId}`,{
+      headers:{
+          'content-type':'application/json',
+          'Authorization': `Bearer ${token}`,
+          'forEdit':true
+      },
+      method: 'POST',
+  }).then(response=>response.json()).then(data=>{
+      if(data.error){
+        // console.log("data form loaddata error : ",data);
+        if(data.error === 'Not a Valid user'){
+            window.location.href = "register.html";
+            return;
+        }
+        console.log("Error from loadExamData : ",data.error);
+      }
+      else{
+        // console.log("Examdata from loadExamData : ",data);
+        fillFormWithData(data.exams);
+      }
+  })
+}
+
+const fillFormWithData = (examData)=>{
+  // console.log(examData);
+  // Department inputs
+  const department = document.getElementById("department");
+  const customDepartment = document.getElementById("custom-department");
+  // subject inputs
+  const subject = document.getElementById("subject");
+  const customSubject = document.getElementById("custom-subject");
+  // topic input
+  const topic = document.getElementById("topic");
+  // Description input
+  const description = document.getElementById("description");
+  // Time limit per quesiton
+  const timePerQuestion = document.getElementById("time-per-question");
+  const customtimePerQuestion = document.getElementById("custom-total-time");
+  // Points per question
+  const points = document.getElementById("points");
+  const customPoints = document.getElementById("custom-points");
+  // Exam start date and time
+  const startDateAndTime = document.getElementById("eventOpeningDay");
+  // Exam End date and time
+  const endDateAndTime = document.getElementById("eventClosingDay");
+  department.value = examData.exam.department;
+  subject.value = examData.exam.subject;
+  topic.value = examData.exam.title;
+  description.value = examData.exam.description;
+  timePerQuestion.value = examData.exam.time_limit_perQuestion;
+  points.value = examData.exam.points_per_question;
+  startDateAndTime.value = examData.exam_start_date;
+  endDateAndTime.value = examData.exam_end_date;
+  questions = examData.exam.questionsWithAns;
+  showPreviewQuestion(questions);
+  totalQuestions = examData.exam.questionsWithAns.length;
+  document.getElementById("total-questions").innerHTML = totalQuestions;
+}
+
+// Function to update a question
+// Function to update exam details
+async function updateExamDetails(examId, updatedExamData) {
+  try {
+      const response = await fetch(`http://localhost:3000/exams/exam/update-exam/${examId}`, {
+          method: "PUT",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify(updatedExamData)
+      });
+
+      if (response.ok) {
+          const result = await response.json();
+          console.log("Exam updated successfully:", result);
+          alert("Exam updated successfully!");
+      } else {
+          const error = await response.json();
+          console.error("Error updating exam:", error.message);
+          alert(`Error: ${error.message}`);
+      }
+  } catch (error) {
+      console.error("Network or server error:", error);
+      alert("An error occurred while updating the exam.");
+  }
+}
+

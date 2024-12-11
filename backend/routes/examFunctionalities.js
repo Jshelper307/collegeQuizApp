@@ -58,6 +58,55 @@ router.post('/create-exam',verifyUser,async (req, res) => {
     }
 });
 
+// Delete Exam Endpoint
+router.delete("/delete-exam/:examId",verifyUser, async (req, res) => {
+    const User = jwt.verify(req.token,process.env.SECRET_KEY,(error,data)=>{
+        if(error){
+            // console.log("Invalid token");
+            return ({isValid:false,error});
+        }else{
+            // console.log("valid user from getSubject....",data)
+            return ({isValid:true,isTeacher:data.isTeacher,teacherId:data.userName});
+        }
+    })
+    if(User.isValid){
+        const { examId } = req.params;
+        const teacherId = User.teacherId;
+        try {
+            // Find and delete the exam by exam_id
+            const deletedExam = await Exam.findOneAndDelete({ exam_id: examId });
+    
+            if (!deletedExam) {
+                return res.status(404).json({ message: "Exam not found." });
+            }
+            const results = await Results.findOneAndDelete({examId});
+            if(!results){
+                return res.status(404).json({ message: "Result not found." });
+            }
+            const teacher = await teachers.findOne({teacher_id:teacherId});
+            if(!teacher){
+                return res.status(404).json({ message: "Teacher not found." });
+            }
+            const ind = teacher.created_exams.indexOf(examId);
+            if(ind === -1){
+                return res.status(404).json({ message: "Exam not found in teacher." });
+            }
+            if(ind === 0){
+                teacher.created_exams.shift();
+            }
+            else{
+                teacher.created_exams.splice(ind,ind);
+            }
+            teacher.save();
+            res.status(200).json({ message: "Exam deleted successfully.", deletedExam });
+        } catch (error) {
+            console.error("Error deleting exam:", error);
+            res.status(500).json({ message: "Internal server error." });
+        }
+
+    }
+});
+
 router.post('/exam/:exam_id',verifyUser, async (req, res) => {
     const User = jwt.verify(req.token,process.env.SECRET_KEY,(error,data)=>{
         if(error){
@@ -68,7 +117,8 @@ router.post('/exam/:exam_id',verifyUser, async (req, res) => {
             return ({isValid:true,fullName:data.fullName,studentId:data.userName});
         }
     })
-    if(User.isValid){
+    const forEdit = req.headers.foredit;
+    if(User.isValid && !forEdit){
         try {
             const userName = User.studentId;
             const { exam_id } = req.params;
@@ -100,8 +150,61 @@ router.post('/exam/:exam_id',verifyUser, async (req, res) => {
             res.status(500).send({ success: false, error: 'Internal Server Error' });
         }
     }
+    else if(User.isValid && forEdit){
+        const { exam_id } = req.params;
+        const exam = await Exam.findOne({ exam_id });
+        
+        if (!exam) {
+            return res.status(404).send({ success: false, error: 'Exam not found' });
+        }
+        res.send({ success: true, exams:exam });
+    }
     else{
         res.send({ success: false, error: 'Not a Valid user' });
+    }
+});
+// update a question
+// Update Question Endpoint
+router.put("/exam/update-exam/:examId", async (req, res) => {
+    const { examId } = req.params;
+    const updates = req.body; // Object containing fields to update
+
+    try {
+        // Find the exam by examId
+        const exams = await Exam.findOne({ exam_id: examId });
+
+        if (!exams) {
+            return res.status(404).json({ message: "Exam not found." });
+        }
+
+        // Update exam details
+        if (updates.department) exams.exam.department = updates.department;
+        if (updates.subject) exams.exam.subject = updates.subject;
+        if (updates.title) exams.exam.title = updates.title;
+        if (updates.description) exams.exam.description = updates.description;
+        if (updates.points_per_question !== undefined) {
+            exams.exam.points_per_question = updates.points_per_question;
+        }
+        if (updates.time_limit_perQuestion !== undefined) {
+            exams.exam.time_limit_perQuestion = updates.time_limit_perQuestion;
+        }
+
+        // Optional: Update questions
+        if (updates.questionsWithAns && Array.isArray(updates.questionsWithAns)) {
+            exams.exam.questionsWithAns = updates.questionsWithAns; // Replace all questions
+        }
+
+        // Optional: Update start and end dates
+        if (updates.exam_start_date) exams.exam_start_date = updates.exam_start_date;
+        if (updates.exam_end_date) exams.exam_end_date = updates.exam_end_date;
+
+        // Save the updated exam
+        await exams.save();
+
+        res.status(200).json({ message: "Exam details updated successfully.", exams });
+    } catch (error) {
+        console.error("Error updating exam details:", error);
+        res.status(500).json({ message: "Internal server error." });
     }
 });
 
