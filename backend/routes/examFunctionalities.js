@@ -117,7 +117,7 @@ router.post('/exam/:exam_id',verifyUser, async (req, res) => {
             return ({isValid:true,fullName:data.fullName,studentId:data.userName});
         }
     })
-    const forEdit = req.headers.foredit;
+    const forEdit = req.headers.foredit==='true';
     if(User.isValid && !forEdit){
         try {
             const userName = User.studentId;

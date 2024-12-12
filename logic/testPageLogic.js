@@ -29,15 +29,24 @@ document.addEventListener("DOMContentLoaded",async ()=>{
         window.location.href = "register.html";
     }
     else{
-        checkValidUser(token);
-        showStartPage();
+        // start quiz
+        userResponded = false;
+        examId = params.get("id");
+        // console.log("id : ",examId);
+        // check user already give his answer or not
+        await loadData(examId);
+        if(!isError.Error){
+            showStartPage();
+            heading.innerHTML = examData["exams"]["exam"]["title"];
+            totalQuestionSpan.innerHTML = totalQuestions;
+            updateTotalAnswred(currentInd);
+            perQuestionTimeLimit = examData.exams.exam.time_limit_perQuestion;
+        }
+        else{
+            showErroeMessage(isError.message);
+        }
     }
 })
-
-// Check user is valid or not
-const checkValidUser = (token)=>{
-    console.log(token);
-}
 
 // This function show the starting counter page
 const showStartPage =()=>{
@@ -66,24 +75,7 @@ const startQuiz =async ()=>{
     const examContent = document.querySelector(".examContent");
     starting.style.display = "none";
     examContent.style.display = "block";
-
-    // start quiz
-    userResponded = false;
-    examId = params.get("id");
-    // console.log("id : ",examId);
-    // check user already give his answer or not
-    await loadData(examId);
-    if(!isError.Error){
-        heading.innerHTML = examData["exams"]["exam"]["title"];
-        totalQuestionSpan.innerHTML = totalQuestions;
-        updateTotalAnswred(currentInd);
-        perQuestionTimeLimit = examData.exams.exam.time_limit_perQuestion;
-        loadQuestion(currentInd);
-        // startTimer(60);
-    }
-    else{
-        showResponded(isError.message);
-    }
+    loadQuestion(currentInd);
 }
 
 const loadData = async (examId)=>{
@@ -217,9 +209,12 @@ const storeResult = ()=>{
     })
 }
 
-const showResponded = (message)=>{
-    question_text.innerHTML = message;
-    next.style.display = "none";
+const showErroeMessage = (message)=>{
+    const messageContent = document.querySelector(".messageContent");
+    messageContent.innerHTML = `<p>${message}</p><div class='next-btn' id='backButton'>Back to Home</div>`
+    document.getElementById("backButton").addEventListener('click',()=>{
+        window.location.href = "index.html";
+    })
 }
 
 const updateTotalAnswred = (totalAnswred)=>{
