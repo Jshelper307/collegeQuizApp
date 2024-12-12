@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // MongoDB connection string (replace with your MongoDB URI)
-const uri = 'mongodb://localhost:27017/examDb'; // For local MongoDB
+const uri = 'mongodb://127.0.0.1:27017/examDb'; // For local MongoDB
 // Example for cloud database (MongoDB Atlas): 
 // const uri = 'mongodb+srv://<username>:<password>@cluster.mongodb.net/exam-platform?retryWrites=true&w=majority';
 
