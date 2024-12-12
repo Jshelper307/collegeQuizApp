@@ -1,10 +1,10 @@
 // Simulated Data
-const leaderboardData = [
-  { rank: 1, name: 'Chitra', score: 95 ,time: '30s'},
-  { rank: 2, name: 'Joy', score: 90, time:'27s' },
-  { rank: 3, name: 'Debayan', score: 85, time:'26s' },
-  { rank: 4, name: 'soham', score: 80, time:'25s' },
-  { rank: 5, name: 'Neha', score: 75,time:'24s' },
+let leaderboardData = [
+  { rank: 1, fullName: "Joy Sarkar",totalMarks: 4 ,totalTimeTaken: 6 ,userName: "27600121023JS"},
+  { rank: 2, fullName: "Chitra Dey",totalMarks: 3 ,totalTimeTaken: 8 ,userName: "27600121025CD"},
+  { rank: 3, fullName: "Neha Dhara",totalMarks: 2 ,totalTimeTaken: 10,userName: "27600121026ND" },
+  { rank: 4, fullName: "Debayan Patra",totalMarks: 2 ,totalTimeTaken: 9 ,userName: "27600121027DP" },
+  { rank: 5, fullName: "Soham Pattanayak",totalMarks: 1 ,totalTimeTaken: 10 ,userName: "27600121021SP" },
 ];
 // {fullName: "Joy Sarkar",totalMarks: 4 ,totalTimeTaken: 6 ,userName: "27600121023JS"}
 
@@ -162,7 +162,7 @@ document.getElementById('download-btn').addEventListener('click', () => {
   // Convert leaderboard data to CSV string
   const csvRows = [
     'Rank,Name,Score,Time', // Header row
-    ...leaderboardData.map(player => `${player.rank},${player.name},${player.score},${player.time}`) // Data rows
+    ...leaderboardData.map(player => `${player.rank},${player.fullName},${player.totalMarks},${player.totalTimeTaken},${player.userName}`) // Data rows
   ];
   const csvStr = csvRows.join('\n');
 
