@@ -91,9 +91,31 @@ signupBtn.addEventListener("click",(e)=>{
                 console.log("Registration successful!");
             }
             else if(!data.success && !data.mailsend){
+                new Notification({
+                    text: 'We cant send mail to your mail address . Please check you mail or try again later',
+                    position: 'top-center',
+                    style: {
+                      background: '#222',
+                      color: '#fff',
+                      transition: 'all 350ms linear',
+                      // more CSS styles here
+                    },
+                    autoClose: 5000,
+                  });
                 console.log("We cant send mail to your mail address . Please check you mail or try again later");
             }
             else{
+                new Notification({
+                    text: data.error,
+                    position: 'top-center',
+                    style: {
+                      background: '#222',
+                      color: '#fff',
+                      transition: 'all 350ms linear',
+                      // more CSS styles here
+                    },
+                    autoClose: 5000,
+                  });
                 console.log(data.error);
             }
         })
@@ -132,6 +154,16 @@ loginBtn.addEventListener("click",(e)=>{
             window.open("../pages/index.html","_parent");
         }
         else{
+            new Notification({
+                text: data.message,
+                style: {
+                  background: '#222',
+                  color: '#fff',
+                  transition: 'all 350ms linear',
+                  // more CSS styles here
+                },
+                autoClose: 3000,
+              });
             console.log(data.message);
         }
     })

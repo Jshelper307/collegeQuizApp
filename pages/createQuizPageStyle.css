@@ -63,6 +63,7 @@
   .link p{
     color: #8abbf0;
     text-decoration: underline;
+    word-break: break-all;
   }
 /* CSS */
 #copyBtn {
@@ -444,6 +445,9 @@
     .btnHolder{
       width: 100%;
       justify-content: space-around;
+    }
+    .link{
+      flex-direction: column;
     }
   }
   
