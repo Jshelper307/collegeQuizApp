@@ -31,7 +31,17 @@ const setMinDate = (examStartDate) => {
 const checkStartDateValue = (examStartDate, examEndDate) => {
   // console.log("start date value ")
   if (examStartDate.value.length === 0) {
-    alert("first enter exam start date");
+    // alert("first enter exam start date");
+    new Notification({
+      text: "first enter exam start date",
+      style: {
+        background: '#222',
+        color: '#fff',
+        transition: 'all 350ms linear',
+        // more CSS styles here
+      },
+      autoClose: 3000,
+    });
   } else {
     const maxGap = 30; //Maximum Gap between exam start and end date in days
     const examdate = new Date(examStartDate.value);
@@ -113,6 +123,16 @@ document.querySelector(".done").addEventListener("click", () => {
             }
             else{
               console.log("some error occure");
+              new Notification({
+                text:"some error occure",
+                style: {
+                  background: '#222',
+                  color: '#fff',
+                  transition: 'all 350ms linear',
+                  // more CSS styles here
+                },
+                autoClose: 3000,
+              });
             }
           })
           .catch(error=>{
@@ -154,7 +174,17 @@ document.querySelector(".done").addEventListener("click", () => {
     // console.log("questions : ", questions);
 
     clearForm(department,customDepartment,subject,customSubject,topic,description,timePerQuestion,customtimePerQuestion,points,customPoints,startDateAndTime,endDateAndTime);
-    alert("Form submitted successfully!");
+    // alert("Form submitted successfully!");
+    new Notification({
+      text: "Form submitted successfully!",
+      style: {
+        background: '#222',
+        color: '#fff',
+        transition: 'all 350ms linear',
+        // more CSS styles here
+      },
+      autoClose: 3000,
+    });
   } 
   // else {
   //   console.log("Not submitted....");
@@ -319,7 +349,7 @@ document.querySelector(".exit").addEventListener("click", () => {
 
 // Exit button end
 document.getElementById("backToHomeBtn").addEventListener("click", () => {
-  window.open("../pages/index.html", "_parent");
+  window.location.href = "adminPanel.html";
 });
 
 // validate input fields
@@ -393,7 +423,17 @@ function addQuestion() {
   }
 
   if (!isCorrectSelected) {
-    alert("Please mark the correct Answer.");
+    // alert("Please mark the correct Answer.");
+    new Notification({
+      text:"Please mark the correct Answer.",
+      style: {
+        background: '#222',
+        color: '#fff',
+        transition: 'all 350ms linear',
+        // more CSS styles here
+      },
+      autoClose: 3000,
+    });
     return; // Stop execution if no correct answer is marked
   }
   for (let i = 0; i < correctOption.length; i++) {
@@ -553,10 +593,20 @@ const editQuestion = (quesiton)=>{
 
   document.querySelector(".add-more").style.display = "block";
   document.querySelector(".editquestion-btn").style.display = "none";
+  new Notification({
+    text: "Question Successfully Edited",
+    style: {
+      background: '#222',
+      color: '#fff',
+      transition: 'all 350ms linear',
+      // more CSS styles here
+    },
+    autoClose: 3000,
+  });
 }
 
 const deleteQuestion = (question)=>{
-  console.log("deleted question : ",question);
+  // console.log("deleted question : ",question);
   const ind = questions.indexOf(question);
   console.log("question Index is : ",ind);
   if(ind===0){
@@ -568,6 +618,16 @@ const deleteQuestion = (question)=>{
   showPreviewQuestion(questions);
   totalQuestions--;
   document.getElementById("total-questions").textContent = totalQuestions;
+  new Notification({
+    text: "Question Successfully Deleted",
+    style: {
+      background: '#222',
+      color: '#fff',
+      transition: 'all 350ms linear',
+      // more CSS styles here
+    },
+    autoClose: 3000,
+  });
 }
 
 
@@ -595,7 +655,17 @@ const showExamLink = (examUrl) => {
 
   copy.addEventListener("click", () => {
     navigator.clipboard.writeText(examUrl);
-    alert("link is copied ...");
+    new Notification({
+      text: "link is copied ...",
+      style: {
+        background: '#222',
+        color: '#fff',
+        transition: 'all 350ms linear',
+        // more CSS styles here
+      },
+      autoClose: 3000,
+    });
+    // alert("link is copied ...");
   });
 };
 
@@ -677,7 +747,17 @@ async function updateExamDetails(examId, updatedExamData) {
       if (response.ok) {
           const result = await response.json();
           console.log("Exam updated successfully:", result);
-          alert("Exam updated successfully!");
+          // alert("Exam updated successfully!");
+          new Notification({
+            text: "Exam updated successfully!",
+            style: {
+              background: '#222',
+              color: '#fff',
+              transition: 'all 350ms linear',
+              // more CSS styles here
+            },
+            autoClose: 3000,
+          });
       } else {
           const error = await response.json();
           console.error("Error updating exam:", error.message);
@@ -685,7 +765,17 @@ async function updateExamDetails(examId, updatedExamData) {
       }
   } catch (error) {
       console.error("Network or server error:", error);
-      alert("An error occurred while updating the exam.");
+      // alert("An error occurred while updating the exam.");
+      new Notification({
+        text: "An error occurred while updating the exam.",
+        style: {
+          background: '#222',
+          color: '#fff',
+          transition: 'all 350ms linear',
+          // more CSS styles here
+        },
+        autoClose: 3000,
+      });
   }
 }
 
