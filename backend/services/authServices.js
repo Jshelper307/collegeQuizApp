@@ -36,7 +36,7 @@ class DbService{
       
     async registerUser(password,firstname,lastname,email,phone,college,universityrollnumber){
         const username = this.calculateStudentId(firstname,lastname,universityrollnumber);
-
+        let result;
         // Hash the password before storing it
         const hashedPassword = this.hashPassword(password);
     
@@ -48,7 +48,7 @@ class DbService{
         const setLogin = await new Promise((resolve,reject)=>{
             connection.execute(queryforstudentlogin, [username, hashedPassword,false], (err, results) => {
             if (err) {
-                console.error("Error inserting userlogin:", err);
+                // console.error("Error inserting userlogin:", err);
                 reject(new Error(err.message))
             } else {
                 console.log("User successfully registered!");
@@ -58,26 +58,27 @@ class DbService{
             });
         })
         if(setLogin){
-            const result = await new Promise((resolve,reject)=>{
+            result = await new Promise((resolve,reject)=>{
                 connection.execute(queryforstudentdetails, [username,firstname,lastname,email,phone,college,universityrollnumber], (err, results) => {
                 if (err) {
                     console.error("Error inserting userdetails:", err);
                     reject(new Error(err.message));
                 } else {
                     console.log("User successfully registered!");
-                    resolve(results);
+                    resolve({success:true,message:"User successfully registered!"});
                 }
                 });
             });
 
             try{
                 const name = firstname+" "+lastname;
-                this.sendMailToUser(username,password,email,name);
+                await this.sendMailToUser(username,password,email,name);
             }
             catch(error){
-                console.log("Error for sending mail : ",error);
-                const isDeleted = this.deleteUser(username);
-                console.log("deleted : ",isDeleted);
+                // console.log("Error for sending mail : ",error);
+                result =await this.deleteUser(username);
+                result.mailsend = false;
+                // console.log("deleted : ",result);
             }
 
             return result;
@@ -114,7 +115,7 @@ class DbService{
                     reject(new Error(err.message));
                 } else {
                     console.log("User successfully Removed!");
-                    resolve(results);
+                    resolve({success:false,error:"User Removed ."});
                 }
                 });
             });
@@ -165,7 +166,7 @@ class DbService{
                 const newTeacher = new teachers({teacher_id:teacherId,created_exams:[]});
                 await newTeacher.save() ;
                 try{
-                    this.sendMailToUser(teacherId,password,email,name);
+                    await this.sendMailToUser(teacherId,password,email,name);
                 }
                 catch(error){
                     console.log("Error for sending mail : ",error);
@@ -298,7 +299,7 @@ class DbService{
             const info = await transporter.sendMail(mailOptions);
             console.log("Email sent successfully:", info.response);
         } catch (error) {
-            console.error("Failed to send email:", error);
+            // console.error("Failed to send email:", error);
             throw new Error(`Failed to send registration email: ${error.message}`);
         }
     };

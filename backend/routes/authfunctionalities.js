@@ -18,7 +18,21 @@ router.post('/signup', async (req, res) => {
     const db = dbService.getDbServiceInstance();
     const result = db.registerUser(password,firstName,lastName,emailAddress,phone,collegeName,universityRollno);
 
-    result.then((data) => res.json({ success: true })).catch((error) => console.log(error));
+    result.then((data) => {
+        // console.log("Signup data : ",data);
+        if(data.success){
+            res.json({ success: true , message:"Registraton Successfull"})
+        }
+        else{
+            res.json({success:false,error:"Registration Failed",mailsend:data.mailsend})
+        }
+    }).catch((error) => {
+        // console.log("Error form /signup : ");
+        if(error.message.split("'")[0]==='Duplicate entry '){
+            return res.json({success:false,error:"You already have an account"});
+        }
+        res.json({success:false,error:error.message});
+    });
 });
 
 // Login Route
@@ -36,7 +50,10 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign(user,JWT_SECRET,{expiresIn: '1h'});
         // console.log("token : ",token);
         res.json({ success: true,token:token});
-    }).catch((error) => console.log("error is : ",error));
+    }).catch((error) =>{ 
+        // console.log("error is : ",error);
+        res.json(error);
+    });
 });
 // Sign-up Route
 router.post('/teacher/signup', async (req, res) => {
