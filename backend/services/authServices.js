@@ -37,13 +37,6 @@ class DbService{
     async registerUser(password,firstname,lastname,email,phone,college,universityrollnumber){
         const username = this.calculateStudentId(firstname,lastname,universityrollnumber);
 
-        try{
-            sendMailToUser(username,password);
-        }
-        catch(error){
-            console.log("Error for sending mail : ",error);
-        }
-
         // Hash the password before storing it
         const hashedPassword = this.hashPassword(password);
     
@@ -59,7 +52,7 @@ class DbService{
                 reject(new Error(err.message))
             } else {
                 console.log("User successfully registered!");
-                //Here code for sending message of the username and password in user's phone
+                //Here code for sending message of the username and password in user's phone ,false
                 resolve(results);
             }
             });
@@ -77,6 +70,16 @@ class DbService{
                 });
             });
 
+            try{
+                const name = firstname+" "+lastname;
+                this.sendMailToUser(username,password,email,name);
+            }
+            catch(error){
+                console.log("Error for sending mail : ",error);
+                const isDeleted = this.deleteUser(username);
+                console.log("deleted : ",isDeleted);
+            }
+
             return result;
         }
     };
@@ -85,6 +88,40 @@ class DbService{
         return urollNum+fname.charAt(0).toUpperCase()+lname.charAt(0).toUpperCase();
     } 
 
+    async deleteUser(userName){
+        // SQL query to insert username and hashed password
+        const queryforstudentlogin = "DELETE FROM loginCredentials WHERE username=?";
+        const queryforstudentdetails = "DELETE FROM studentdetails WHERE studentid=?";
+    
+        // Execute the MySQL query
+        const deleteLogin = await new Promise((resolve,reject)=>{
+            connection.execute(queryforstudentlogin, [userName], (err, results) => {
+            if (err) {
+                console.error("Error deleting userlogin:", err);
+                reject(new Error(err.message))
+            } else {
+                console.log("User successfully removed!");
+                //Here code for sending message of the username and password in user's phone ,false
+                resolve(results);
+            }
+            });
+        })
+        if(deleteLogin){
+            const result = await new Promise((resolve,reject)=>{
+                connection.execute(queryforstudentdetails, [userName], (err, results) => {
+                if (err) {
+                    console.error("Error removing userdetails:", err);
+                    reject(new Error(err.message));
+                } else {
+                    console.log("User successfully Removed!");
+                    resolve(results);
+                }
+                });
+            });
+
+            return result;
+        }
+    }
 
 
     // Add a teacher to the database and send a welcome email
@@ -127,6 +164,12 @@ class DbService{
                 const result = await connection.promise().execute(query, [teacherId, name, email, department, contact]);
                 const newTeacher = new teachers({teacher_id:teacherId,created_exams:[]});
                 await newTeacher.save() ;
+                try{
+                    this.sendMailToUser(teacherId,password,email,name);
+                }
+                catch(error){
+                    console.log("Error for sending mail : ",error);
+                }
                 return { message: "Teacher registered successfully!", result };
             }
         } catch (error) {
@@ -135,15 +178,15 @@ class DbService{
         }
     }
         
-        // Add this method to the DbService class
-        calculateteacherId(name, contact) {
-            const contactNumber = contact; // Use the contact number directly
-            const nameInitials = name
-                .split(' ')
-                .map(word => word.charAt(0).toUpperCase())
-                .join(''); // Combine the initials of the name
-            return `${contactNumber}${nameInitials}`;
-        }
+    // Add this method to the DbService class
+    calculateteacherId(name, contact) {
+        const contactNumber = contact; // Use the contact number directly
+        const nameInitials = name
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase())
+            .join(''); // Combine the initials of the name
+        return `${contactNumber}${nameInitials}`;
+    }
 
 
     async verifyUser(username, inputPassword){
@@ -224,24 +267,30 @@ class DbService{
         return userFullName;
     }
 
-    sendMailToUser =async(id,password)=>{
+    sendMailToUser = async (id, password, email, username) => {
+        // Validate input
+        if (!email || !username || !id || !password) {
+            throw new Error("Invalid email parameters.");
+        }
+    
         // Configure the transport using SMTP settings from .env
         const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,  // Gmail's SMTP host
-            port: process.env.SMTP_PORT || 587,  // Use port 587 for TLS or 465 for SSL
-            secure: process.env.SMTP_PORT === '465',  // true for SSL (port 465)
+            host: process.env.SMTP_HOST, // Gmail's SMTP host
+            port: Number(process.env.SMTP_PORT) || 587, // Use port 587 for TLS or 465 for SSL
+            secure: Number(process.env.SMTP_PORT) === 465, // true for SSL (port 465)
             auth: {
-                user: process.env.SMTP_USER,  // Your Gmail email address
-                pass: process.env.SMTP_PASS,  // App password or Gmail password (depending on 2FA)
+                user: process.env.SMTP_USER, // Your Gmail email address
+                pass: process.env.SMTP_PASS, // App password or Gmail password (depending on 2FA)
             },
+            debug: true, // Enable debug output
         });
     
         // Set up the email options
         const mailOptions = {
             from: `"QuizMania" <${process.env.SMTP_USER}>`, // Sender's email
-            to: email,  // Receiver's email (user's email)
-            subject: "Welcome to Our Platform!",  // Email subject
-            text: `Hello ${firstname} ${lastname},\n\nThank you for registering!\n\nYour credentials are:\nUsername: ${id}\nPassword: ${password}\n\nPlease keep this information secure.\n\nBest Regards,\nQuizMania Team`, // Email body in plain text
+            to: email, // Receiver's email (user's email)
+            subject: "Welcome to Our Platform!", // Email subject
+            text: `Hello ${username},\n\nThank you for registering!\n\nYour credentials are:\nUsername: ${id}\nPassword: ${password}\n\nPlease keep this information secure.\n\nBest Regards,\nQuizMania Team`, // Email body in plain text
         };
     
         // Send the email
@@ -250,9 +299,10 @@ class DbService{
             console.log("Email sent successfully:", info.response);
         } catch (error) {
             console.error("Failed to send email:", error);
-            throw new Error("Failed to send registration email.");
+            throw new Error(`Failed to send registration email: ${error.message}`);
         }
-    }
+    };
+    
 }
 
 module.exports = DbService;
