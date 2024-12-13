@@ -87,10 +87,19 @@ signupBtn.addEventListener("click",(e)=>{
         })
         .then(data => {
             console.log("data is : ",data)
+            if(data.success){
+                console.log("Registration successful!");
+            }
+            else if(!data.success && !data.mailsend){
+                console.log("We cant send mail to your mail address . Please check you mail or try again later");
+            }
+            else{
+                console.log(data.error);
+            }
         })
         .catch(err => console.error('Error:', err));
 
-        console.log("Registration successful!");
+        
     } else {
         console.error("Registration failed due to mismatched passwords.");
     }
@@ -117,9 +126,14 @@ loginBtn.addEventListener("click",(e)=>{
         return response.json();
     })
     .then(data => {
-        // console.log("data is : ",data);
-        localStorage.setItem("token",data.token);
-        window.open("../pages/index.html","_parent");
+        console.log("data is : ",data);
+        if(data.success){
+            localStorage.setItem("token",data.token);
+            window.open("../pages/index.html","_parent");
+        }
+        else{
+            console.log(data.message);
+        }
     })
     .catch(err => console.error('Error:', err));
 
