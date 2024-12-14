@@ -408,3 +408,11 @@
     overflow-x: auto;
   }
   
+  .tableHeader{
+    display: none;
+    justify-content: space-around;
+    color: #5980a7;
+    padding: 10px;
+    background-color: yellow;
+    font-weight: bold;
+  }

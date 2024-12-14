@@ -136,8 +136,7 @@ const loadQuestion = (QuestionIndex)=>{
     question_text.innerHTML = examData["exams"]["exam"]["questionsWithAns"][QuestionIndex]["question"];
     optionsContainer.innerHTML = examData["exams"]["exam"]["questionsWithAns"][QuestionIndex]["options"]
     .map(
-        (option, idx) =>
-            `<label><input type="radio" name="option" value="${option}"> ${option}</label>`
+        option =>`<label><input type="radio" name="option" value="${option}"> ${option}</label>`
     )
     .join("");
     currentInd++;
