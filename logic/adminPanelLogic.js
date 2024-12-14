@@ -1,11 +1,5 @@
 // Simulated Data
-let leaderboardData = [
-  { rank: 1, fullName: "Joy Sarkar",totalMarks: 4 ,totalTimeTaken: 6 ,userName: "27600121023JS"},
-  { rank: 2, fullName: "Chitra Dey",totalMarks: 3 ,totalTimeTaken: 8 ,userName: "27600121025CD"},
-  { rank: 3, fullName: "Neha Dhara",totalMarks: 2 ,totalTimeTaken: 10,userName: "27600121026ND" },
-  { rank: 4, fullName: "Debayan Patra",totalMarks: 2 ,totalTimeTaken: 9 ,userName: "27600121027DP" },
-  { rank: 5, fullName: "Soham Pattanayak",totalMarks: 1 ,totalTimeTaken: 10 ,userName: "27600121021SP" },
-];
+let leaderboardData = [];
 // {fullName: "Joy Sarkar",totalMarks: 4 ,totalTimeTaken: 6 ,userName: "27600121023JS"}
 
 document.addEventListener('DOMContentLoaded',()=>{
@@ -119,8 +113,9 @@ const showLeaderBoard = (examId)=>{
   fetch(url)
   .then(response=>response.json())
   .then(data=>{
-    console.log(data.examResults.results);
+    // console.log(data.examResults.results);
     renderLeaderboard(data.examResults.results);
+    leaderboardData = data.examResults.results;
   })
   .catch(error=>{
     console.log("error from showLeaderBoard : ",error);
@@ -131,6 +126,8 @@ const showLeaderBoard = (examId)=>{
 function renderLeaderboard(data) {
   const leaderboard_header = document.querySelector(".leaderboard-header");
   const leaderboaedHolder = document.querySelector(".leaderboaedHolder");
+  const tableHeader = document.querySelector(".tableHeader");
+  tableHeader.style.display = "flex";
   // Reference to the leaderboard list
   const leaderboardList = document.querySelector(".leaderboard-list");
   // Clear existing items
@@ -141,12 +138,22 @@ function renderLeaderboard(data) {
   data.forEach((player,index) => {
     const listItem = document.createElement('li');
     listItem.classList.add('leaderboard-item');
+    let time = "0S";
+    if(player.totalTimeTaken>=60 && player.totalTimeTaken<3600){
+      time = secToMin(player.totalTimeTaken);
+    }
+    else if(player.totalTimeTaken>=3600){
+      time = secToHour(player.totalTimeTaken);
+    }
+    else{
+      time = `00 : 00 : ${String(player.totalTimeTaken).padStart(2,'0')}`;
+    }
 
     listItem.innerHTML = `
       <span class="rank">${index+1}</span>
       <span class="name">${player.fullName}</span>
       <span class="score">${player.totalMarks}</span>
-      <span class="time">${player.totalTimeTaken} S</span>
+      <span class="time">${time}</span>
     `;
 
     // Append the item to the leaderboard list
@@ -159,10 +166,11 @@ function renderLeaderboard(data) {
 
 
 document.getElementById('download-btn').addEventListener('click', () => {
+  console.log("leaderboard Data : ",leaderboardData);
   // Convert leaderboard data to CSV string
   const csvRows = [
-    'Rank,Name,Score,Time', // Header row
-    ...leaderboardData.map(player => `${player.rank},${player.fullName},${player.totalMarks},${player.totalTimeTaken},${player.userName}`) // Data rows
+    'Rank,UserName,Name,Score,Time', // Header row
+    ...leaderboardData.map((player,index) =>`${index+1},${player.userName},${player.fullName},${player.totalMarks},${player.totalTimeTaken} Sec`) // Data rows
   ];
   const csvStr = csvRows.join('\n');
 
@@ -213,4 +221,17 @@ const deleteExam =async (examId)=>{
       console.error("Network or server error:", error);
       alert("An error occurred while deleting the exam.");
   }
+}
+
+const secToMin=(sec)=>{
+  let min=String(Math.floor(sec/60)).padStart(2,'0');
+  let remsec = String(sec%60).padStart(2,'0');
+  return `00 : ${min} : ${remsec}`;
+}
+
+const secToHour=(sec)=>{
+  let hr = String(Math.floor(sec/(60*60))).padStart(2,'0');
+  let min=String(Math.floor((sec-(60*60))/60)).padStart(2,'0');
+  let remsec = String((sec-(60*60))%60).padStart(2,'0');
+  return `${hr} : ${min} : ${remsec}`;
 }

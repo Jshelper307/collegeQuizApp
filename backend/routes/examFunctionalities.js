@@ -218,7 +218,9 @@ router.get('/exam/:exam_id/get_results', async (req, res) => {
         if (!results) {
             return res.status(404).send({ success: false, error: 'Results not found' });
         }
-        
+        // console.log(results);
+        // Sort the leaderboard before send the response
+        results.results = sortLeaderboard(results.results);
         res.send({ success: true, examResults:results });
     } catch (error) {
         console.error('Error fetching results:', error.message);
@@ -264,7 +266,18 @@ function shuffleQuestion(questions){
     return questions;
 }
 
-
+// sort the leaderboard
+function sortLeaderboard(results) {
+    // Custom comparator function
+    return results.sort((a, b) => {
+        // Compare totalmarks in descending order
+        if (b.totalMarks !== a.totalMarks) {
+            return b.totalMarks - a.totalMarks;
+        }
+        // If totalmarks are the same, compare totaltime in ascending order
+        return a.totalTimeTaken - b.totalTimeTaken;
+    });
+}
 
 
 module.exports = router;
