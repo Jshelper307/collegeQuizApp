@@ -61,11 +61,13 @@ router.post('/teacher/signup', async (req, res) => {
 
     try {
         const db = dbService.getDbServiceInstance();
-        await db.addTeacher(name, email, department, contact, password);
-        res.json({ success: true, message: 'Teacher registered successfully' });
+        const result = await db.addTeacher(name, email, department, contact, password);
+        // console.log("Result from post req : ",result);
+        res.json(result);
     } catch (error) {
-        console.error('Error in /teacher/signup:', error.message);
-        res.status(500).json({ success: false, message: error.message });
+        // console.error('Error in /teacher/signup:', error.message);
+        
+        res.json({ success: false, message: error.message });
     }
 });
 
