@@ -140,18 +140,23 @@ class DbService{
         const teacherId = this.calculateteacherId(name, contact);
     
         try {
+            let result;
             // sendMail(teacherId,password);
             // Hash the password and insert into the database
             const hashedPassword = this.hashPassword(password);
 
-            const queryforstudentlogin = "INSERT INTO loginCredentials (username, password,isTeacher) VALUES (?, ?,?)";
+            const queryforteacherlogin = "INSERT INTO loginCredentials (username, password,isTeacher) VALUES (?, ?,?)";
             const setLogin = await new Promise((resolve,reject)=>{
-                connection.execute(queryforstudentlogin, [teacherId, hashedPassword,true], (err, results) => {
+                connection.execute(queryforteacherlogin, [teacherId, hashedPassword,true], (err, results) => {
                 if (err) {
-                    console.error("Error inserting userlogin:", err);
+                    // console.error("Error inserting userlogin:", err);
+                    // console.log(err.message.split("'")[0]);
+                    if(err.message.split("'")[0].trim()==="Duplicate entry"){
+                        reject({success:false,error:"Already have an account"});
+                    }
                     reject(new Error(err.message))
                 } else {
-                    console.log("User successfully registered!");
+                    // console.log("User successfully registered!");
                     //Here code for sending message of the username and password in user's phone
                     resolve(results);
                 }
@@ -162,19 +167,53 @@ class DbService{
                     INSERT INTO teacherdetails (teacherid, name, email, department, contact)
                     VALUES (?, ?, ?, ?, ?)
                 `;
-                const result = await connection.promise().execute(query, [teacherId, name, email, department, contact]);
+                result = await connection.promise().execute(query, [teacherId, name, email, department, contact]);
                 const newTeacher = new teachers({teacher_id:teacherId,created_exams:[]});
                 await newTeacher.save() ;
                 try{
                     await this.sendMailToUser(teacherId,password,email,name);
                 }
                 catch(error){
-                    console.log("Error for sending mail : ",error);
+                    // console.log("Error for sending mail : ",error);
+                    result = await this.deleteTeacher(teacherId);
+                    result.mailSend = false;
+                    return result;
                 }
-                return { message: "Teacher registered successfully!", result };
+                return { message: "Teacher registered successfully!", success:true ,mailSend:true};
             }
         } catch (error) {
-            console.error("Failed to register teacher:", error);
+            // console.error("Failed to register teacher:", error);
+            throw new Error(error.error);
+        }
+    }
+
+    async deleteTeacher(userName){
+        try {
+            const queryforstudentlogin = "DELETE FROM loginCredentials WHERE username=?;";
+            const setLogin = await new Promise((resolve,reject)=>{
+                connection.execute(queryforstudentlogin, [userName], (err, results) => {
+                if (err) {
+                    console.error("Error deleting userlogin:", err);
+                    reject(new Error(err.message))
+                } else {
+                    // console.log("User successfully deleted!");
+                    //Here code for sending message of the username and password in user's phone
+                    resolve(results);
+                }
+                });
+            })
+            if(setLogin){
+                const query = `DELETE FROM teacherdetails WHERE teacherid = ?;`;
+                await connection.promise().execute(query, [userName]);
+                const deleteTeacher = await teachers.findOneAndDelete({teacher_id:userName});
+                if(!deleteTeacher){
+                    return {success:false,message:"Error form remove user"};
+                }
+                return { message: "Teacher removed successfully!", success:false};
+            }
+            return {success:false,message:"Internal error"};
+        } catch (error) {
+            console.error("Failed to delete teacher:", error);
             throw new Error("Registration failed. Please try again.");
         }
     }
