@@ -11,17 +11,17 @@
     <h1>Teacher Registration</h1>
     <form class="registration-form" id="registrationForm">
         <div class="form-group">
-          <label for="name">Full Name:</label>
+          <label for="name">Full Name:<span class="required">*</span></label>
           <input type="text" id="name" name="name" placeholder="Enter your full name">
           <small class="error-message"></small>
         </div>
         <div class="form-group">
-          <label for="email">Email:</label>
+          <label for="email">Email:<span class="required">*</span></label>
           <input type="email" id="email" name="email" placeholder="Enter your email">
           <small class="error-message"></small>
         </div>
         <div class="form-group">
-          <label for="department">Department:</label>
+          <label for="department">Department:<span class="required">*</span></label>
           <select id="department" name="department">
             <option value="Select the Department">----Select the Department----</option>
             <option value="computer-science">Computer Science And Engineering</option>
@@ -35,18 +35,18 @@
           <small class="error-message"></small>
         </div>
         <div class="form-group">
-            <label for="contact">Contact:</label>
+            <label for="contact">Contact:<span class="required">*</span></label>
             <input type="text" id="contact" name="subject" placeholder="Enter your contact">
             <small class="error-message"></small>
           </div>
         <div class="form-group password-container">
-          <label for="password">Password:</label>
+          <label for="password">Password:<span class="required">*</span></label>
           <input type="password" id="password" name="password" placeholder="Enter your password">
           <span class="toggle-password" onclick="togglePassword('password')">&#128065;</span>
           <small class="error-message"></small>
         </div>
         <div class="form-group password-container">
-          <label for="confirm-password">Confirm Password:</label>
+          <label for="confirm-password">Confirm Password:<span class="required">*</span></label>
           <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password">
           <span class="toggle-password" onclick="togglePassword('confirm-password')">&#128065;</span>
           <small class="error-message"></small>
