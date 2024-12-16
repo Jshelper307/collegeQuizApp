@@ -117,7 +117,7 @@ document.querySelector(".done").addEventListener("click", () => {
             return response.json();
           })
           .then(data=>{
-            console.log("log from teacherPageLogic : ",data);
+            // console.log("log from teacherPageLogic : ",data);
             if(data['success']){
               showExamLink(data['examUrl']);
             }
@@ -506,7 +506,9 @@ const showPreviewQuestion = (questions) => {
       setQuestionForEdit(question);
     })
     deleteBtn.addEventListener("click",()=>{
-      deleteQuestion(question);
+      if(confirm("Are you want to delete this question ?")){
+        deleteQuestion(question);
+      }
     })
     
     buttonHolder.appendChild(editBtn);
@@ -608,7 +610,7 @@ const editQuestion = (quesiton)=>{
 const deleteQuestion = (question)=>{
   // console.log("deleted question : ",question);
   const ind = questions.indexOf(question);
-  console.log("question Index is : ",ind);
+  // console.log("question Index is : ",ind);
   if(ind===0){
     questions.shift();
   }

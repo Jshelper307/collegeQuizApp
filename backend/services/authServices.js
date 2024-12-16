@@ -152,7 +152,7 @@ class DbService{
                     // console.error("Error inserting userlogin:", err);
                     // console.log(err.message.split("'")[0]);
                     if(err.message.split("'")[0].trim()==="Duplicate entry"){
-                        reject({success:false,error:"Already have an account"});
+                        reject({success:false,message:"Already have an account"});
                     }
                     reject(new Error(err.message))
                 } else {
@@ -168,22 +168,27 @@ class DbService{
                     VALUES (?, ?, ?, ?, ?)
                 `;
                 result = await connection.promise().execute(query, [teacherId, name, email, department, contact]);
-                const newTeacher = new teachers({teacher_id:teacherId,created_exams:[]});
-                await newTeacher.save() ;
-                try{
-                    await this.sendMailToUser(teacherId,password,email,name);
+                if(result){
+                    const newTeacher = new teachers({teacher_id:teacherId,created_exams:[]});
+                    await newTeacher.save() ;
+                    try{
+                        await this.sendMailToUser(teacherId,password,email,name);
+                    }
+                    catch(error){
+                        // console.log("Error for sending mail : ",error);
+                        result = await this.deleteTeacher(teacherId);
+                        result.mailSend = false;
+                        return result;
+                    }
+                    return { message: "Teacher registered successfully!", success:true ,mailSend:true};
                 }
-                catch(error){
-                    // console.log("Error for sending mail : ",error);
-                    result = await this.deleteTeacher(teacherId);
-                    result.mailSend = false;
-                    return result;
+                else{
+                    return {success:false,error:"Error to register teacher"}
                 }
-                return { message: "Teacher registered successfully!", success:true ,mailSend:true};
             }
         } catch (error) {
             // console.error("Failed to register teacher:", error);
-            throw new Error(error.error);
+            throw new Error(error.message);
         }
     }
 
@@ -335,8 +340,9 @@ class DbService{
     
         // Send the email
         try {
-            const info = await transporter.sendMail(mailOptions);
-            console.log("Email sent successfully:", info.response);
+            await transporter.sendMail(mailOptions);
+            // const info = await transporter.sendMail(mailOptions);
+            // console.log("Email sent successfully:", info.response);
         } catch (error) {
             // console.error("Failed to send email:", error);
             throw new Error(`Failed to send registration email: ${error.message}`);
