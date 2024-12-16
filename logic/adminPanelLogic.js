@@ -61,7 +61,7 @@ const addUpcomming = (exam)=>{
   editBtn.className = "Btn";
   editBtn.innerHTML = `<img src="../icons/icons8-edit.svg" alt="edit">`
   editBtn.addEventListener("click",()=>{
-    console.log("Edited : ",exam.examId);
+    // console.log("Edited : ",exam.examId);
     localStorage.setItem("editedExamId",exam.examId);
     window.location.href = "createQuizPage.html";
   })
@@ -69,8 +69,10 @@ const addUpcomming = (exam)=>{
   deleteBtn.className = "Btn";
   deleteBtn.innerHTML = `<img src="../icons/icons8-delete.svg" alt="delete">`
   deleteBtn.addEventListener("click",()=>{
-    console.log("Deleted : ",exam.examId);
-    deleteExam(exam.examId);
+    if(confirm("Are you want to delete this exam ?")){
+      console.log("Deleted : ",exam.examId);
+      deleteExam(exam.examId);
+    }
   })
   buttonHolderDiv.appendChild(editBtn);
   buttonHolderDiv.appendChild(deleteBtn);
@@ -210,16 +212,44 @@ const deleteExam =async (examId)=>{
 
     if (response.ok) {
         const result = await response.json();
-        console.log("Exam deleted successfully:", result);
-        alert("Exam deleted successfully!");
+        // console.log("Exam deleted successfully:", result);
+        new Notification({
+          text: "Exam deleted successfully!",
+          style: {
+            background: '#222',
+            color: '#fff',
+            transition: 'all 350ms linear',
+            // more CSS styles here
+          },
+          autoClose: 3000,
+        });
     } else {
         const error = await response.json();
         console.error("Error deleting exam:", error.message);
-        alert(`Error: ${error.message}`);
+        new Notification({
+          text: `Error: ${error.message}`,
+          style: {
+            background: '#222',
+            color: '#fff',
+            transition: 'all 350ms linear',
+            // more CSS styles here
+          },
+          autoClose: 3000,
+        });
     }
   } catch (error) {
-      console.error("Network or server error:", error);
-      alert("An error occurred while deleting the exam.");
+      // console.error("Network or server error:", error);
+      new Notification({
+        text: "An error occurred while deleting the exam.",
+        style: {
+          background: '#222',
+          color: '#fff',
+          transition: 'all 350ms linear',
+          // more CSS styles here
+        },
+        autoClose: 3000,
+      });
+      // alert("An error occurred while deleting the exam.");
   }
 }
 

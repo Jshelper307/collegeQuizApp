@@ -148,7 +148,7 @@ loginBtn.addEventListener("click",(e)=>{
         return response.json();
     })
     .then(data => {
-        console.log("data is : ",data);
+        // console.log("data is : ",data);
         if(data.success){
             localStorage.setItem("token",data.token);
             window.open("../pages/index.html","_parent");

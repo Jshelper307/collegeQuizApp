@@ -58,7 +58,7 @@ async function submitForm(data) {
     // }
     const result = await response.json();
 
-    console.log(result);
+    // console.log(result);
     // console.log("Data from teacher Registration:", result);
     return result;
   } catch (error) {
@@ -98,6 +98,16 @@ registrationForm.addEventListener("submit",async (event) => {
           },
           autoClose: 5000,
         });
+        new Notification({
+          text: "UserName and Password is send to your Email . Please check your email and login through it ..",
+          style: {
+            background: '#222',
+            color: '#fff',
+            transition: 'all 350ms linear',
+            // more CSS styles here
+          },
+          autoClose: 5000,
+        });
       }
       else if(!result.success && result.message==="Already have an account"){
         // console.log("Failed to send email. Please check your email address or try again later.")
@@ -127,6 +137,16 @@ registrationForm.addEventListener("submit",async (event) => {
       }
       else{
         console.log(result);
+        new Notification({
+          text: result.message,
+          style: {
+            background: '#222',
+            color: '#fff',
+            transition: 'all 350ms linear',
+            // more CSS styles here
+          },
+          autoClose: 5000,
+        });
       }
     }
     else{

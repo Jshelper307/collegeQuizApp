@@ -65,7 +65,7 @@ router.post('/teacher/signup', async (req, res) => {
         // console.log("Result from post req : ",result);
         res.json(result);
     } catch (error) {
-        // console.error('Error in /teacher/signup:', error.message);
+        // console.error('Error in /teacher/signup:', error);
         
         res.json({ success: false, message: error.message });
     }
