@@ -46,6 +46,8 @@ const loadData = (examData)=>{
 
 const addUpcomming = (exam)=>{
   const upcommingTestsDiv = document.getElementById("upcommingTests");
+  const examDivHolder = document.createElement("div");
+  examDivHolder.style.border = "2px solid red";
   const div = document.createElement("div");
   div.className = "box";
   const descDiv = document.createElement("div");
@@ -69,11 +71,19 @@ const addUpcomming = (exam)=>{
   deleteBtn.className = "Btn";
   deleteBtn.innerHTML = `<img src="../icons/icons8-delete.svg" alt="delete">`
   deleteBtn.addEventListener("click",()=>{
+    // console.log("Deleted : ",exam.examId);
     if(confirm("Are you want to delete this exam ?")){
-      console.log("Deleted : ",exam.examId);
       deleteExam(exam.examId);
     }
   })
+  const copyLink = document.createElement("button");
+  copyLink.className = "Btn";
+  copyLink.innerHTML = `<img src="../icons/copy.svg" alt="delete">`;
+  copyLink.onclick = ()=>{
+    copyLinkAddress(exam);
+  }
+
+  buttonHolderDiv.appendChild(copyLink);
   buttonHolderDiv.appendChild(editBtn);
   buttonHolderDiv.appendChild(deleteBtn);
 
@@ -86,6 +96,8 @@ const addUpcomming = (exam)=>{
 
 const addLiveAndFinished = (exam)=>{
   const liveAndFinishedTestsDiv = document.getElementById("liveAndFinishedTests");
+  const examHolderDiv = document.createElement("div");
+  examHolderDiv.className = "examHolder";
   const div = document.createElement("div");
   div.className = "box";
   const descDiv = document.createElement("div");
@@ -95,19 +107,79 @@ const addLiveAndFinished = (exam)=>{
   titleDiv.innerHTML = `Title : ${exam.details.exam_title}`;
   const datesDiv = document.createElement("div");
   datesDiv.innerHTML = `Start : <span>${exam.details.examStartDate}</span><br>End : <span>${exam.details.examEndDate}</span>`;
-  if(exam.status === "Live"){
-    const statusDiv = document.createElement("div");
-    statusDiv.innerHTML=`🔴 Live`;
-    datesDiv.appendChild(statusDiv);
-  }
   div.appendChild(descDiv);
   div.appendChild(titleDiv);
   div.appendChild(datesDiv);
   div.addEventListener("click",()=>{
     showLeaderBoard(exam.examId);
   })
-  liveAndFinishedTestsDiv.appendChild(div);
+  const status = document.createElement("div");
+  status.className = "examStatus";
+  const copyLink = document.createElement("button");
+  copyLink.className = "Btn";
+  copyLink.innerHTML = `<img src="../icons/copy.svg" alt="delete">`;
+  copyLink.onclick = ()=>{
+    copyLinkAddress(exam);
+  }
+  status.appendChild(copyLink);
+  if(exam.status === 'Live'){
+    const live = document.createElement("span");
+    live.innerHTML = `🔴 Live`;
+    live.style.color = "white";
+    status.appendChild(live);
+  }
+  else{
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "Btn";
+    deleteBtn.innerHTML = `<img src="../icons/icons8-delete.svg" alt="delete">`
+    deleteBtn.addEventListener("click",()=>{
+      // console.log("Deleted : ",exam.examId);
+      if(confirm("Are you want to delete this exam ?")){
+        deleteExam(exam.examId);
+      }
+    })
+    status.appendChild(deleteBtn);
+  }
+  examHolderDiv.appendChild(div);
+  examHolderDiv.appendChild(status);
+  liveAndFinishedTestsDiv.appendChild(examHolderDiv);
 }
+
+// this function copy link address to the clipboard
+const copyLinkAddress = (exam) => {
+  const examLink = `http://localhost:5500/pages/test.html?id=${exam.examId}`;
+  
+  // Copy the link to the clipboard
+  navigator.clipboard.writeText(examLink)
+    .then(() => {
+      // console.log("Exam link copied successfully:", examLink);
+      
+      // Show notification
+      new Notification({
+        text: "Exam link copied successfully .",
+        style: {
+          background: '#222',
+          color: '#fff',
+          transition: 'all 350ms linear',
+          // more CSS styles here
+        },
+        autoClose: 3000,
+      });
+    })
+    .catch((err) => {
+      // console.error("Failed to copy the link:", err);
+      new Notification({
+        text: "Failed to copy the link .",
+        style: {
+          background: '#222',
+          color: '#fff',
+          transition: 'all 350ms linear',
+          // more CSS styles here
+        },
+        autoClose: 3000,
+      });
+    });
+};
 
 
 const showLeaderBoard = (examId)=>{
@@ -211,7 +283,8 @@ const deleteExam =async (examId)=>{
     });
 
     if (response.ok) {
-        const result = await response.json();
+        // const result = await response.json();
+        await response.json();
         // console.log("Exam deleted successfully:", result);
         new Notification({
           text: "Exam deleted successfully!",
