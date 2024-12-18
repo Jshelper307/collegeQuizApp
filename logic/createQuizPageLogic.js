@@ -658,7 +658,7 @@ const showExamLink = (examUrl) => {
   copy.addEventListener("click", () => {
     navigator.clipboard.writeText(examUrl);
     new Notification({
-      text: "link is copied ...",
+      text: "Exam link copied successfully .",
       style: {
         background: '#222',
         color: '#fff',

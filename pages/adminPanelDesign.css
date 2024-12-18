@@ -104,6 +104,28 @@
     position: relative;
   }
 
+  .examHolder > .box{
+    width: 100%;
+  }
+  .examHolder{
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+    float: left;
+    padding: 5px;
+    margin: 5px;
+    background-color: #ddddff;
+    border-radius: 20px;
+  }
+  .examStatus{
+    /* border: 2px solid red; */
+    background-color: black;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
   .box div{
     font-size: 1.09rem;
     font-weight: bold;
