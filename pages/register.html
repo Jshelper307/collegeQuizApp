@@ -6,9 +6,6 @@
     <link rel="stylesheet" href="register.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- for notification -->
-    <link rel="stylesheet" href="notification.css" />
-    <script src="../logic/Notification.js"></script>
 </head>
 <body>
     <div class="wrapper">
@@ -25,57 +22,68 @@
                 <div class="slider-tab"></div>
             </div>
             <div class="form-inner">
-                <form class="loginForm">
+                <!-- Login Form -->
+                <form action="login-handler.php" method="post" class="loginForm">
                     <div class="field">
-                        <input type="text" id="userNameInp" placeholder="Username" required>
+                        <label for="userNameInp">Username <span style="color: red;">*</span></label>
+                        <input type="text" id="userNameInp" name="username" placeholder="Username" required>
                     </div>
                     <div class="field">
-                        <input type="password" id="loginPassword" placeholder="Password" required>
-                        <i id="toggleLoginPassword" class="fas fa-eye"></i>
+                        <label for="loginPassword">Password <span style="color: red;">*</span></label>
+                        <input type="password" id="loginPassword" name="password" placeholder="Password" required>
                     </div>
                     <div class="pass-link"><a href="forgetPassword.html">Forgot password?</a></div>
                     <div class="field btn">
                         <div class="btn-layer"></div>
                         <input type="submit" id="loginBtn" value="Login">
                     </div>
-                    <div class="signup-link">Not a member? <a href="#">Signup now</a></div>
-                    <div class="signup-link">You are a Teacher? Then regester Here <a href="./TeacherRegistration.html">Signup now</a></div>
-                    <div class="signup-link">Go To <a href="./index.html">Home Page</a></div>
+                    <div class="signup-link">Not a member? <label for="signupFormBtn">Signup now</label></div>
+                    <div class="signup-link">You are a Teacher? Then register here <a href="./TeacherRegistration.html">Signup now</a></div>
+                    <div class="signup-link">Go to <a href="./index.html">Home Page</a></div>
                 </form>
-                <form class="signupForm">
+                <!-- Signup Form -->
+                <form action="signup-handler.php" method="post" class="signupForm">
                     <div class="field">
-                        <input type="text" id="firstNameInp" placeholder="First Name" required>
+                        <label for="firstNameInp">First Name <span style="color: red;">*</span></label>
+                        <input type="text" id="firstNameInp" name="first_name" placeholder="First Name" required>
                     </div>
                     <div class="field">
-                        <input type="text" id="lastNameInp" placeholder="Last Name" required>
+                        <label for="lastNameInp">Last Name <span style="color: red;">*</span></label>
+                        <input type="text" id="lastNameInp" name="last_name" placeholder="Last Name" required>
                     </div>
                     <div class="field">
-                        <input type="text" id="emailAddressInp" placeholder="Email Address" required>
+                        <label for="emailAddressInp">Email Address <span style="color: red;">*</span></label>
+                        <input type="email" id="emailAddressInp" name="email" placeholder="Email Address" required>
                     </div>
                     <div class="field">
-                        <input type="text" id="phoneInp" placeholder="Phone" required>
+                        <label for="phoneInp">Phone <span style="color: red;">*</span></label>
+                        <input type="text" id="phoneInp" name="phone" placeholder="Phone" required>
                     </div>
                     <div class="field">
-                        <input type="text" id="collegeNameInp" placeholder="College Name" required>
+                        <label for="collegeNameInp">College Name <span style="color: red;">*</span></label>
+                        <input type="text" id="collegeNameInp" name="college_name" placeholder="College Name" required>
                     </div>
                     <div class="field">
-                        <input type="text" id="universityRollnoInp" placeholder="University Roll Number" required>
+                        <label for="universityRollnoInp">University Roll Number <span style="color: red;">*</span></label>
+                        <input type="text" id="universityRollnoInp" name="university_rollno" placeholder="University Roll Number" required>
                     </div>
                     <div class="field">
-                        <input type="password" id="signupPassword" placeholder="Password" required>
-                        <i id="toggleSignupPassword" class="fas fa-eye"></i>
+                        <label for="signupPassword">Password <span style="color: red;">*</span></label>
+                        <input type="password" id="signupPassword" name="password" placeholder="Password" required>
                     </div>
                     <div class="field">
-                        <input type="password" placeholder="Confirm password" id="confirmPasswordInp" required>
+                        <label for="confirmPasswordInp">Confirm Password <span style="color: red;">*</span></label>
+                        <input type="password" id="confirmPasswordInp" name="confirm_password" placeholder="Confirm Password" required>
                     </div>
                     <div class="field btn">
                         <div class="btn-layer"></div>
-                        <input type="submit" id="signupBtn" value="Singup">
+                        <input type="submit" id="signupBtn" value="Signup">
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <script src="../logic/loginAndRegisterPageLogic.js"></script>
+    <script src="formLogic.js"></script>
+
 </body>
 </html>
