@@ -13,16 +13,19 @@
             <div class="title login">Login Form</div>
             <div class="title signup">Signup Form</div>
         </div>
+
         <div class="form-container">
             <div class="slide-controls">
-                <input type="radio" name="slide" id="loginFormBtn" checked>
-                <input type="radio" name="slide" id="signupFormBtn">
+                <input type="radio" name="slider" id="loginFormBtn" checked>
+                <input type="radio" name="slider" id="signupFormBtn">
                 <label for="loginFormBtn" class="slide loginFormBtn">Login</label>
                 <label for="signupFormBtn" class="slide signupFormBtn">Signup</label>
                 <div class="slider-tab"></div>
             </div>
+
             <div class="form-inner">
                 <!-- Login Form -->
+                <form class="loginForm" onsubmit="return validateLoginForm()">
                 <form action="login-handler.php" method="post" class="loginForm">
                     <div class="field">
                         <label for="userNameInp">Username <span style="color: red;">*</span></label>
@@ -37,10 +40,17 @@
                         <div class="btn-layer"></div>
                         <input type="submit" id="loginBtn" value="Login">
                     </div>
-                    <div class="signup-link">Not a member? <label for="signupFormBtn">Signup now</label></div>
-                    <div class="signup-link">You are a Teacher? Then register here <a href="./TeacherRegistration.html">Signup now</a></div>
-                    <div class="signup-link">Go to <a href="./index.html">Home Page</a></div>
+                    <div class="signup-link">
+                        Not a member? <label for="signupFormBtn">Signup now</label>
+                    </div>
+                    <div class="signup-link">
+                        You are a Teacher? Register here: <a href="./TeacherRegistration.html">Signup now</a>
+                    </div>
+                    <div class="signup-link">
+                        Go to <a href="./index.html">Home Page</a>
+                    </div>
                 </form>
+
                 <!-- Signup Form -->
                 <form action="signup-handler.php" method="post" class="signupForm">
                     <div class="field">
@@ -83,7 +93,7 @@
             </div>
         </div>
     </div>
-    <script src="formLogic.js"></script>
 
+    <script src="formLogic.js"></script>
 </body>
 </html>
