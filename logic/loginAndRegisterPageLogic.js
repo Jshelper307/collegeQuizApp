@@ -45,6 +45,99 @@ toggleSignupPassword.addEventListener('click', () => {
     toggleSignupPassword.classList.toggle('fa-eye-slash', type === 'text');
 });
 
+
+// First Name validation
+const firstName = document.getElementById("firstNameInp");
+firstName.oninput= ()=>{
+    const erroeElement = firstName.nextElementSibling;
+    const nameRegex = /^[A-Za-z]+$/;
+    // console.log(firstName.value);
+    if(firstName.value.length>=1 && firstName.value.length<=2){
+        erroeElement.innerHTML = "First Name must be greater than 2";
+    }
+    else if(!(firstName.value).match(nameRegex) && firstName.value.length>=1){
+        erroeElement.innerHTML = "First Name not contain any number or special character";
+    }
+    else{
+        erroeElement.innerHTML = "";
+    }
+}
+// Last Name validation
+const lastName = document.getElementById("lastNameInp");
+lastName.oninput= ()=>{
+    const erroeElement = lastName.nextElementSibling;
+    const nameRegex = /^[A-Za-z]+$/;
+    // console.log(firstName.value);
+    if(lastName.value.length>=1 && lastName.value.length<=2){
+        erroeElement.innerHTML = "Last Name must be greater than 2";
+    }
+    else if(!(lastName.value).match(nameRegex) && lastName.value.length>=1){
+        erroeElement.innerHTML = "Last Name not contain any number or special character";
+    }
+    else{
+        erroeElement.innerHTML = "";
+    }
+}
+// Email validation
+const email = document.getElementById("emailAddressInp");
+email.oninput= ()=>{
+    const erroeElement = email.nextElementSibling;
+    // console.log(firstName.value);
+    if(!(email.value).includes("@gmail.com")){
+        erroeElement.innerHTML = "This is not a valid mail";
+    }
+    else{
+        erroeElement.innerHTML = "";
+    }
+}
+// Phone validation
+const phone = document.getElementById("phoneInp");
+phone.addEventListener('keypress',(event)=>{
+    if(!/[0-9]/.test(event.key) || phone.value.length>=10){
+        event.preventDefault();
+    }
+})
+phone.oninput= ()=>{
+    const erroeElement = phone.nextElementSibling;
+    // console.log(firstName.value);
+    if(phone.value.length<10){
+        erroeElement.innerHTML = "Phone number must be 10 digits";
+    }
+    else{
+        erroeElement.innerHTML = "";
+    }
+}
+// UniversityRollNumber validation
+const UniversityRollNumber = document.getElementById("universityRollnoInp");
+UniversityRollNumber.addEventListener('keypress',(event)=>{
+    if(!/[0-9]/.test(event.key) || UniversityRollNumber.value.length>11){
+        event.preventDefault();
+    }
+})
+UniversityRollNumber.oninput= ()=>{
+    const erroeElement = UniversityRollNumber.nextElementSibling;
+    // console.log(firstName.value);
+    if(UniversityRollNumber.value.length<11){
+        erroeElement.innerHTML = "UniversityRollNumber must be 11 digits";
+    }
+    else{
+        erroeElement.innerHTML = "";
+    }
+}
+
+// UniversityRollNumber validation
+const password = document.getElementById("signupPassword");
+password.oninput= ()=>{
+    const erroeElement = password.nextElementSibling.nextElementSibling;
+    // console.log(firstName.value);
+    if(password.value.length<8){
+        erroeElement.innerHTML = "Password must be greater than 8 digits";
+    }
+    else{
+        erroeElement.innerHTML = "";
+    }
+}
+
 // For registration
 const signupBtn = document.getElementById("signupBtn");
 const loginBtn = document.getElementById('loginBtn');
