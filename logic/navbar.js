@@ -37,7 +37,7 @@ const getNavbar = (loggedIn)=>{
           </ul>
        </li>
         <li><a href="contact.html">Contact</a></li>
-        <li ${loggedIn?`id="userDetails"`:""}>${loggedIn?`<img src="../icons/user.svg" alt="userImage" height="25">${nameOfUser}`:`<a href="./register.html">Login/Regester</a>`}
+        <li ${loggedIn?`id="userDetails"`:""}>${loggedIn?`<img src="../icons/user.svg" alt="userImage" height="25">${nameOfUser}`:`<a href="./register.html">Login/Register</a>`}
           <ul class="dropdown-menu">
               <li id="logout"><img src="../icons/logout.svg" alt="logoutLogo" height="25">Logout</li>
           </ul>

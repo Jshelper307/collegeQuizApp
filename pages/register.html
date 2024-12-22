@@ -8,6 +8,89 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    
+    <div class="wrapper">
+        <div class="title-text">
+            <div class="title login">Login Form</div>
+            <div class="title signup">Signup Form</div>
+        </div>
+        <div class="form-container">
+            <div class="slide-controls">
+                <input type="radio" name="slide" id="loginFormBtn" checked>
+                <input type="radio" name="slide" id="signupFormBtn">
+                <label for="loginFormBtn" class="slide loginFormBtn">Login</label>
+                <label for="signupFormBtn" class="slide signupFormBtn">Signup</label>
+                <div class="slider-tab"></div>
+            </div>
+            <div class="form-inner">
+                <form class="loginForm">
+                    <div class="field">
+                        <input type="text" id="userNameInp" placeholder="Username" required>
+                    </div>
+                    <div class="field">
+                        <input type="password" id="loginPassword" placeholder="Password" required>
+                        <i id="toggleLoginPassword" class="fas fa-eye"></i>
+                    </div>
+                    <div class="pass-link"><a href="forgetPassword.html">Forgot password?</a></div>
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" id="loginBtn" value="Login">
+                    </div>
+                    <div class="signup-link">Not a member? <a href="#">Signup now</a></div>
+                    <div class="signup-link">You are a Teacher? Then regester Here <a href="./TeacherRegistration.html">Signup now</a></div>
+                    <div class="signup-link">Go To <a href="./index.html">Home Page</a></div>
+                </form>
+                <form class="signupForm">
+                    <div class="field">
+                        <label for="firstNameInp">First Name <span style="color: red;font-size: 20px;">*</span></label>
+                        <input type="text" id="firstNameInp" placeholder="First Name" required>
+                        <p style="color: red;"></p>
+                    </div>
+                    <div class="field">
+                        <label for="lastNameInp">Last Name <span style="color: red;font-size: 20px;">*</span></label>
+                        <input type="text" id="lastNameInp" placeholder="Last Name" required>
+                        <p style="color: red;"></p>
+                    </div>
+                    <div class="field">
+                        <label for="emailAddressInp">Email <span style="color: red;font-size: 20px;">*</span></label>
+                        <input type="text" id="emailAddressInp" placeholder="Email Address" required>
+                        <p style="color: red;"></p>
+                    </div>
+                    <div class="field">
+                        <label for="phoneInp">Phone <span style="color: red;font-size: 20px;">*</span></label>
+                        <input type="text" id="phoneInp" placeholder="Phone" required>
+                        <p style="color: red;"></p>
+                    </div>
+                    <div class="field">
+                        <label for="collegeNameInp">College or University <span style="color: red;font-size: 20px;">*</span></label>
+                        <select id="collegeNameInp">
+                            <option value="">Select College or University Name</option>
+                            <option value="Budge Budge Institute of Technology">Budge Budge Institute of Technology</option>
+                        </select>
+                        <!-- <input type="text" id="collegeNameInp" placeholder="College Name" required> -->
+                    </div>
+                    <div class="field">
+                        <label for="universityRollnoInp">University Roll Number <span style="color: red;font-size: 20px;">*</span></label>
+                        <input type="text" id="universityRollnoInp" placeholder="University Roll Number" required>
+                        <p style="color: red;"></p>
+                    </div>
+                    <div class="field">
+                        <label for="signupPassword">Password <span style="color: red;font-size: 20px;">*</span></label>
+                        <input type="password" id="signupPassword" placeholder="Password" required>
+                        <i id="toggleSignupPassword" class="fas fa-eye"></i>
+                        <p style="color: red;"></p>
+                    </div>
+                    <div class="field">
+                        <label for="confirmPasswordInp">Confirm password <span style="color: red;font-size: 20px;">*</span></label>
+                        <input type="password" placeholder="Confirm password" id="confirmPasswordInp" required>
+                    </div>
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" id="signupBtn" value="Singup">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../logic/loginAndRegisterPageLogic.js"></script>
 </body>
 </html>
