@@ -115,23 +115,25 @@ input[type="radio"]{
 }
 .form-inner form .field input,.form-inner form .field select{
   height: 50px;
-  width: 100%;
+  width: 92%;
   outline: none;
   padding-left: 15px;
   border-radius: 5px;
   border: 1px solid lightgrey;
   border-bottom-width: 2px;
   font-size: 17px;
+  color: #999;
   transition: all 0.3s ease;
 }
 .form-inner form .field input:focus{
   border-color: #fc83bb;
   /* box-shadow: inset 0 0 3px #fb6aae; */
 }
-.form-inner form .field input::placeholder ,select > option{
+.form-inner form .field input::placeholder{
   color: #999;
   transition: all 0.3s ease;
 }
+
 form .field input:focus::placeholder{
   color: #b3b3b3;
 }
@@ -215,7 +217,7 @@ form .btn input[type="submit"]{
 
 .form-inner form .field input {
   height: 50px;
-  width: calc(100% - 40px); /* Adjusted width to make space for the icon */
+  width: 92%; /* Adjusted width to make space for the icon */
   outline: none;
   padding-left: 15px;
   padding-right: 40px; /* Added padding for icon */
@@ -296,6 +298,10 @@ form .btn input[type="submit"] {
   font-weight: 500;
   cursor: pointer;
 }
-
+.form-inner form .field i{
+  position: relative;
+  top: 9px;
+  left: 1px;
+}
 
 

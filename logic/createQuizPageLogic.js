@@ -138,6 +138,17 @@ document.querySelector(".done").addEventListener("click", () => {
           .catch(error=>{
             console.log(error);
           })
+
+          new Notification({
+            text: "Form submitted successfully!",
+            style: {
+              background: '#222',
+              color: '#fff',
+              transition: 'all 350ms linear',
+              // more CSS styles here
+            },
+            autoClose: 3000,
+          });
     }
     else{
       const examId = localStorage.getItem("editedExamId"); // Replace with the actual exam ID
@@ -157,7 +168,6 @@ document.querySelector(".done").addEventListener("click", () => {
 
       // Call the update function
       updateExamDetails(examId, updatedExamData);
-      localStorage.removeItem("editedExamId");
     }
 
     // Submit data
@@ -175,16 +185,7 @@ document.querySelector(".done").addEventListener("click", () => {
 
     clearForm(department,customDepartment,subject,customSubject,topic,description,timePerQuestion,customtimePerQuestion,points,customPoints,startDateAndTime,endDateAndTime);
     // alert("Form submitted successfully!");
-    new Notification({
-      text: "Form submitted successfully!",
-      style: {
-        background: '#222',
-        color: '#fff',
-        transition: 'all 350ms linear',
-        // more CSS styles here
-      },
-      autoClose: 3000,
-    });
+    
   } 
   // else {
   //   console.log("Not submitted....");
@@ -748,18 +749,10 @@ async function updateExamDetails(examId, updatedExamData) {
 
       if (response.ok) {
           const result = await response.json();
-          console.log("Exam updated successfully:", result);
-          // alert("Exam updated successfully!");
-          new Notification({
-            text: "Exam updated successfully!",
-            style: {
-              background: '#222',
-              color: '#fff',
-              transition: 'all 350ms linear',
-              // more CSS styles here
-            },
-            autoClose: 3000,
-          });
+          // console.log("Exam updated successfully:", result);
+          localStorage.removeItem("editedExamId");
+          localStorage.setItem("isUpdate",true);
+          window.location.href = "adminPanel.html";
       } else {
           const error = await response.json();
           console.error("Error updating exam:", error.message);
