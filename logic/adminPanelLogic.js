@@ -5,6 +5,21 @@ let leaderboardData = [];
 document.addEventListener('DOMContentLoaded',()=>{
   const token = localStorage.getItem("token");
   loadTeacherData(token);
+  const isUpdate = localStorage.getItem("isUpdate");
+  if(isUpdate){
+    // alert("Exam updated successfully!");
+    new Notification({
+      text: "Exam updated successfully!",
+      style: {
+        background: '#222',
+        color: '#fff',
+        transition: 'all 350ms linear',
+        // more CSS styles here
+      },
+      autoClose: 3000,
+    });
+    localStorage.removeItem("isUpdate");
+  }
 })
 
 const loadTeacherData = (token)=>{
